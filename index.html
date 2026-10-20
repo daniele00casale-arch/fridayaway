@@ -1,0 +1,1318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Fridayaway – swipe to pick your weekend: flight + hotel within your budget.">
+<meta name="theme-color" content="#1f2a5a">
+</head>
+<body>
+<title>Fridayaway</title>
+<link rel="icon" href="data:image/png;base64,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">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: phone-app shell (max 460px) centred on wider screens. Top bar, scrolling screen, fixed bottom tab bar.
+   Discover screen = prompt + filters + swipeable card deck. */
+:root{
+  /* Deliberately single light theme: white app, pastel accents. */
+  --bg:#F6F5FB; --app:#FFFFFF; --surface:#FFFFFF; --ink:#26233A; --muted:#706C86; --line:#ECE9F4;
+  --primary:#6D5DE6; --primary-ink:#FFFFFF; --primary-soft:#EFECFF;
+  --accent:#FFB8A3; --accent-ink:#3B2621; --star:#F2B01E;
+  --mint:#DDF6E8; --mint-ink:#1D7A4C; --sky:#E1F0FF; --sky-ink:#2A5C93; --butter:#FFF4D6; --butter-ink:#7A5A10; --rose:#FFE4EA; --rose-ink:#A43A55; --lilac:#EFEAFF; --lilac-ink:#5A49C9;
+  --good:#1D7A4C; --good-soft:#DDF6E8; --warn:#B4511C; --like:#2FA36B; --nope:#E3667E;
+  --shadow:0 6px 20px rgba(38,35,58,.08);
+  --display:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Inter",ui-sans-serif,system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
+.app{max-width:460px;margin:0 auto;min-height:100%;background:var(--app);display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px var(--line)}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:700;margin:0;text-wrap:balance;letter-spacing:-.02em}
+p{margin:0}
+button{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
+.eyebrow{font-size:12px;font-weight:600;color:var(--muted)}
+.muted{color:var(--muted)}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:6;background:var(--app);border-bottom:1px solid var(--line);padding-top:max(10px,env(safe-area-inset-top,0px));padding-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px;letter-spacing:-.02em}
+.logo{width:30px;height:30px;border-radius:9px;object-fit:cover;display:block}.brand b{color:#14b8b0;font-weight:inherit}
+.trip{font-size:12.5px;color:var(--muted);text-align:right;line-height:1.25}
+.trip b{color:var(--ink)}
+
+.screen{flex:1;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+.screen[hidden]{display:none}
+
+/* ask */
+.ask{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.askrow{display:flex;gap:8px;align-items:flex-end}
+textarea{flex:1;min-width:0;resize:none;height:62px;font:inherit;font-size:15px;color:var(--ink);background:var(--app);border:1px solid var(--line);border-radius:12px;padding:9px 11px}
+.go{flex:none;height:44px;padding:0 16px;border:0;border-radius:12px;background:var(--primary);color:var(--primary-ink);font-weight:700;cursor:pointer}
+.go[disabled]{opacity:.6}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 11px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--app);border-color:var(--ink)}
+.budget{display:flex;align-items:center;gap:10px;font-size:13.5px}
+.budget input{flex:1;accent-color:var(--primary)}
+.budget b{font-family:var(--mono);font-variant-numeric:tabular-nums;min-width:62px;text-align:right}
+.read{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+
+/* learned strip */
+.learned{margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px}
+.learned .t{background:var(--primary-soft);color:var(--primary);border-radius:6px;padding:3px 7px}
+.linkbtn{border:0;background:none;color:var(--primary);font-weight:600;font-size:12.5px;cursor:pointer;padding:2px}
+
+/* deck */
+.deckwrap{margin-top:12px;position:relative;height:600px}
+.card{position:absolute;inset:0;background:var(--surface);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;touch-action:pan-y;user-select:none;-webkit-user-select:none;will-change:transform;cursor:grab}
+.card.dragging{cursor:grabbing;transition:none}
+.card.anim{transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.art{position:relative;height:185px;flex:none;overflow:hidden}
+.art svg{position:absolute;inset:0;width:100%;height:100%}
+.art .city{position:absolute;left:16px;bottom:12px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.art .city h2{font-size:30px;font-weight:700;line-height:1}
+.art .city span{font-size:13px;font-weight:600;opacity:.95}
+.art .temp{position:absolute;right:12px;top:12px;background:rgba(255,255,255,.88);color:#111C33;border-radius:999px;padding:4px 10px;font-weight:700;font-size:13px}
+.art .match{position:absolute;left:12px;top:12px;background:var(--butter);color:var(--butter-ink);border-radius:999px;padding:4px 10px;font-weight:700;font-size:12.5px}
+.stamp{position:absolute;top:26px;font-family:var(--display);font-weight:700;font-size:28px;border:4px solid;border-radius:10px;padding:2px 12px;opacity:0;pointer-events:none;z-index:3;background:rgba(255,255,255,.85)}
+.stamp.like{left:18px;color:var(--like);transform:rotate(-12deg)}
+.stamp.nope{right:18px;color:var(--nope);transform:rotate(12deg)}
+.body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
+.hotel{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.hotel h3{font-size:18px;font-family:var(--body);font-weight:700;line-height:1.2}
+.stars{color:var(--star);letter-spacing:1px;font-size:13px}
+.score{flex:none;background:var(--lilac);color:var(--lilac-ink);font-weight:700;border-radius:9px 9px 9px 2px;padding:5px 8px;font-size:14px;text-align:center;line-height:1}
+.score small{display:block;font-size:10px;font-weight:600;opacity:.85;margin-top:3px}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.badge{font-size:12px;font-weight:600;border-radius:6px;padding:3px 7px;background:var(--app);border:1px solid var(--line)}
+.badge.good{background:var(--good-soft);color:var(--good);border-color:transparent}
+.why{font-size:13.5px;color:var(--muted)}
+.why b{color:var(--ink);font-weight:600}
+.priceRow{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.price{font-family:var(--display);font-weight:700;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.pp{font-size:12.5px;color:var(--muted)}
+.left{font-size:12.5px;font-weight:600;text-align:right}
+.left.ok{color:var(--good)} .left.over{color:var(--warn)}
+.upg{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px dashed var(--line);border-radius:12px;padding:8px 10px;font-size:13px}
+.upg button{flex:none;border:1px solid var(--primary);color:var(--primary);background:transparent;border-radius:8px;padding:5px 9px;font-weight:700;font-size:12.5px;cursor:pointer}
+.empty{position:absolute;inset:0;border:2px dashed var(--line);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px}
+.actions{display:flex;justify-content:center;align-items:center;gap:18px;margin:12px 0 4px}
+.act{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);display:grid;place-items:center;cursor:pointer;font-size:24px;font-weight:700}
+.act.nope{color:var(--nope)} .act.like{color:var(--like)} .act.info{width:48px;height:48px;font-size:17px;color:var(--primary)}
+.hint{text-align:center;font-size:12.5px;color:var(--muted);margin-top:10px}
+.whoBar{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--primary-soft);color:var(--primary);border-radius:12px;padding:8px 12px;font-weight:600;font-size:13.5px}
+.whoBar button{border:0;background:var(--primary);color:var(--primary-ink);border-radius:8px;padding:6px 10px;font-weight:700;cursor:pointer;font-size:12.5px}
+
+/* lists */
+.sec{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+.sec h2{font-size:22px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px;display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center}
+.thumb{width:64px;height:64px;border-radius:12px;overflow:hidden;position:relative}
+.thumb svg{width:100%;height:100%}
+.item h3{font-size:16px}
+.item .sub{font-size:12.5px;color:var(--muted)}
+.item .p{font-family:var(--display);font-weight:700;font-size:18px;text-align:right;font-variant-numeric:tabular-nums}
+.item .rm{border:0;background:none;color:var(--muted);font-size:12px;cursor:pointer;padding:0}
+.cmp{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.cmp table{border-collapse:collapse;width:100%;min-width:420px;font-size:13px}
+.cmp th,.cmp td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.cmp th{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.cmp td.best{color:var(--good);font-weight:700}
+.note{font-size:12.5px;color:var(--muted)}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.btn{border:0;border-radius:12px;background:var(--primary);color:var(--primary-ink);font-weight:700;padding:11px 14px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--primary);border:1px solid var(--primary)}
+.mail{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--app);display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+.mail ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px}
+.toggle input{width:20px;height:20px;accent-color:var(--primary)}
+
+/* case screen */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:4px}
+.stat .v{font-family:var(--display);font-weight:700;font-size:24px;line-height:1;font-variant-numeric:tabular-nums}
+.stat .l{font-size:12.5px}
+.stat .s{font-size:11px;color:var(--muted)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.tbl table{border-collapse:collapse;min-width:620px;width:100%;font-size:12.5px}
+.tbl th,.tbl td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.tbl th{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.tbl tr.us td{background:var(--primary-soft)}
+.y{color:var(--good);font-weight:700}.pa{color:var(--warn);font-weight:700}.n{color:var(--muted)}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:14px}
+.field{display:grid;grid-template-columns:1fr 96px;gap:8px;align-items:center;font-size:13px}
+.field input{font-family:var(--mono);font-size:13px;color:var(--ink);background:var(--app);border:1px solid var(--line);border-radius:8px;padding:6px 8px;width:100%;text-align:right}
+.total{font-family:var(--display);font-weight:700;font-size:28px;font-variant-numeric:tabular-nums}
+.box a{color:var(--primary)}
+
+/* tab bar */
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:460px;z-index:8;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.tabbar button{border:0;background:none;padding:10px 4px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11.5px;font-weight:600;color:var(--muted);cursor:pointer;position:relative}
+.tabbar button svg{width:22px;height:22px}
+.tabbar button[aria-current="page"]{color:var(--primary)}
+.count{position:absolute;top:5px;left:calc(50% + 6px);background:var(--nope);color:#fff;font-size:10px;font-weight:700;border-radius:999px;padding:1px 5px;min-width:16px;text-align:center}
+
+/* sheet + overlay */
+.scrim{position:fixed;inset:0;background:rgba(10,16,32,.45);z-index:20}
+.sheet{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:460px;max-height:86%;overflow:auto;background:var(--surface);border-radius:20px 20px 0 0;z-index:21;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:12px}
+.grab{width:42px;height:5px;border-radius:5px;background:var(--line);margin:0 auto}
+.hrow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;background:var(--app)}
+.hrow[aria-pressed="true"]{border-color:var(--primary);box-shadow:inset 0 0 0 1px var(--primary)}
+.hrow .n{font-weight:700;color:var(--ink)}
+.hrow .d{font-size:12px;color:var(--muted)}
+.hrow .pr{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
+.matchPop{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:rgba(10,16,32,.7)}
+.matchPop .in{background:var(--surface);border-radius:22px;padding:22px;max-width:340px;width:calc(100% - 32px);text-align:center;display:flex;flex-direction:column;gap:12px}
+.matchPop h2{font-size:30px;color:var(--primary)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--app);padding:10px 14px;border-radius:12px;font-size:13.5px;z-index:40;max-width:calc(100% - 32px);width:max-content}
+.art canvas{position:absolute;inset:0;width:100%;height:100%}
+.art .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0) 35%,rgba(38,35,58,.55) 100%)}
+.credit{font-size:11px;color:var(--muted)}
+.credit a{color:var(--muted)}
+.badge.mint{background:var(--mint);color:var(--mint-ink);border-color:transparent}
+.badge.sky{background:var(--sky);color:var(--sky-ink);border-color:transparent}
+.badge.butter{background:var(--butter);color:var(--butter-ink);border-color:transparent}
+.badge.rose{background:var(--rose);color:var(--rose-ink);border-color:transparent}
+.badge.lilac{background:var(--lilac);color:var(--lilac-ink);border-color:transparent}
+.legs{display:flex;flex-direction:column;gap:6px}
+.leg{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;font-size:12.5px;background:var(--bg);border-radius:10px;padding:7px 9px}
+.leg b{font-family:var(--mono);font-size:12.5px}
+.leg .fn{font-family:var(--mono);color:var(--muted);font-size:11.5px}
+.hours{font-weight:700;font-size:12.5px;color:var(--lilac-ink)}
+.warnline{font-size:12.5px;color:var(--rose-ink);background:var(--rose);border-radius:8px;padding:5px 8px}
+.room{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;font-size:13.5px}
+.room input{accent-color:var(--primary)}
+.room .rn{font-weight:600}
+.room .rd{font-size:12px;color:var(--muted)}
+.room .rp{font-family:var(--mono);font-weight:700}
+.step{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--primary-soft);border-top-color:var(--primary);animation:sp 0.8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.checkout{display:block;text-align:center;text-decoration:none;border-radius:12px;background:var(--primary);color:var(--primary-ink);font-weight:700;padding:12px 14px}
+.errbox{background:var(--rose);color:var(--rose-ink);border-radius:12px;padding:10px 12px;font-size:13.5px}
+.when{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.when label{display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:600;color:var(--muted)}
+.when input,.when select{font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:7px 8px;min-width:0;width:100%}
+.alt{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:9px 10px;cursor:pointer;font-size:12.5px}
+.alt input{accent-color:var(--primary)}
+.alt .ap{font-family:var(--mono);font-weight:700}
+.alt.cur{border-color:var(--primary)}
+details.more summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);list-style:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::after{content:" +";}
+details.more[open] summary::after{content:" −";}
+details.more[open] .when{margin-top:8px}
+.margin{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--mint);color:var(--mint-ink);border-radius:12px;padding:8px 10px;font-size:13px}
+.margin b{font-size:15px}
+.mpill{background:var(--mint);color:var(--mint-ink);border-radius:12px;padding:6px 10px;text-align:right;display:flex;flex-direction:column;line-height:1.25}
+.mpill b{font-size:15px}.mpill span{font-size:11.5px}
+.mpill.over{background:var(--rose);color:var(--rose-ink)}
+.margin.over{background:var(--rose);color:var(--rose-ink)}
+.matches{margin-top:12px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.matches b{color:var(--ink)}
+.best3{display:flex;flex-direction:column;gap:10px}
+.bitem{display:grid;grid-template-columns:28px 64px 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:10px;background:var(--surface)}
+.bitem .rk{font-weight:700;color:var(--primary);text-align:center}
+.bitem h3{font-size:16px}
+.bitem .p{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.bitem .lf{font-size:12px;color:var(--mint-ink);text-align:right}
+@media (prefers-reduced-motion:reduce){.card.anim{transition:none}}
+@media (max-height:740px){.deckwrap{height:580px}.art{height:160px}}
+.totalbox{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px;padding:14px 16px;border-radius:14px;background:var(--primary);color:#fff}.totalbox span{font-size:13px;font-weight:600;opacity:.9}.totalbox b{grid-row:span 2;font-size:24px;letter-spacing:-.02em}.totalbox small{font-size:12px;opacity:.85}
+.bin{position:fixed;left:10px;top:46%;z-index:40;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--nope);box-shadow:var(--shadow);opacity:0;transform:translateX(-40px) scale(.7);transition:opacity .18s,transform .22s cubic-bezier(.3,1.4,.5,1),background .15s,color .15s;pointer-events:none}
+.bin.show{opacity:1;transform:none}
+.bin.hot{background:var(--nope);color:#fff;transform:scale(1.22)}
+.bin svg{width:28px;height:28px;overflow:visible}
+.bin .lid{transform-origin:4px 6px;transition:transform .2s}
+.bin.hot .lid,.bin.open .lid{transform:rotate(-28deg) translateY(-2px)}
+.bin.gulp{animation:gulp .38s ease}
+@keyframes gulp{0%{transform:scale(1.22)}40%{transform:scale(.9) rotate(-6deg)}70%{transform:scale(1.08) rotate(4deg)}100%{transform:scale(1)}}
+nav [data-tab="saved"].pop svg{animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.5)}60%{transform:scale(.9)}100%{transform:scale(1)}}
+.card.flying{transition:none!important;pointer-events:none;z-index:39!important}
+.act.undo{width:46px;height:46px;font-size:18px;color:var(--muted);align-self:center}
+.act.undo:disabled{opacity:.35;cursor:default;box-shadow:none}
+.act.undo.ready{color:var(--primary);border-color:var(--primary)}
+.card.back{animation:backIn .42s cubic-bezier(.2,1.3,.4,1)}
+.card.back.fromL{--bx:-140px;--br:-14deg}.card.back.fromR{--bx:140px;--br:14deg}
+@keyframes backIn{from{transform:translate(var(--bx),40px) rotate(var(--br)) scale(.6);opacity:0}to{transform:none;opacity:1}}
+.item.open{cursor:pointer;transition:transform .12s,box-shadow .12s}
+.item.open:hover{box-shadow:var(--shadow)}.item.open:active{transform:scale(.98)}
+.item .vlink{color:var(--primary);font-size:11.5px;font-weight:600;margin-top:1px}
+#savedList .item{padding:8px 10px;grid-template-columns:52px 1fr auto;gap:10px;border-radius:14px}
+#savedList .thumb{width:52px;height:52px;border-radius:10px}
+#savedList .item h3{font-size:15px;line-height:1.2}
+#savedList .item .sub{font-size:12px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#savedList .item>div:nth-child(2){min-width:0}
+#savedList .item .p{font-size:16px}
+#savedList{gap:8px}
+
+/* ===== desktop / tablet ===== */
+.dright{position:relative}
+@media (min-width:960px){
+  .app{max-width:1180px;box-shadow:none;background:var(--app)}
+  body{background:var(--app)}
+  .top{padding-top:14px;padding-bottom:14px;padding-left:32px;padding-right:32px}
+  .gut{padding-left:32px;padding-right:32px}
+  .tabbar{top:10px;bottom:auto;width:auto;max-width:none;background:transparent;border:0;display:flex;gap:4px;z-index:9;padding:0}
+  .tabbar button{flex-direction:row;gap:7px;font-size:14px;padding:10px 14px;border-radius:12px}
+  .tabbar button:hover{background:var(--line)}
+  .tabbar button[aria-current="page"]{background:color-mix(in srgb,var(--primary) 12%,transparent)}
+  .tabbar button svg{width:19px;height:19px}
+  .screen{padding-bottom:48px}
+  main[data-s="discover"]:not([hidden]){display:grid;grid-template-columns:minmax(340px,420px) minmax(0,1fr);gap:48px;align-items:start}
+  .dleft{position:sticky;top:96px}
+  .dleft .ask{margin-top:24px}
+  .dright{max-width:440px;width:100%;justify-self:center;padding-top:12px}
+  .bin{position:absolute;left:-86px;top:38%}
+  main[data-s="saved"]>.sec,main[data-s="together"]>.sec,main[data-s="drop"]>.sec,main[data-s="case"]>*{max-width:900px;margin-left:auto;margin-right:auto}
+  #savedList{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+  .sheet{top:50%;bottom:auto;transform:translate(-50%,-50%);max-width:560px;max-height:88vh;border-radius:20px}
+  .toast{bottom:32px}
+  .chips{flex-wrap:wrap;overflow:visible}
+  textarea{height:84px}
+  .tabbar #savedCount{position:static;margin-left:2px;transform:none}
+}
+@media (min-width:960px) and (max-width:1180px){.trip{max-width:220px}}
+.deckarea{position:relative}
+.swh{position:absolute;top:78px;z-index:15;width:30px;height:30px;border-radius:50%;border:0;display:grid;place-items:center;background:rgba(255,255,255,.72);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.18);opacity:.75;pointer-events:none;padding:0;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.swh svg{width:16px;height:16px}
+.swh.l{left:8px;animation:nudgeL 2.8s ease-in-out infinite}.swh.r{right:8px;animation:nudgeR 2.8s ease-in-out infinite}
+.swh.l svg{color:var(--nope)}.swh.r svg{color:var(--like)}
+@keyframes nudgeL{0%,70%,100%{transform:none}80%{transform:translateX(-5px)}90%{transform:translateX(0)}}
+@keyframes nudgeR{0%,70%,100%{transform:none}80%{transform:translateX(5px)}90%{transform:translateX(0)}}
+.deckarea.calm .swh{animation:none;opacity:.5}
+.deckarea.empty .swh,.deckarea.dragging .swh{opacity:0;transition:opacity .15s}
+@media (prefers-reduced-motion:reduce){.swh{animation:none!important}}
+@media (min-width:960px){.swh{pointer-events:auto;top:280px;width:40px;height:40px;background:var(--surface);border:1px solid var(--line);opacity:.8;transition:opacity .15s,transform .15s}.swh svg{width:20px;height:20px}.swh:hover{opacity:1;transform:scale(1.08)}.swh.l{left:-58px}.swh.r{right:-58px}}
+.actions .act{width:auto;height:46px;border-radius:999px;padding:0 20px 0 16px;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;font-family:inherit}
+.actions .act .ic{font-size:18px;line-height:1}
+.actions .act.nope{background:color-mix(in srgb,var(--nope) 10%,var(--surface));border-color:color-mix(in srgb,var(--nope) 35%,transparent)}
+.actions .act.like{background:color-mix(in srgb,var(--like) 12%,var(--surface));border-color:color-mix(in srgb,var(--like) 40%,transparent)}
+.actions .act.undo{height:38px;padding:0 14px 0 11px;font-size:13px;gap:5px}
+.actions .act.undo svg{width:16px;height:16px}
+.actions{gap:10px;justify-content:space-between;max-width:440px;margin-left:auto;margin-right:auto}
+.actions .act.like{padding:0 16px 0 20px}
+.card.demo{transition:transform .45s cubic-bezier(.4,0,.2,1)}
+</style>
+
+<div class="app">
+  <header class="top gut">
+    <div class="brand"><img class="logo" alt="" src="data:image/png;base64,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"><span>Friday<b>away</b></span></div>
+    <div class="trip" id="tripTxt"></div>
+  </header>
+
+  <!-- DISCOVER -->
+  <main class="screen gut" data-s="discover">
+   <div class="dleft">
+    <div class="ask">
+      <div class="askrow">
+        <label for="q" class="eyebrow" style="position:absolute;left:-9999px">Describe your weekend</label>
+        <textarea id="q" placeholder="Describe your weekend…">Somewhere warm by the sea, great food, nice hotel near the centre, max €750 for the two of us</textarea>
+        <button class="go" id="go">Go</button>
+      </div>
+      <div class="chips" role="group" aria-label="Moods">
+        <button class="chip" data-v="sea">Sea</button>
+        <button class="chip" data-v="food">Food</button>
+        <button class="chip" data-v="culture">Culture</button>
+        <button class="chip" data-v="city">City</button>
+        <button class="chip" data-v="nightlife">Nightlife</button>
+        <button class="chip" data-v="relax">Relax</button>
+        <button class="chip" data-f="flex">Free cancel</button>
+        <button class="chip" data-f="direct">Direct</button>
+      </div>
+      <details class="more" id="more"><summary id="moreSum">From, dates &amp; travellers</summary>
+      <div class="when" role="group" aria-label="Dates and times">
+        <label>From<select id="orig"><option value="MIL" selected>Milan</option><option value="TRN">Turin</option><option value="GOA">Genoa</option><option value="VRN">Verona</option><option value="VCE">Venice</option><option value="BLQ">Bologna</option><option value="PSA">Pisa</option><option value="FLR">Florence</option><option value="ROM">Rome</option><option value="NAP">Naples</option><option value="BRI">Bari</option><option value="CTA">Catania</option><option value="PMO">Palermo</option><option value="CAG">Cagliari</option><option value="ZRH">Zurich</option><option value="GVA">Geneva</option></select></label>
+        <label>Depart<input id="dFrom" type="date"></label>
+        <label>Return<input id="dTo" type="date"></label>
+        <label>Leave after<input id="tOut" type="time"></label>
+        <label>Fly home after<input id="tIn" type="time"></label>
+        <label>Adults<select id="adults"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></label>
+        <button class="go" id="applyTrip" style="height:38px;align-self:end">Update</button>
+      </div>
+      </details>
+      <span class="read" id="liveStatus"></span>
+      <div class="budget"><label for="b" id="bLabel">Budget</label><input id="b" type="range" min="300" max="3000" step="10" value="750"><b id="bv">€750</b><button class="linkbtn" id="bClear" title="No budget">✕</button></div>
+      <span class="read" id="read"></span>
+    </div>
+
+    <div class="whoBar" id="whoBar" hidden><span id="whoTxt"></span><button id="whoSwitch">Pass the phone</button></div>
+
+    <div class="matches" id="liveBar" hidden></div>
+    <div class="matches" id="matches" hidden></div>
+    <div class="learned" id="learned"></div>
+   </div>
+   <div class="dright">
+
+    <div class="actions">
+      
+      <button class="act nope" id="bNope"><span class="ic">←</span>Skip</button>
+      <button class="act undo" id="bUndo" aria-label="Bring back the last card" title="Back" disabled><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>Back</button>
+      <button class="act like" id="bLike">Save<span class="ic">→</span></button>
+    </div>
+    <div class="deckarea">
+    <div class="deckwrap" id="deck" aria-live="polite"></div>
+    <button class="swh l" id="swL" aria-label="Skip" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="swh r" id="swR" aria-label="Save" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="bin" id="bin" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g class="lid"><path d="M3 6h18"/><path d="M9 6V4h6v2"/></g><path d="M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"/><path d="M10 11v6M14 11v6"/></svg></div>
+    <p class="hint">Right to save · left to skip · tap to book</p>
+   </div>
+  </main>
+
+  <!-- SAVED -->
+  <main class="screen gut" data-s="saved" hidden>
+    <div class="sec">
+      <h2>Saved weekends</h2>
+      
+      <div id="savedList" class="sec" style="margin-top:0"></div>
+      <div class="cmp" id="cmpWrap" hidden><table id="cmp"></table></div>
+      <div class="toggle box"><label for="split">Show price per person</label><input id="split" type="checkbox"></div>
+    </div>
+  </main>
+
+  <!-- TOGETHER -->
+  <main class="screen gut" data-s="together" hidden>
+    <div class="sec">
+      <h2>Decide together</h2>
+      <p class="muted">You both swipe. Only shared likes show up.</p>
+      <div class="box">
+        <div class="toggle"><span>Mode</span><b id="tgMode">Off</b></div>
+        <button class="btn" id="tgStart">Start: Player 1 swipes first</button>
+        <button class="btn ghost" id="tgReset">Reset swipes</button>
+      </div>
+      <h3>Your matches</h3>
+      <div id="matchList" class="sec" style="margin-top:0"></div>
+    </div>
+  </main>
+
+  <!-- DROP -->
+  <main class="screen gut" data-s="drop" hidden>
+    <div class="sec">
+      <h2>Top 3</h2>
+      <p class="muted" id="bestSub"></p>
+      <div class="best3" id="mail"></div>
+      <button class="btn" id="dropSave">Send me the Top 3 every Tuesday</button>
+      <button class="btn ghost" id="openCase">Product case</button>
+    </div>
+  </main>
+
+  <!-- CASE -->
+  <main class="screen gut" data-s="case" hidden>
+    <div class="sec">
+      <button class="linkbtn" id="backDrop" style="align-self:flex-start">← Back</button>
+      <span class="eyebrow">Product case · October 2026</span>
+      <h2>Everyone added AI search. Nobody starts from the wallet.</h2>
+      <p class="muted">Fridayaway is a budget-first, swipe-to-decide weekend planner for an OTA with dynamic packaging. The demo runs on real indicative package prices from lastminute.com's MCP server, fetched on 17 Oct 2026.</p>
+      <div class="stats">
+        <div class="stat"><span class="v">45%</span><span class="l">used AI to plan a holiday last year (Italy 51%)</span><span class="s">lastminute.com Travel Horizons, Sep 2026</span></div>
+        <div class="stat"><span class="v">12%</span><span class="l">would let AI book for them</span><span class="s">same report</span></div>
+        <div class="stat"><span class="v">59.6%</span><span class="l">of bookings: low-cost flight + 4★+ hotel</span><span class="s">same report</span></div>
+        <div class="stat"><span class="v">+10.1%</span><span class="l">Friday departures YoY, top short-break day</span><span class="s">same report</span></div>
+        <div class="stat"><span class="v">−8%</span><span class="l">package revenue in Q2 2026; shift to flexible single products</span><span class="s">Q2 2026 earnings call</span></div>
+        <div class="stat"><span class="v">⅔</span><span class="l">of revenue and gross profit from dynamic packaging</span><span class="s">same call</span></div>
+      </div>
+      <div class="tbl"><table>
+        <thead><tr><th>Player</th><th>Plain words</th><th>Total budget</th><th>Priced F+H package</th><th>Learns taste</th><th>Group decision</th></tr></thead>
+        <tbody>
+          <tr><td>Skyscanner Explore AI</td><td class="y">Yes</td><td class="n">Not shown</td><td class="n">Flights only</td><td class="n">No</td><td class="n">No</td></tr>
+          <tr><td>Booking.com AI Trip Planner</td><td class="y">Yes</td><td class="pa">Per night</td><td class="n">Limited</td><td class="n">No</td><td class="n">No</td></tr>
+          <tr><td>Expedia AI assistant</td><td class="y">Yes</td><td class="n">Not shown</td><td class="pa">Bundle discount</td><td class="n">No</td><td class="n">No</td></tr>
+          <tr><td>Google AI Mode</td><td class="y">Yes</td><td class="n">Not shown</td><td class="n">No</td><td class="n">No</td><td class="n">No</td></tr>
+          <tr class="us"><td><b>Fridayaway</b></td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">From swipes</td><td class="y">Match mode</td></tr>
+        </tbody></table></div>
+      <p class="note">"Not shown" = no public evidence found, not proof of absence.</p>
+      <div class="box">
+        <h3>What makes it different</h3>
+        <ul>
+          <li><b>Budget in, weekend out:</b> one total for two, every card shows what is left.</li>
+          <li><b>Swipe to decide:</b> fast, low-effort choice for people who are "just looking".</li>
+          <li><b>Taste learning you can see:</b> each swipe updates visible preferences; one tap to reset.</li>
+          <li><b>Decide together:</b> couples and friends get only mutual matches, which removes the "send me the link" back-and-forth.</li>
+          <li><b>Step up, not just cheaper:</b> each card offers the next better hotel in the same city, matching how people already book.</li>
+          <li><b>Top 3:</b> turns browsers into a weekly owned channel instead of paid retargeting.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Value model · illustrative inputs</h3>
+        <div class="field"><label for="c1">Weekend searches / month</label><input id="c1" type="number" value="200000" step="10000"></div>
+        <div class="field"><label for="c2">Baseline conversion %</label><input id="c2" type="number" value="1.5" step="0.1"></div>
+        <div class="field"><label for="c3">Relative uplift %</label><input id="c3" type="number" value="10" step="1"></div>
+        <div class="field"><label for="c4">Gross profit / package €</label><input id="c4" type="number" value="60" step="5"></div>
+        <div class="field"><label for="c5">Visitors saving Top 3 %</label><input id="c5" type="number" value="3" step="0.5"></div>
+        <div class="field"><label for="c6">Bookings / 100 Top 3 subs / month</label><input id="c6" type="number" value="1.5" step="0.1"></div>
+        <span class="eyebrow">Extra gross profit per month</span>
+        <span class="total" id="o5"></span>
+        <span class="note" id="o6"></span>
+      </div>
+      <div class="box">
+        <h3>KPIs and 6-week test</h3>
+        <ul>
+          <li><b>North star:</b> package bookings per 1,000 weekend searches</li>
+          <li>Save rate per swipe session · step-up take rate · match-to-book rate</li>
+          <li><b>Guardrails:</b> margin per booking, cancellations</li>
+          <li>Weeks 1–2: 8 interviews + fake-door entry · Weeks 3–4: manual Top 3 to 500 opt-ins · Weeks 5–6: A/B on Italian traffic</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Sources</h3>
+        <ul class="note">
+          <li><a href="https://www.travolution.com/en/article/new-data-from-lastminute.com-finds-travellers-using-ai-for-holiday-maxxing" target="_blank" rel="noopener">Travolution · Travel Horizons data (Sep 2026)</a></li>
+          <li><a href="https://www.investing.com/news/transcripts/earnings-call-transcript-lastminutecom-shares-fall-after-q2-2026-profit-drop-93CH-4822883" target="_blank" rel="noopener">Investing.com · Q2 2026 earnings call</a></li>
+          <li><a href="https://www.travolution.com/en/article/lastminute.com-launches-mcp-server-for-flights-as-first-step-in-ai-roadmap" target="_blank" rel="noopener">Travolution · MCP server launch (Jan 2026)</a></li>
+          <li><a href="https://www.phocuswire.com/news/technology/skyscanner-launches-ai-discovery-road-trip-planning-tools" target="_blank" rel="noopener">PhocusWire · Skyscanner AI discovery</a></li>
+          <li><a href="https://techcrunch.com/2026/08/27/googles-ai-mode-can-now-track-flight-prices-help-book-hotels-and-more/" target="_blank" rel="noopener">TechCrunch · Google AI Mode travel</a></li>
+          <li><a href="https://stardrift.ai/resources/stardrift-vs-expedia-vs-booking-trip-planner" target="_blank" rel="noopener">Stardrift · Expedia vs Booking AI planners</a></li>
+        </ul>
+      </div>
+      <p class="note">Concept by Daniele Casale · Product Manager, AI &amp; Data · <a href="https://danielecasale.netlify.app" target="_blank" rel="noopener" style="color:var(--primary)">danielecasale.netlify.app</a>. Independent concept, not affiliated with any travel company. Prices are indicative totals for 2 adults returned by lastminute.com's public MCP server on 17 Oct 2026 and will change. With the lastminute.com connector, Book re-prices live and opens the exact flight + hotel + room at checkout.</p>
+    </div>
+  </main>
+
+  <nav class="tabbar" aria-label="App">
+    <button data-tab="discover" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6"/></svg>Discover</button>
+    <button data-tab="saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Saved<span class="count" id="savedCount" hidden></span></button>
+    <button data-tab="together"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5M11 20c0-3 2.5-5 5-5s5 2 5 5"/></svg>Together</button>
+    <button data-tab="drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1-4.5-4.2 6.1-.8z"/></svg>Top 3</button>
+  </nav>
+</div>
+<div id="layer"></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ===== Real indicative package prices: lastminute.com MCP, MIL → X, 23–25 Oct 2026, 2 adults (fetched 17 Oct 2026) =====
+   hotel tuple: [name, stars, rating(0-100), reviews, km from centre, facilities, total EUR for 2, free cancellation] */
+const DATA=[
+ {code:"BCN",city:"Barcelona",country:"Spain",temp:21,fly:"1h 40",direct:true,carrier:"Vueling",tags:["city","sea","food","nightlife","culture"],scene:"sea",h:[
+  ["Occidental Diagonal 414",4,91,578,1.2,["Free WiFi","Parking","Restaurant"],641.5,false],["Ilunion Almirante",4,60,1260,0.6,["Free WiFi","Fitness Center"],664.25,true],["Ilunion Barcelona",4,78,2124,3,["Free WiFi","Pool"],711.83,false],["Barcelo Raval",4,84,5910,1,["Free WiFi","Pool","Spa"],723.21,false],["Hotel Barcelona Universal",4,87,5878,1.4,["Free WiFi","Pool"],1007.47,false]]},
+ {code:"LIS",city:"Lisbon",country:"Portugal",temp:22,fly:"≈4h, 1 stop",direct:false,carrier:"Vueling",tags:["city","food","culture","sea","nightlife"],scene:"sea",h:[
+  ["TURIM Terreiro do Paço Hotel",4,69,679,0.2,["Free WiFi","Bar"],755.92,true],["My Story Hotel Tejo",3,87,648,0.7,["Free WiFi"],810.04,false],["Rossio Plaza Hotel",3,93,313,0.7,["Free WiFi"],821.71,false],["behotelisboa",4,89,854,0.5,["Free WiFi","Parking"],828.44,false],["Pestana CR7 Lisboa",4,87,1165,0.2,["Free WiFi","Restaurant","Bar"],1095.61,false]]},
+ {code:"VLC",city:"Valencia",country:"Spain",temp:23,fly:"1h 45",direct:true,carrier:"Ryanair",tags:["sea","food","relax","city"],scene:"sea",h:[
+  ["Ilunion Valencia 4",4,78,1323,3,["Free WiFi","Pool"],706.39,false],["Silken Puerta Valencia",4,78,2231,1.8,["Free WiFi","Restaurant"],805.26,false],["Petit Palace Ruzafa",3,84,1455,0.8,["Free WiFi"],836.48,false],["Senator Parque Central",4,75,2130,1.4,["Free WiFi","Parking"],887.91,false],["Vincci Palace",4,82,1936,0.6,["Free WiFi","Bar"],949.28,true]]},
+ {code:"AGP",city:"Málaga",country:"Spain",temp:24,fly:"2h 35",direct:true,carrier:"Wizz Air",tags:["sea","relax","food"],scene:"sea",h:[
+  ["Ilunion Hacienda de Mijas",4,75,1938,4.9,["Free WiFi","Pool"],454.52,false],["Las Palmeras Affiliated by FERGUS",4,48,24,0.5,["Free WiFi","Pool"],606.3,true],["Sercotel Rosaleda Málaga",4,87,155,2,["Free WiFi","Pool"],669.89,false],["Hotel Ocean House Costa del Sol",4,84,4372,2.6,["Free WiFi","Pool","Restaurant"],686.49,true],["Vincci Selección Posada del Patio",5,89,3123,0.5,["Free WiFi","Pool"],1047.6,true]]},
+ {code:"PMO",city:"Palermo",country:"Italy",temp:24,fly:"1h 40",direct:true,carrier:"Ryanair",tags:["sea","food","culture","relax"],scene:"sea",h:[
+  ["Hotel Venere di Erice Resort & Spa",4,84,263,5.7,["Free WiFi","Pool"],408.29,false],["Seawater Hotel Bio & Beauty Spa",4,87,193,2.4,["Free WiFi","Pool","Spa"],436.13,false],["Mangia's Pollina Resort",4,89,2986,11.2,["Free WiFi","Pool"],572.29,false],["Cristal Hotel Palermo",4,66,947,1,["Free WiFi","Parking"],578.68,false],["Mangia's Himera Resort",4,91,1533,16.3,["Free WiFi","Pool"],642.88,false]]},
+ {code:"NAP",city:"Naples",country:"Italy",temp:22,fly:"1h 25",direct:true,carrier:"Ryanair",tags:["food","culture","sea","city"],scene:"sea",h:[
+  ["Hotel Solemare Beach & Beauty SPA",4,84,641,4,["Free WiFi","Pool","Spa"],471.48,false],["Aragona Palace Hotel & Spa",4,91,1943,3.6,["Free WiFi","Pool","Spa"],481.14,false],["7th Floor Suite",3,91,120,1.8,["Free WiFi"],485.55,false],["Hotel Prestige",4,91,1843,2.6,["Free WiFi","Pool"],497.14,false],["NH Napoli Panorama",4,73,3764,0.3,["Free WiFi","Parking"],766.19,false]]},
+ {code:"CAG",city:"Cagliari",country:"Italy",temp:24,fly:"1h 30",direct:true,carrier:"easyJet",tags:["sea","relax","food"],scene:"sea",h:[
+  ["Hotel Califfo",4,60,660,12,["Free WiFi","Pool"],463.93,false],["Hotel Residence Ulivi E Palme",3,66,484,2.7,["Free WiFi","Parking"],523.4,true],["Hotel La Bitta - Bovis Hotels",4,93,1228,1,["Free WiFi","Pool"],678.48,false],["Palazzo Doglio",5,89,388,1.1,["Free WiFi","Spa"],775.44,true]]},
+ {code:"ATH",city:"Athens",country:"Greece",temp:23,fly:"2h 25",direct:true,carrier:"easyJet",tags:["sea","culture","food"],scene:"city",h:[
+  ["Hotel Marina",3,66,1103,0.8,["Free WiFi"],591.67,false],["Dorian Inn - Sure Hotel Collection",3,62,1288,0.9,["Free WiFi","Pool","Restaurant"],674.84,false],["Philippos Hotel",3,82,1434,1.6,["Free WiFi","Bar"],807.39,false],["Athens Lodge by Athens Prime Hotels",4,87,211,0.7,["Free WiFi","Bar"],927.15,true],["Herodion Hotel",4,89,3798,1.5,["Free WiFi","Restaurant","Bar"],948.87,false]]},
+ {code:"OPO",city:"Porto",country:"Portugal",temp:20,fly:"2h 25",direct:true,carrier:"easyJet",tags:["food","city","culture","sea"],scene:"sea",h:[
+  ["JAM Porto",4,91,333,1.7,["Free WiFi","Pool"],636.91,false],["Vincci Porto",4,89,2101,1.9,["Free WiFi","Restaurant"],724.1,true],["Jupiter Porto Hotel - Rooftop & Spa",4,98,30,1.5,["Free WiFi","Pool","Spa"],731.53,false],["Vincci Bonjardim",4,96,334,0.3,["Free WiFi","Pool","Bar"],798.31,true],["Pestana Porto - A Brasileira",5,93,1444,0.4,["Free WiFi","Restaurant"],1068.72,false]]},
+ {code:"TFS",city:"Tenerife",country:"Spain",temp:26,fly:"≈6h, 1 stop",direct:false,carrier:"Vueling",tags:["sea","relax"],scene:"sea",h:[
+  ["Parque Vacacional Eden",4,82,1862,0.4,["Free WiFi","Pool"],625.5,true],["Gara Suites Golf & Spa",4,64,1357,1.8,["Free WiFi","Pool","Spa"],753.34,true],["Meliá Costa Atlantis Tenerife",4,84,136,0.5,["Free WiFi","Pool","Spa"],851.04,false],["Vincci Selección La Plantación del Sur",5,91,5823,2.2,["Free WiFi","Pool","Spa"],1418.1,false]]},
+ {code:"PRG",city:"Prague",country:"Czechia",temp:13,fly:"1h 30",direct:true,carrier:"Ryanair",tags:["city","culture","nightlife"],scene:"city",h:[
+  ["Mamaison Hotel Riverside Prague",5,0,0,1.7,["Free WiFi","Parking"],679.22,false],["K+K Hotel Central",4,89,3636,0.7,["Free WiFi","Parking"],778.76,false],["Hotel Bologna",4,80,395,0.6,["Free WiFi","Parking"],811.74,false],["Grand Majestic Hotel Prague",4,89,5041,0.8,["Free WiFi","Restaurant"],827.1,true],["Metropolitan Old Town Hotel",4,89,2079,0.5,["Free WiFi","Parking"],879.38,false]]},
+ {code:"BUD",city:"Budapest",country:"Hungary",temp:16,fly:"1h 40",direct:true,carrier:"Ryanair",tags:["city","relax","nightlife","culture"],scene:"city",h:[
+  ["Dean's Home Budapest",3,91,437,3.4,["Free WiFi","Fitness Center"],698.33,false],["NH Budapest City",4,82,2395,1.8,["Free WiFi","Spa"],819.97,false],["Carlton Hotel Buda Castle",4,91,112,0.2,["Free WiFi","Parking"],827.18,true],["Park Plaza Budapest",4,84,3781,0.5,["Free WiFi","Parking"],857.27,false],["Corinthia Budapest",5,91,9937,2,["Free WiFi","Pool","Spa"],1420.91,false]]},
+ {code:"VIE",city:"Vienna",country:"Austria",temp:14,fly:"1h 25",direct:true,carrier:"easyJet",tags:["culture","city","food"],scene:"city",h:[
+  ["Hotel Enziana Wien",3,69,1023,2.1,["Free WiFi","Bar"],586.62,false],["The Social Hub Vienna",4,84,965,2,["Free WiFi","Restaurant"],663.5,false],["NH Danube City",4,80,1611,4.7,["Free WiFi","Spa"],695.3,false],["Mercure Grand Hotel Biedermeier Wien",4,80,1840,1.3,["Free WiFi","Spa"],733.58,false],["Novotel Wien City",4,78,1999,0.9,["Free WiFi","Parking"],818.8,false]]},
+ {code:"PAR",city:"Paris",country:"France",temp:15,fly:"1h 30",direct:true,carrier:"Ryanair",tags:["city","culture","food"],scene:"city",h:[
+  ["Ibis Orly Chevilly Tram 7",3,62,626,10,["Free WiFi","Parking"],550.52,false],["ibis Paris Ornano Montmartre Nord",3,66,938,4,["Free WiFi","Bar"],699.07,false],["Hôtel Maison Montmartre",4,69,530,4.4,["Free WiFi","Parking"],739.41,false],["Pullman Paris Montparnasse",4,82,829,2.8,["Free WiFi","Parking"],904.01,true],["Mercure Paris Centre Tour Eiffel",4,73,5977,3.3,["Free WiFi","Parking"],1115.68,true]]},
+ {code:"SPU",city:"Split",country:"Croatia",temp:20,fly:"≈4h, 1 stop",direct:false,carrier:"Lufthansa",tags:["sea","relax","culture"],scene:"sea",h:[
+  ["Prima Luce Downtown",4,64,60,0.5,["Free WiFi","Adults Only"],917.7,false],["Hotel Plaža",4,91,569,0.2,["Free WiFi","Spa"],987.51,true],["Heritage Hotel Life Palace",4,91,348,0.4,["Free WiFi","Spa"],1036.9,false],["Hotel Plaža Duće",4,98,1031,2.8,["Free WiFi","Pool","Spa"],1082.7,true]]},
+ {code:"AMS",city:"Amsterdam",country:"Netherlands",temp:14,fly:"1h 45",direct:true,carrier:"easyJet",tags:["city","culture","nightlife"],scene:"city",h:[
+  ["Bunk Hotel Amsterdam",3,84,323,2.2,["Free WiFi","Restaurant"],1184.21,false],["Best Western Amsterdam",3,53,2582,4.3,["Free WiFi","Bar"],1260.89,true],["Yotel Amsterdam",4,78,538,2.1,["Free WiFi","Restaurant"],1347.48,true],["Inntel Hotels Amsterdam Landmark",4,64,275,2.5,["Free WiFi","Pool","Spa"],1356.78,false]]},
+ {code:"CPH",city:"Copenhagen",country:"Denmark",temp:12,fly:"2h 05",direct:true,carrier:"Norwegian",tags:["city","food","culture"],scene:"city",h:[
+  ["Hotel Mayfair",4,75,2208,0.6,["Free WiFi","Bar"],1172,false],["Scandic Spectrum",4,64,699,0.8,["Free WiFi","Pool"],1264.7,false],["NH Copenhagen Grand Joanne",4,87,563,0.5,["Free WiFi","Restaurant"],1336.81,true],["Absalon Hotel",4,87,5083,0.7,["Free WiFi","Bar"],1439.36,true]]}
+];
+
+/* lastminute.com hotel ids (internal_id_hotel) for live booking */
+const HID={"Occidental Diagonal 414":7418103,"Ilunion Almirante":8779,"Ilunion Barcelona":2648425,"Barcelo Raval":2416660,"Hotel Barcelona Universal":2648557,
+"TURIM Terreiro do Paço Hotel":2854271,"My Story Hotel Tejo":247723,"Rossio Plaza Hotel":10245366,"behotelisboa":2650587,"Pestana CR7 Lisboa":3533786,
+"Ilunion Valencia 4":2416920,"Silken Puerta Valencia":2415496,"Petit Palace Ruzafa":54074,"Senator Parque Central":30610,"Vincci Palace":2415492,
+"Ilunion Hacienda de Mijas":54808,"Las Palmeras Affiliated by FERGUS":2622,"Sercotel Rosaleda Málaga":12565140,"Hotel Ocean House Costa del Sol":60316,"Vincci Selección Posada del Patio":2414110,
+"Hotel Venere di Erice Resort & Spa":4590798,"Seawater Hotel Bio & Beauty Spa":6229573,"Mangia's Pollina Resort":5186761,"Cristal Hotel Palermo":16704,"Mangia's Himera Resort":3827066,
+"Hotel Solemare Beach & Beauty SPA":24194,"Aragona Palace Hotel & Spa":93970,"7th Floor Suite":5253200,"Hotel Prestige":93369,"NH Napoli Panorama":24111,
+"Hotel Califfo":3481,"Hotel Residence Ulivi E Palme":83606,"Hotel La Bitta - Bovis Hotels":2632816,"Palazzo Doglio":6919072,
+"Hotel Marina":224238,"Dorian Inn - Sure Hotel Collection":245478,"Philippos Hotel":3842,"Athens Lodge by Athens Prime Hotels":4482133,"Herodion Hotel":165448,
+"JAM Porto":10212831,"Vincci Porto":1840418,"Jupiter Porto Hotel - Rooftop & Spa":101104718,"Vincci Bonjardim":13025598,"Pestana Porto - A Brasileira":4874031,
+"Parque Vacacional Eden":2502698,"Gara Suites Golf & Spa":5864717,"Meliá Costa Atlantis Tenerife":146167,"Vincci Selección La Plantación del Sur":2415364,
+"Mamaison Hotel Riverside Prague":268488,"K+K Hotel Central":223836,"Hotel Bologna":6367,"Grand Majestic Hotel Prague":342071,"Metropolitan Old Town Hotel":189516,
+"Dean's Home Budapest":9559708,"NH Budapest City":2415672,"Carlton Hotel Buda Castle":29822,"Park Plaza Budapest":2416819,"Corinthia Budapest":33369,
+"Hotel Enziana Wien":100149,"The Social Hub Vienna":8786380,"NH Danube City":2648673,"Mercure Grand Hotel Biedermeier Wien":2416387,"Novotel Wien City":102293,
+"Ibis Orly Chevilly Tram 7":212446,"ibis Paris Ornano Montmartre Nord":32687,"Hôtel Maison Montmartre":5313093,"Pullman Paris Montparnasse":267968,"Mercure Paris Centre Tour Eiffel":2649325,
+"Prima Luce Downtown":4585704,"Hotel Plaža":83990,"Heritage Hotel Life Palace":1861728,"Hotel Plaža Duće":4027177,
+"Bunk Hotel Amsterdam":8640344,"Best Western Amsterdam":42686,"Yotel Amsterdam":8428177,"Inntel Hotels Amsterdam Landmark":9936458,
+"Hotel Mayfair":324839,"Scandic Spectrum":10999241,"NH Copenhagen Grand Joanne":17963,"Absalon Hotel":127741};
+
+/* Flights returned by lastminute.com for one package per city (select_hotel_options, 17 Oct 2026). Local times.
+   [from,to,dep,arr,flight] outbound Fri 23 / inbound Sun 25. Exact flights are re-confirmed live at booking. */
+const FL={
+ BCN:{o:["MXP","BCN","16:45","18:30","VY 6333"],i:["BCN","BGY","06:00","07:45","FR 3320"]},
+ LIS:{o:["MXP","LIS","16:45","21:30","VY 6333 · 1 stop"],i:["LIS","MXP","20:05","09:20 Mon","UX 1160 · 1 stop"]},
+ VLC:{o:["BGY","VLC","11:05","13:05","FR 497"],i:["VLC","BGY","08:25","10:20","FR 4632"]},
+ AGP:{o:["MXP","AGP","11:45","14:25","W4 6307"],i:["AGP","MXP","06:55","09:30","FR 4949"]},
+ PMO:{o:["BGY","TPS","06:50","08:30","FR 4650"],i:["PMO","MXP","07:35","09:15","U2 3506"],note:"Lands in Trapani (TPS), about 100 km from Palermo"},
+ NAP:{o:["BGY","QSR","12:00","13:25","FR 4786"],i:["NAP","BGY","07:50","09:15","FR 3562"],note:"Lands in Salerno (QSR), about 55 km from Naples"},
+ CAG:{o:["MXP","CAG","20:25","22:00","U2 3571"],i:["CAG","LIN","10:50","12:10","XZ 2356"]},
+ ATH:{o:["MXP","ATH","07:10","10:40","U2 3651"],i:["ATH","MXP","17:00","18:35","GQ 830"]},
+ OPO:{o:["MXP","OPO","21:30","23:10","U2 6886"],i:["OPO","LIN","14:00","17:30","U2 5448"]},
+ TFS:{o:["MXP","TFN","09:55","19:35","VY 6331 · 1 stop"],i:["TFS","BGY","17:55","23:10","FR 2831"],note:"Arrives at Tenerife North, leaves from Tenerife South"},
+ PRG:{o:["BGY","PRG","06:15","07:40","FR 3528"],i:["PRG","BGY","23:35","01:00 Mon","FR 3539"]},
+ BUD:{o:["BGY","BUD","06:00","07:35","FR 2107"],i:["BUD","MXP","08:25","10:10","W4 2333"]},
+ VIE:{o:["LIN","VIE","13:25","14:50","U2 5445"],i:["VIE","MXP","19:25","20:55","FR 214"]},
+ PAR:{o:["MXP","BVA","20:15","21:50","FR 8884"],i:["ORY","MXP","07:00","08:25","U2 4905"],note:"Lands in Beauvais (BVA), about 85 km from Paris"},
+ SPU:{o:["LIN","SPU","18:25","22:35","LH 1855 · 1 stop"],i:["SPU","LIN","15:15","19:50","OS 614 · 1 stop"]},
+ AMS:{o:["LIN","AMS","06:55","08:50","U2 5405"],i:["AMS","MXP","12:40","14:20","U2 3856"]},
+ CPH:{o:["BGY","CPH","10:10","12:10","D8 3751"],i:["CPH","BGY","18:15","20:25","FR 1785"]}};
+
+/* Unsplash: photo page, photographer, BlurHash of the photo (drawn on the card) */
+const PH={
+ BCN:["LIEoA8E*t7WV_NkCofa{yExafkWV","aerial-view-of-city-buildings-during-daytime-hVhfqhDYciU","Logan Armstrong"],
+ LIS:["LHJRHp%L^wMwt:IVn0MwOaM}VWjX","yellow-tram-in-historic-lisbon-street-ljhCEaHYWJ8","Aayush Gupta"],
+ VLC:["LdH_#-S6ZyNI_NXAwGRkK8bJnzof","a-group-of-people-standing-around-a-fountain-in-a-city-K358aM-cPRA","Tom Podmore"],
+ AGP:["LnL3$2ERt6oL_4RkW;bH0%WBWCj[","top-view-photography-of-city-during-daytime-7vKP5BAm8wg","Willian Justen de Vasconcellos"],
+ PMO:["LJINKvNd4TIo}:ozWDRj%MxZIUs,","woman-walking-on-street-ZXSDMEGipNY","Who's Denilo ?"],
+ NAP:["L*Ih{tM{oJoe%%R-WBayMxkCa{oe","city-buildings-near-sea-under-white-clouds-and-blue-sky-during-daytime-NjhHTNPkEDQ","Danilo D'Agostino"],
+ CAG:["L:Glegt7ayj@.Tt6jZbHtmoLayj[","aerial-view-of-city-buildings-during-daytime-4o2gxfuD5BU","Laura Lugaresi"],
+ ATH:["LXHURdM|xaWB_NRjflayEmaxR+fk","acropolis-of-athens-at-golden-hour-yqBvJJ8jGBQ","Constantinos Kollias"],
+ OPO:["LhDdS5F#s+S5pfXTs8W=AekXs8Wr","boats-on-douro-river-in-porto-Prb-sjOUBFs","Nick Karvounis"],
+ TFS:["LdD0=gpeR-s:.T%Mn$R*%gRinhof","brown-and-green-mountain-beside-body-of-water-during-daytime-O4eoPFWgXw0","Maxim Berg"],
+ PRG:["LXFrt.V?NHoe?woJjZofTefls-WX","gray-concrete-bridge-near-buildings-OyoaCpMCR0U","Martin Krchnacek"],
+ BUD:["LsIF0xbckCRj?wslj]ogkXsmjEjr","hungarian-parliament-building-in-budapest-sMyQb3i9bNA","Ervin Lukacs"],
+ VIE:["LlFFgLoeWBj]_4bHWVj[XoWXf6az","st-stephens-cathedral-skyline-in-vienna-5SjAaqqCCmY","Jacek Dylag"],
+ PAR:["LcE_?.Ins.WB?dRjjrj]W@j?ofay","pont-alexandre-iii-bridge-in-paris-R5scocnOOdM","Léonard Cotte"],
+ SPU:["LNGIWJ%L00M_-=RjDiof?vWBITj]","people-walking-on-street-during-daytime-TkLAj42wBHI","mana5280"],
+ AMS:["LdJRs.9F8_S4~qRikCRj%hWUn$NG","boats-on-canal-in-amsterdam-QRtym77B6xk","Adrien Olichon"],
+ CPH:["LbG[$uaxR+R+~WWVj[axcGWEjYo0","white-and-blue-boat-on-water-near-concrete-building-during-daytime-whqxMeyZjk0","Alexandra Mitache"]};
+
+/* time on the ground: Fri arrival → Sun departure (EU clocks go back on Sun 25 Oct, +1 h) */
+const hm=t=>{const [h,m]=t.split(" ")[0].split(":").map(Number);return h+m/60};
+function hoursThere(code){const f=FL[code];if(!f)return null;return Math.round(48-hm(f.o[3])+hm(f.i[2])+1)}
+function earlyReturn(code){const f=FL[code];return f&&hm(f.i[2])<10}
+
+/* BlurHash decoder (MIT, after woltapp/blurhash) */
+const B83="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%*+,-.:;=?@[]^_{|}~";
+const d83=str=>{let v=0;for(const c of str)v=v*83+B83.indexOf(c);return v};
+const s2l=v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4)};
+const l2s=v=>{v=Math.max(0,Math.min(1,v));return Math.round(v<=0.0031308?v*12.92*255+0.5:(1.055*Math.pow(v,1/2.4)-0.055)*255+0.5)};
+const sp=(v,e)=>Math.sign(v)*Math.pow(Math.abs(v),e);
+function bhDecode(hash,w,h){
+  const sf=d83(hash[0]),ny=Math.floor(sf/9)+1,nx=(sf%9)+1,mv=(d83(hash[1])+1)/166,colors=[];
+  for(let i=0;i<nx*ny;i++){
+    if(i===0){const v=d83(hash.substring(2,6));colors.push([s2l(v>>16),s2l((v>>8)&255),s2l(v&255)]);}
+    else{const v=d83(hash.substring(4+i*2,6+i*2));const q=[Math.floor(v/361),Math.floor(v/19)%19,v%19];colors.push(q.map(x=>sp((x-9)/9,2)*mv));}
+  }
+  const px=new Uint8ClampedArray(w*h*4);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){let r=0,g=0,b=0;
+    for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){const bs=Math.cos(Math.PI*x*i/w)*Math.cos(Math.PI*y*j/h),c=colors[i+j*nx];r+=c[0]*bs;g+=c[1]*bs;b+=c[2]*bs;}
+    const k=4*(x+y*w);px[k]=l2s(r);px[k+1]=l2s(g);px[k+2]=l2s(b);px[k+3]=255;}
+  return px;
+}
+const BH_CACHE={};
+function bhURL(code){
+  if(BH_CACHE[code]) return BH_CACHE[code];
+  const p=PH[code]; if(!p) return null;
+  try{const w=32,h=20,c=document.createElement("canvas");c.width=w;c.height=h;const ctx=c.getContext("2d");const im=ctx.createImageData(w,h);im.data.set(bhDecode(p[0],w,h));ctx.putImageData(im,0,0);
+    // pastel wash
+    ctx.fillStyle="rgba(255,255,255,.18)";ctx.fillRect(0,0,w,h);BH_CACHE[code]=c.toDataURL();}catch(e){return null}
+  return BH_CACHE[code];
+}
+const REAL_PHOTOS=false;
+const PHOTO={"ATH": "photos/ATH.jpg", "OPO": "photos/OPO.jpg", "LIS": "photos/LIS.jpg", "CAG": "photos/CAG.jpg", "AGP": "photos/AGP.jpg", "PMO": "photos/PMO.jpg", "BCN": "photos/BCN.jpg", "VLC": "photos/VLC.jpg", "NAP": "photos/NAP.jpg", "TFS": "photos/TFS.jpg", "PRG": "photos/PRG.jpg", "BUD": "photos/BUD.jpg", "VIE": "photos/VIE.jpg", "PAR": "photos/PAR.jpg", "SPU": "photos/SPU.jpg", "AMS": "photos/AMS.jpg", "CPH": "photos/CPH.jpg", "MAD": "photos/MAD.jpg", "SVQ": "photos/SVQ.jpg", "PMI": "photos/PMI.jpg", "MAH": "photos/MAH.jpg", "ALC": "photos/ALC.jpg", "BIO": "photos/BIO.jpg", "GRX": "photos/GRX.jpg", "LPA": "photos/LPA.jpg", "ACE": "photos/ACE.jpg", "FUE": "photos/FUE.jpg", "FAO": "photos/FAO.jpg", "FNC": "photos/FNC.jpg", "LYS": "photos/LYS.jpg", "MRS": "photos/MRS.jpg", "NCE": "photos/NCE.jpg", "BOD": "photos/BOD.jpg", "LON": "photos/LON.jpg", "EDI": "photos/EDI.jpg", "DUB": "photos/DUB.jpg", "BRU": "photos/BRU.jpg", "IBZ": "photos/IBZ.jpg", "BER": "photos/BER.jpg", "MUC": "photos/MUC.jpg", "HAM": "photos/HAM.jpg", "STO": "photos/STO.jpg", "OSL": "photos/OSL.jpg", "HEL": "photos/HEL.jpg", "REK": "photos/REK.jpg", "RIX": "photos/RIX.jpg", "TLL": "photos/TLL.jpg", "WAW": "photos/WAW.jpg", "KRK": "photos/KRK.jpg", "GDN": "photos/GDN.jpg", "DBV": "photos/DBV.jpg", "ZAG": "photos/ZAG.jpg", "TIA": "photos/TIA.jpg", "BEG": "photos/BEG.jpg", "SOF": "photos/SOF.jpg", "OTP": "photos/OTP.jpg", "JTR": "photos/JTR.jpg", "JMK": "photos/JMK.jpg", "HER": "photos/HER.jpg", "RHO": "photos/RHO.jpg", "CFU": "photos/CFU.jpg", "SKG": "photos/SKG.jpg", "MLA": "photos/MLA.jpg", "LCA": "photos/LCA.jpg", "IST": "photos/IST.jpg", "RAK": "photos/RAK.jpg", "ROM": "photos/ROM.jpg", "CTA": "photos/CTA.jpg", "BRI": "photos/BRI.jpg", "BDS": "photos/BDS.jpg", "OLB": "photos/OLB.jpg", "AHO": "photos/AHO.jpg", "SUF": "photos/SUF.jpg", "ZAD": "photos/ZAD.jpg"};
+const photoLink=code=>REAL_PHOTOS&&PH[code]?`<span class="credit">Photo: <a href="https://unsplash.com/photos/${PH[code][1]}" target="_blank" rel="noopener">${PH[code][2]} on Unsplash ↗</a></span>`:"";
+/* More cities: no snapshot, searched live on lastminute.com when the page opens (typical late-October highs) */
+const MORE=[{"code": "MAD", "city": "Madrid", "country": "Spain", "temp": 19, "scene": "city", "tags": ["city", "food", "culture", "nightlife"]}, {"code": "SVQ", "city": "Seville", "country": "Spain", "temp": 25, "scene": "city", "tags": ["city", "food", "culture"]}, {"code": "PMI", "city": "Palma de Mallorca", "country": "Spain", "temp": 23, "scene": "sea", "tags": ["sea", "relax", "food"]}, {"code": "IBZ", "city": "Ibiza", "country": "Spain", "temp": 23, "scene": "sea", "tags": ["sea", "nightlife", "relax"]}, {"code": "MAH", "city": "Menorca", "country": "Spain", "temp": 22, "scene": "sea", "tags": ["sea", "relax"]}, {"code": "ALC", "city": "Alicante", "country": "Spain", "temp": 24, "scene": "sea", "tags": ["sea", "food", "relax"]}, {"code": "BIO", "city": "Bilbao", "country": "Spain", "temp": 19, "scene": "city", "tags": ["city", "food", "culture"]}, {"code": "GRX", "city": "Granada", "country": "Spain", "temp": 20, "scene": "city", "tags": ["culture", "food"]}, {"code": "LPA", "city": "Gran Canaria", "country": "Spain", "temp": 26, "scene": "sea", "tags": ["sea", "relax"]}, {"code": "ACE", "city": "Lanzarote", "country": "Spain", "temp": 26, "scene": "sea", "tags": ["sea", "relax"]}, {"code": "FUE", "city": "Fuerteventura", "country": "Spain", "temp": 26, "scene": "sea", "tags": ["sea", "relax"]}, {"code": "FAO", "city": "Faro & Algarve", "country": "Portugal", "temp": 23, "scene": "sea", "tags": ["sea", "relax"]}, {"code": "FNC", "city": "Madeira", "country": "Portugal", "temp": 23, "scene": "sea", "tags": ["sea", "relax", "food"]}, {"code": "LYS", "city": "Lyon", "country": "France", "temp": 16, "scene": "city", "tags": ["food", "city", "culture"]}, {"code": "MRS", "city": "Marseille", "country": "France", "temp": 20, "scene": "sea", "tags": ["sea", "food", "city"]}, {"code": "NCE", "city": "Nice", "country": "France", "temp": 20, "scene": "sea", "tags": ["sea", "city", "food"]}, {"code": "BOD", "city": "Bordeaux", "country": "France", "temp": 18, "scene": "city", "tags": ["food", "city"]}, {"code": "LON", "city": "London", "country": "United Kingdom", "temp": 15, "scene": "city", "tags": ["city", "culture", "nightlife", "food"]}, {"code": "EDI", "city": "Edinburgh", "country": "United Kingdom", "temp": 12, "scene": "city", "tags": ["city", "culture"]}, {"code": "DUB", "city": "Dublin", "country": "Ireland", "temp": 13, "scene": "city", "tags": ["city", "nightlife"]}, {"code": "BRU", "city": "Brussels", "country": "Belgium", "temp": 14, "scene": "city", "tags": ["city", "food", "culture"]}, {"code": "BER", "city": "Berlin", "country": "Germany", "temp": 13, "scene": "city", "tags": ["city", "nightlife", "culture"]}, {"code": "MUC", "city": "Munich", "country": "Germany", "temp": 14, "scene": "city", "tags": ["city", "food", "culture"]}, {"code": "HAM", "city": "Hamburg", "country": "Germany", "temp": 13, "scene": "city", "tags": ["city", "food"]}, {"code": "STO", "city": "Stockholm", "country": "Sweden", "temp": 10, "scene": "city", "tags": ["city", "culture"]}, {"code": "OSL", "city": "Oslo", "country": "Norway", "temp": 9, "scene": "city", "tags": ["city", "culture"]}, {"code": "HEL", "city": "Helsinki", "country": "Finland", "temp": 8, "scene": "city", "tags": ["city", "relax"]}, {"code": "REK", "city": "Reykjavik", "country": "Iceland", "temp": 6, "scene": "city", "tags": ["relax", "culture"]}, {"code": "RIX", "city": "Riga", "country": "Latvia", "temp": 10, "scene": "city", "tags": ["city", "culture", "nightlife"]}, {"code": "TLL", "city": "Tallinn", "country": "Estonia", "temp": 9, "scene": "city", "tags": ["city", "culture"]}, {"code": "WAW", "city": "Warsaw", "country": "Poland", "temp": 12, "scene": "city", "tags": ["city", "culture", "food"]}, {"code": "KRK", "city": "Krakow", "country": "Poland", "temp": 13, "scene": "city", "tags": ["culture", "food", "nightlife"]}, {"code": "GDN", "city": "Gdansk", "country": "Poland", "temp": 12, "scene": "city", "tags": ["city", "culture"]}, {"code": "DBV", "city": "Dubrovnik", "country": "Croatia", "temp": 20, "scene": "sea", "tags": ["sea", "culture"]}, {"code": "ZAD", "city": "Zadar", "country": "Croatia", "temp": 19, "scene": "sea", "tags": ["sea", "relax"]}, {"code": "ZAG", "city": "Zagreb", "country": "Croatia", "temp": 15, "scene": "city", "tags": ["city", "food"]}, {"code": "TIA", "city": "Tirana", "country": "Albania", "temp": 21, "scene": "city", "tags": ["city", "food"]}, {"code": "BEG", "city": "Belgrade", "country": "Serbia", "temp": 17, "scene": "city", "tags": ["city", "nightlife", "food"]}, {"code": "SOF", "city": "Sofia", "country": "Bulgaria", "temp": 16, "scene": "city", "tags": ["city", "culture"]}, {"code": "OTP", "city": "Bucharest", "country": "Romania", "temp": 16, "scene": "city", "tags": ["city", "nightlife"]}, {"code": "JTR", "city": "Santorini", "country": "Greece", "temp": 22, "scene": "sea", "tags": ["sea", "relax"]}, {"code": "JMK", "city": "Mykonos", "country": "Greece", "temp": 22, "scene": "sea", "tags": ["sea", "nightlife"]}, {"code": "HER", "city": "Crete", "country": "Greece", "temp": 23, "scene": "sea", "tags": ["sea", "food", "relax"]}, {"code": "RHO", "city": "Rhodes", "country": "Greece", "temp": 24, "scene": "sea", "tags": ["sea", "culture", "relax"]}, {"code": "CFU", "city": "Corfu", "country": "Greece", "temp": 21, "scene": "sea", "tags": ["sea", "relax", "food"]}, {"code": "SKG", "city": "Thessaloniki", "country": "Greece", "temp": 20, "scene": "sea", "tags": ["city", "food", "sea"]}, {"code": "MLA", "city": "Malta", "country": "Malta", "temp": 24, "scene": "sea", "tags": ["sea", "culture", "nightlife"]}, {"code": "LCA", "city": "Cyprus (Larnaca)", "country": "Cyprus", "temp": 27, "scene": "sea", "tags": ["sea", "relax"]}, {"code": "IST", "city": "Istanbul", "country": "Türkiye", "temp": 18, "scene": "city", "tags": ["city", "food", "culture", "nightlife"]}, {"code": "RAK", "city": "Marrakech", "country": "Morocco", "temp": 26, "scene": "city", "tags": ["culture", "food", "relax"]}, {"code": "ROM", "city": "Rome", "country": "Italy", "temp": 21, "scene": "city", "tags": ["city", "food", "culture"]}, {"code": "CTA", "city": "Catania", "country": "Italy", "temp": 23, "scene": "sea", "tags": ["sea", "food", "culture"]}, {"code": "BRI", "city": "Bari", "country": "Italy", "temp": 21, "scene": "sea", "tags": ["sea", "food"]}, {"code": "BDS", "city": "Salento (Brindisi)", "country": "Italy", "temp": 22, "scene": "sea", "tags": ["sea", "food", "relax"]}, {"code": "OLB", "city": "Olbia", "country": "Italy", "temp": 21, "scene": "sea", "tags": ["sea", "relax"]}, {"code": "AHO", "city": "Alghero", "country": "Italy", "temp": 21, "scene": "sea", "tags": ["sea", "food"]}, {"code": "SUF", "city": "Calabria (Lamezia)", "country": "Italy", "temp": 22, "scene": "sea", "tags": ["sea", "relax"]}];
+DATA.push(...MORE.map(m=>({fly:"",direct:false,carrier:"",h:[],more:true,...m})));
+DATA.forEach((d,i)=>{d.id=i;d.hotels=d.h.map((t,j)=>({j,name:t[0],stars:t[1],rating:t[2],reviews:t[3],km:t[4],fac:t[5],price:t[6],flex:t[7],hid:HID[t[0]]}));d.hrs=hoursThere(d.code);});
+const VIBE_WORDS={sea:["sea","beach","mare","spiaggia","warm","caldo","sun","sole","island"],city:["city","città","citta","urban"],food:["food","cibo","eat","mangiare","restaurant","wine","vino"],culture:["culture","cultura","art","arte","museum","musei","history"],nightlife:["nightlife","party","club","bar","movida"],relax:["relax","spa","calm","chill","terme","wellness","quiet"]};
+const VLABEL={sea:"sea",city:"city",food:"food",culture:"culture",nightlife:"nightlife",relax:"relax & spa"};
+
+/* ===== state ===== */
+const S={budget:750,budgetOn:true,filterOn:false,vibes:new Set(["sea","food"]),flex:false,direct:false,hotelPref:{stars4:true,central:true},
+  taste:{v:{},stars:0,central:0,price:0},seen:new Set(),saved:[],choice:{},together:{on:false,who:0,names:["Player 1","Player 2"],likes:[new Set(),new Set()]},split:false};
+let deck=[], sample=null;
+const $=id=>document.getElementById(id);
+const eur=(n,dec)=>"€"+(dec?n.toFixed(2):Math.round(n).toLocaleString("en-GB"));
+
+/* ===== trip (dates, times, adults) ===== */
+const BASE={from:"2026-10-23",to:"2026-10-25",adults:2};
+const ORIG=DATA.map(d=>({code:d.code,hotels:d.hotels.slice()}));
+S.trip={from:BASE.from,to:BASE.to,tOut:"",tIn:"",adults:2,live:false,origin:"MIL"};
+const ORIGINS={"MIL": "Milan", "TRN": "Turin", "GOA": "Genoa", "VRN": "Verona", "VCE": "Venice", "BLQ": "Bologna", "PSA": "Pisa", "FLR": "Florence", "ROM": "Rome", "NAP": "Naples", "BRI": "Bari", "CTA": "Catania", "PMO": "Palermo", "CAG": "Cagliari", "ZRH": "Zurich", "GVA": "Geneva"};
+const ORI=()=>S.trip.origin||"MIL"; const oriName=()=>ORIGINS[ORI()]||ORI();
+const nightsOf=()=>Math.round((new Date(S.trip.to)-new Date(S.trip.from))/864e5);
+const dfmt=iso=>new Date(iso+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
+const wd=iso=>new Date(iso+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short"}); const dayFrom=()=>wd(S.trip.from), dayTo=()=>wd(S.trip.to);
+function renderTrip(){
+  $("tripTxt").innerHTML=`<b>From ${oriName()} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)}</b><br>${S.trip.adults} adult${S.trip.adults>1?"s":""} · ${nightsOf()} night${nightsOf()>1?"s":""} · flight + hotel`;
+  $("bLabel").textContent=`Budget for ${S.trip.adults}`;
+}
+function timeOK(t,min){return !min||!t||hm(t)>=hm(min)}
+const hasTimes=()=>!!(S.trip.tOut||S.trip.tIn);
+const timeTxt=()=>[S.trip.tOut?`leave after ${S.trip.tOut}`:"",S.trip.tIn?`fly home after ${S.trip.tIn}`:""].filter(Boolean).join(" · ");
+function timeIssue(code){
+  const f=FL[code]; if(!f||S.trip.live) return "";
+  const a=!timeOK(f.o[2],S.trip.tOut), b=!timeOK(f.i[2],S.trip.tIn);
+  if(!a&&!b) return "";
+  return `Package flight ${a?`leaves ${dayFrom()} ${f.o[2]}`:""}${a&&b?" and ":""}${b?`returns ${dayTo()} ${f.i[2]}`:""}. At booking Fridayaway looks for flights that match your times.`;
+}
+/* ===== flight-time check: a city is shown only if a real flight leaves after the chosen times ===== */
+const FC={key:"",busy:false,res:{},done:0,total:0,src:"",err:""};
+const fcOn=()=>hasTimes();
+const fcKey=()=>[S.trip.from,S.trip.to,S.trip.tOut,S.trip.tIn,S.trip.adults,S.trip.live].join("|");
+const fcCand=()=>DATA.filter(d=>d.hotels.length&&(!S.filterOn||fits(d)));
+const fcReady=()=>!fcOn()||(FC.key===fcKey()&&!FC.busy&&!LIVE.busy&&fcCand().every(d=>FC.res[d.code]!==undefined));
+function fcOK(code){ if(!fcOn()) return true; if(!fcReady()) return false; return !!FC.res[code]; }
+const fcLegs=code=>fcOn()&&fcReady()&&FC.src==="live"&&FC.res[code]&&typeof FC.res[code]==="object"?FC.res[code]:null;
+const CONN_ERR=["server_not_connected","needs_reauth","not_in_manifest","approval_required","blocked_by_policy","consent_required"];
+function fcSnapshot(){
+  FC.src="snapshot";
+  DATA.forEach(d=>{const f=FL[d.code]; FC.res[d.code]=!S.trip.live&&!!f&&timeOK(f.o[2],S.trip.tOut)&&timeOK(f.i[2],S.trip.tIn)});
+}
+async function legAfter(dep,arr,date,t){
+  const r=await mcp.callTool(LM,"search_flights",{departure:dep,arrival:arr,start_date:date,departure_time_start:t,departure_time_end:"23:59",adults:S.trip.adults,max_results:3});
+  const p=(r&&r.payload)||r||{}; const list=(p.flights||[]).filter(x=>x&&x.departure);
+  if(!list.length) return null;
+  const f=list.slice().sort((a,b)=>hm(String(a.departure).split(" ")[1]||"0:0")-hm(String(b.departure).split(" ")[1]||"0:0"))[0];
+  const [ap,tm]=String(f.departure).split(" "); return {ap,t:tm,to:String(f.arrival||""),air:f.airline||"",stops:f.stops||""};
+}
+/* Stage 2: check the flights that the flight + hotel PACKAGE really offers (they differ from the route's loose flights) */
+const iso2b=t=>t?String(t).slice(11,16):"";
+function pkgLegs(fo,fi){
+  const L=x=>x?{ap:x.from,t:iso2b(x.departure_time),to:`${x.to} ${iso2b(x.arrival_time)}`,air:x.carrier_code||"",stops:x.direct?"Direct":"1 stop"}:null;
+  return {o:L(fo),i:L(fi)};
+}
+async function pkgVerify(d){
+  const r1=await mcp.callTool(LM,"search_flight_and_hotel_package",{origin:ORI(),destination:d.code,date_from:S.trip.from,date_to:S.trip.to,adults:String(S.trip.adults),max_results:20,lang:"it",sort:"recommended"});
+  const p1=(r1&&r1.payload)||{}; const list=(p1.products_summary||[]).slice().sort((a,b)=>a.price_total-b.price_total);
+  if(!list.length||!p1.search_id) return false;
+  const hit=(S.budgetOn&&list.find(x=>x.price_total<=S.budget))||list[0];
+  const r2=await mcp.callTool(LM,"select_hotel_options",{search_id:p1.search_id,hotel_internal_id:hit.internal_id_hotel,date_from:S.trip.from,date_to:S.trip.to});
+  const p2=(r2&&r2.payload)||{}; if(!p2.success) return false;
+  const fo=p2.flight_details&&p2.flight_details.outbound, fi=p2.flight_details&&p2.flight_details.inbound;
+  if(timeOK(iso2b(fo&&fo.departure_time),S.trip.tOut)&&timeOK(iso2b(fi&&fi.departure_time),S.trip.tIn)) return pkgLegs(fo,fi);
+  const rate=(p2.room_options||[])[0]&&p2.room_options[0].rate_id; if(!rate) return false;
+  await mcp.callTool(LM,"generate_booking_link",{pricing_id:p2.pricing_id,rate_id:rate});
+  const r3=await mcp.callTool(LM,"get_alternative_flights",{pricing_id:p2.pricing_id});
+  const fl=((r3&&r3.payload)||{}).flights||[];
+  const ok=fl.filter(x=>timeOK(x.outbound.departure.time,S.trip.tOut)&&timeOK(x.inbound.departure.time,S.trip.tIn)).sort((a,b)=>a.price.total-b.price.total)[0];
+  if(!ok) return false;
+  const A=(x,dir)=>({ap:x.departure.airport,t:x.departure.time,to:`${x.arrival.airport} ${x.arrival.time}`,air:x.carrier.code,stops:x.stops});
+  return {o:A(ok.outbound),i:A(ok.inbound)};
+}
+async function checkTimes(){
+  if(!fcOn()){FC.key="";FC.busy=false;renderDeck();return}
+  if(FC.busy||LIVE.busy){FC.again=true;return}
+  const key=fcKey(); if(FC.key!==key){FC.key=key;FC.res={};FC.err="";}
+  if(!mcp){fcSnapshot();renderDeck();return}
+  const list=fcCand().filter(d=>FC.res[d.code]===undefined);
+  if(!list.length){renderDeck();return}
+  FC.busy=true; FC.src="live"; FC.done=0; FC.total=list.length; renderDeck();
+  const one=async d=>{
+    let o=true,i=true;
+    try{
+      if(S.trip.tOut) o=await legAfter(ORI(),d.code,S.trip.from,S.trip.tOut);
+      if(o&&S.trip.tIn) i=await legAfter(d.code,ORI(),S.trip.to,S.trip.tIn);
+      FC.res[d.code]=o&&i?await pkgVerify(d):false;
+    }catch(e){ if(e&&CONN_ERR.includes(e.code)) throw e; FC.res[d.code]=false; }
+    FC.done++; const s=$("fcProg"); if(s) s.textContent=`${FC.done}/${FC.total}`;
+  };
+  try{
+    const q=list.slice(); await Promise.all(Array.from({length:5},async()=>{while(q.length) await one(q.shift())}));
+  }catch(e){ FC.err=mcpMsg(e); FC.res={}; fcSnapshot(); }
+  FC.busy=false;
+  if(FC.again){FC.again=false; return checkTimes();}
+  S.seen.clear(); renderDeck();
+}
+let fcT=0; const fcSoon=()=>{clearTimeout(fcT);fcT=setTimeout(checkTimes,500)};
+function fcHours(code){
+  const v=fcLegs(code); if(!v) return null; if(!v.o||!v.i) return "hide";
+  const m=/(\d{1,2}:\d{2})(\+1)?/.exec(v.o.to); if(!m) return "hide";
+  return Math.round(nightsOf()*24-(hm(m[1])+(m[2]?24:0))+hm(v.i.t));
+}
+const hrsOf=d=>{const x=fcHours(d.code); return x==="hide"?null:x===null?d.hrs:x};
+function fcLegHTML(day,l){return l?`<div class="leg"><span>${day}</span><b>${l.ap} ${l.t} → ${l.to}</b><span class="fn">${l.air.split(" ")[0]}</span></div>`:""}
+function fcBlock(code){
+  const v=fcLegs(code); if(!v) return "";
+  return `<span class="eyebrow">Flights in your package after your times · live</span><div class="legs">${fcLegHTML(dayFrom(),v.o)}${fcLegHTML(dayTo(),v.i)}</div>`;
+}
+/* ===== live search over many cities ===== */
+const LIVE={busy:false,done:0,total:0,msg:""};
+function liveBar(){const b=$("liveBar"); if(!b) return;
+  if(LIVE.busy){b.hidden=false;b.innerHTML=`<span><span class="spin" style="width:12px;height:12px;vertical-align:-1px"></span> Finding weekends in more cities · <b>${LIVE.done}/${LIVE.total}</b></span>`;}
+  else if(LIVE.msg){b.hidden=false;b.innerHTML=`<span>${LIVE.msg}</span>`;}
+  else b.hidden=true;}
+async function liveOne(d,from,to,ad){
+  if(d.code===ORI()){d.hotels=[];return}
+  try{
+    const r=await mcp.callTool(LM,"search_flight_and_hotel_package",{origin:ORI(),destination:d.code,date_from:from,date_to:to,adults:String(ad),max_results:6,lang:"it",sort:"recommended"});
+    const list=((r.payload||{}).products_summary)||[];
+    d.hotels=list.map((x,j)=>({j,name:x.name,stars:x.stars||0,rating:x.rating||0,reviews:x.reviews||0,km:x.distance_km,fac:x.facilities||[],price:x.price_total,flex:!!x.cancellable,hid:x.internal_id_hotel}));
+    if(list[0]){d.direct=!!list[0].flight_direct;d.carrier=list[0].carrier||d.carrier;d.fly=d.direct?"Direct":"1 stop"}
+  }catch(e){ if(e&&CONN_ERR.includes(e.code)) throw e; d.hotels=[]; }
+  d.hrs=d.more?null:d.hrs;
+}
+async function liveSearch(list,from,to,ad){
+  LIVE.busy=true;LIVE.done=0;LIVE.total=list.length;LIVE.msg="";liveBar();
+  const q=list.slice();
+  try{
+    await Promise.all(Array.from({length:6},async()=>{while(q.length){const d=q.shift();await liveOne(d,from,to,ad);LIVE.done++;liveBar();}}));
+    return null;
+  }catch(e){return e}
+  finally{LIVE.busy=false;liveBar();}
+}
+async function discoverMore(){
+  if(!mcp||LIVE.busy) return;
+  const list=DATA.filter(d=>d.more&&!d.hotels.length&&!d.tried);
+  if(!list.length) return;
+  list.forEach(d=>d.tried=true);
+  const err=await liveSearch(list,S.trip.from,S.trip.to,S.trip.adults);
+  const n=list.filter(d=>d.hotels.length).length;
+  LIVE.msg=err?`More cities need the lastminute.com connector: ${mcpMsg(err)}`:`+${n} more cities with live prices`;
+  liveBar(); setTimeout(()=>{LIVE.msg="";liveBar()},6000);
+  if(FC.again){FC.again=false;checkTimes()} renderDeck();
+}
+async function applyTrip(){
+  const from=$("dFrom").value,to=$("dTo").value,ad=+$("adults").value;
+  S.trip.tOut=$("tOut").value; S.trip.tIn=$("tIn").value;
+  const st=$("liveStatus");
+  if(!from||!to||to<=from){st.textContent="Pick a return date after the departure date.";return}
+  const today=new Date().toISOString().slice(0,10);
+  if(from<today){st.textContent="The departure date must be today or later.";return}
+  if((new Date(to)-new Date(from))/864e5>7){st.textContent="Fridayaway is built for short breaks: up to 7 nights.";return}
+  const org=$("orig").value; const same=from===BASE.from&&to===BASE.to&&ad===BASE.adults&&org==="MIL";
+  if(same){
+    S.trip={...S.trip,from,to,adults:ad,live:false,origin:"MIL"};
+    DATA.forEach(d=>{d.hotels=ORIG.find(o=>o.code===d.code).hotels.slice();d.hrs=hoursThere(d.code);d.tried=false});
+    st.textContent="";
+    S.choice={};S.seen.clear();renderTrip();renderDeck();checkTimes();discoverMore();return;
+  }
+  if(!mcp){$("orig").value=S.trip.origin;st.textContent="Other departure cities and new dates need live prices from the lastminute.com connector. Try again in a minute.";return}
+  $("applyTrip").disabled=true; st.textContent="Searching live prices from "+ORIGINS[org]+"…";
+  const prevO=S.trip.origin; S.trip.origin=org;
+  const err=await liveSearch(DATA.slice(),from,to,ad);
+  if(!err){
+    DATA.forEach(d=>{d.tried=true;d.hrs=null});
+    S.trip={...S.trip,from,to,adults:ad,live:true,origin:org};
+    const n=DATA.filter(d=>d.hotels.length).length;
+    st.textContent=`Live prices for ${n} cities · ${new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})}`;
+  }else{st.textContent=mcpMsg(err); DATA.forEach(d=>{d.hotels=ORIG.find(o=>o.code===d.code).hotels.slice();d.hrs=hoursThere(d.code)}); S.trip={...S.trip,from:BASE.from,to:BASE.to,adults:2,live:false,origin:"MIL"};$("orig").value="MIL"}
+  $("applyTrip").disabled=false; S.choice={};S.seen.clear();renderTrip();renderDeck();checkTimes();
+}
+
+/* ===== scoring ===== */
+function hotelFor(d){
+  if(S.choice[d.code]!=null) return d.hotels[S.choice[d.code]];
+  let opts=d.hotels.slice();
+  if(S.flex){const f=opts.filter(h=>h.flex); if(f.length) opts=f;}
+  const sc=h=>{let s=0;
+    if(S.budgetOn){if(h.price<=S.budget) s+=5; else s-=(h.price-S.budget)/40;}
+    s+=((h.rating||75)-75)/4;
+    if(S.hotelPref.stars4||S.taste.stars>0) s+=(h.stars-3)*(1.2+Math.max(0,S.taste.stars));
+    if(S.hotelPref.central||S.taste.central>0) s+=Math.max(0,2-h.km)*(1+Math.max(0,S.taste.central));
+    s-=Math.max(0,S.taste.price)*h.price/300;
+    return s;};
+  return opts.sort((a,b)=>sc(b)-sc(a))[0];
+}
+function upgradeFor(d,h){
+  return d.hotels.filter(x=>x!==h&&x.price>h.price&&(x.stars>h.stars||(x.rating>h.rating+4)||(x.km<h.km-0.5&&x.stars>=h.stars))).sort((a,b)=>a.price-b.price)[0];
+}
+function scoreDest(d){
+  const h=hotelFor(d);
+  let s=0;const m=[];
+  S.vibes.forEach(v=>{if(d.tags.includes(v)){s+=3;m.push(v)}});
+  for(const [v,w] of Object.entries(S.taste.v)) if(d.tags.includes(v)) s+=w*1.5;
+  if(S.vibes.has("sea")) s+=(d.temp-18)/2;
+  if(S.direct&&!d.direct) s-=6;
+  if(!d.direct) s-=1;
+  s+=(h.rating||70)/40;
+  if(d.hrs) s+=(d.hrs-40)/12;
+  if(timeIssue(d.code)) s-=4;
+  return {d,h,s,m};
+}
+/* After a request (Go) the deck only shows destinations that fit it: every chosen mood
+   (falls back to any mood if none has them all), at least one hotel in budget, and the flight/cancel filters. */
+function fits(d){
+  if(!d.hotels.length) return false;
+  if(S.budgetOn&&!d.hotels.some(h=>h.price<=S.budget)) return false;
+  if(S.direct&&!d.direct) return false;
+  if(S.flex&&!d.hotels.some(h=>h.flex)) return false;
+  return true;
+}
+function pool(){
+  if(!S.filterOn) return DATA.filter(d=>d.hotels.length&&fcOK(d.code));
+  const base=DATA.filter(d=>fits(d)&&fcOK(d.code)), v=[...S.vibes];
+  if(!v.length) return base;
+  const all=base.filter(d=>v.every(x=>d.tags.includes(x)));
+  return all.length?all:base.filter(d=>v.some(x=>d.tags.includes(x)));
+}
+/* Budget ordering: weekends within budget come first, preferring the ones that use the budget best
+   (a €1,500 budget shows €1,300–1,500 trips before €400 ones); over-budget ones follow, closest first. */
+function byBudget(a,b){
+  if(!S.budgetOn) return b.s-a.s;
+  const fa=a.h.price<=S.budget, fb=b.h.price<=S.budget;
+  if(fa!==fb) return fa?-1:1;
+  if(!fa) return a.h.price-b.h.price;
+  const k=o=>o.s+8*(o.h.price/S.budget)-(o.h.price<S.budget*0.5?3:0);
+  return k(b)-k(a);
+}
+function buildDeck(){const p=pool();S.poolN=p.length;deck=p.filter(d=>!S.seen.has(d.code)).map(scoreDest).sort(byBudget);
+  if(S.backCode){const i=deck.findIndex(o=>o.d.code===S.backCode); if(i>0) deck.unshift(deck.splice(i,1)[0]); if(i<0&&!DATA.some(d=>d.code===S.backCode&&pool().includes(d))) S.backCode=null;}}
+
+/* ===== illustration ===== */
+function hash(str){let h=0;for(const c of str)h=(h*31+c.charCodeAt(0))>>>0;return h}
+function art(d,small){
+  const u=PHOTO[d.code]||null; if(u) return `<img src="${u}" alt="" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><div class="shade"></div>`;
+  const r=hash(d.code), warm=Math.min(1,Math.max(0,(d.temp-11)/15));
+  const top=warm>0.6?["#FFD3C2","#FFB8C8"]:warm>0.35?["#CFE4FF","#FFD9C7"]:["#D7DDF7","#E9ECFA"];
+  const id="g"+d.code+(small?"s":"");
+  let layer="";
+  if(d.scene==="sea"){
+    layer+=`<circle cx="${70+r%200}" cy="${70+r%30}" r="${small?22:30}" fill="#FFE29A" opacity=".95"/>`;
+    layer+=`<path d="M0 150 Q 60 ${130+r%15} 120 150 T 240 150 T 360 150 T 480 150 V 225 H0Z" fill="#2E8BC0"/>`;
+    layer+=`<path d="M0 170 Q 70 158 140 172 T 280 170 T 420 172 V 225 H0Z" fill="#1B6F9E"/>`;
+    layer+=`<path d="M0 195 Q 80 185 160 197 T 320 195 T 480 197 V 225 H0Z" fill="#145A82"/>`;
+    layer+=`<path d="M${200+r%120} 150 l40 -46 l14 18 l26 -30 l40 58Z" fill="#3C4F6B" opacity=".55"/>`;
+  } else {
+    layer+=`<circle cx="${90+r%220}" cy="${60+r%25}" r="${small?18:24}" fill="#FFF3C9" opacity=".9"/>`;
+    let x=0,k=r;
+    while(x<480){k=(k*1103515245+12345)>>>0;const w=26+k%34,hh=50+k%95;layer+=`<rect x="${x}" y="${225-hh}" width="${w}" height="${hh}" fill="#2B3A5C" opacity="${.75+(k%20)/100}"/>`;
+      if(k%5===0) layer+=`<path d="M${x} ${225-hh} l${w/2} -${18+k%14} l${w/2} ${18+k%14}Z" fill="#2B3A5C"/>`;
+      for(let wy=225-hh+10;wy<215;wy+=16) for(let wx=x+5;wx<x+w-6;wx+=10) if(((wx*7+wy*3+k)%9)<3) layer+=`<rect x="${wx}" y="${wy}" width="4" height="6" fill="#FFE29A" opacity=".8"/>`;
+      x+=w+2;}
+  }
+  return `<svg viewBox="0 0 480 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${top[0]}"/><stop offset="1" stop-color="${top[1]}"/></linearGradient></defs><rect width="480" height="225" fill="url(#${id})"/>${layer}</svg>`;
+}
+
+/* ===== deck rendering ===== */
+const starStr=n=>n?"★".repeat(n):"";
+const ratingWord=r=>r>=90?"Superb":r>=85?"Excellent":r>=80?"Very good":r>=70?"Good":r>0?"Fair":"New";
+function cardHTML(o,pos){
+  const {d,h,m}=o, left=S.budget-h.price, up=upgradeFor(d,h);
+  const pp=S.split?`<div class="pp">${eur(h.price/S.trip.adults)} per person</div>`:`<div class="pp">for ${S.trip.adults} · ${eur(h.price/S.trip.adults)} pp</div>`;
+  const why=m.length?`Fits your <b>${m.map(v=>VLABEL[v]).join(" + ")}</b> mood`:Object.keys(S.taste.v).length?`Picked from what you saved so far`:`A strong all-round weekend`;
+  return `<article class="card" data-code="${d.code}" style="z-index:${10-pos};transform:translateY(${pos*10}px) scale(${1-pos*0.04});${pos>2?"opacity:0;":""}" aria-label="${d.city}, ${eur(h.price)}">
+    <div class="stamp like">SAVE</div><div class="stamp nope">SKIP</div>
+    <div class="art">${art(d)}<span class="temp">☀ ${d.temp}°C</span>${pos===0&&o.s>8?`<span class="match">Top match</span>`:""}<div class="city"><h2>${d.city}</h2><span>${d.country}${d.carrier?" · "+d.carrier:""}</span></div></div>
+    <div class="body">
+      <div class="hotel"><div><h3>${h.name}</h3><span class="stars">${starStr(h.stars)}</span> <span class="muted" style="font-size:12.5px">${h.km} km from centre</span></div>
+        ${h.rating?`<div class="score">${(h.rating/10).toFixed(1)}<small>${ratingWord(h.rating)}</small></div>`:`<div class="score">New</div>`}</div>
+      <div class="badges">${h.flex?`<span class="badge mint">Free cancellation</span>`:`<span class="badge rose">Non-refundable</span>`}${d.direct?`<span class="badge sky">Direct flights</span>`:`<span class="badge butter">1 stop</span>`}${hrsOf(d)>0?`<span class="badge lilac">${hrsOf(d)} h there</span>`:""}${h.fac.filter(f=>/Pool|Spa/.test(f)).slice(0,1).map(f=>`<span class="badge">${f}</span>`).join("")}</div>
+      ${fcLegs(d.code)?fcBlock(d.code):FL[d.code]&&!S.trip.live&&!timeIssue(d.code)?`<div class="legs"><div class="leg"><span>${dayFrom()}</span><b>${FL[d.code].o[0]} ${FL[d.code].o[2]} → ${FL[d.code].o[1]} ${FL[d.code].o[3]}</b><span class="fn">${FL[d.code].o[4].split(" · ")[0]}</span></div><div class="leg"><span>${dayTo()}</span><b>${FL[d.code].i[0]} ${FL[d.code].i[2]} → ${FL[d.code].i[1]} ${FL[d.code].i[3]}</b><span class="fn">${FL[d.code].i[4].split(" · ")[0]}</span></div></div>`:""}
+      ${fcLegs(d.code)?"":S.trip.live||!FL[d.code]?`<div class="leg" style="grid-template-columns:1fr"><span>Exact flights are shown when you open this weekend</span></div>`:timeIssue(d.code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights to match your times (${timeTxt()}) are picked when you book</span></div>`:FL[d.code]&&FL[d.code].note?`<div class="warnline">${FL[d.code].note}</div>`:earlyReturn(d.code)?`<div class="warnline">Early flight home on Sunday (${FL[d.code].i[2]})</div>`:""}
+      ${up?`<div class="upg"><span><b>+${eur(up.price-h.price)}</b> for ${starStr(up.stars)} ${up.name.length>26?up.name.slice(0,25)+"…":up.name}${up.rating?` · ${(up.rating/10).toFixed(1)}`:""}</span><button data-up="${d.code}|${up.j}">Step up</button></div>`:""}
+      <div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}</div>${marginPill(h.price)}</div>
+    </div></article>`;
+}
+/* Budget margin: what is left of the budget once flight + hotel are paid, and what that is per day there. */
+function marginHTML(price){
+  if(!S.budgetOn) return "";
+  const left=S.budget-price, days=Math.max(1,nightsOf());
+  if(left<0) return `<div class="margin over"><span>Over budget</span><b>+${eur(-left)}</b></div>`;
+  return `<div class="margin"><span>Left in budget · ${eur(left/days)}/day to spend</span><b>${eur(left)}</b></div>`;
+}
+function marginPill(price){
+  if(!S.budgetOn) return "";
+  const left=S.budget-price, days=Math.max(1,nightsOf());
+  return left<0?`<div class="mpill over"><b>+${eur(-left)}</b><span>over budget</span></div>`
+    :`<div class="mpill"><b>${eur(left)} left</b><span>${eur(left/days)}/day to spend</span></div>`;
+}
+function renderMatches(){
+  const m=$("matches"); const t=fcOn()&&fcReady();
+  if(!S.filterOn&&!t){m.hidden=true;return}
+  m.hidden=false;
+  m.innerHTML=`<span><b>${S.poolN}</b> destination${S.poolN===1?"":"s"} ${t?`with flights for your times (${timeTxt()})`:`match${S.poolN===1?"es":""}`}</span>${S.filterOn?`<button class="linkbtn" id="showAll">Show all</button>`:""}`;
+  if(S.filterOn) $("showAll").onclick=()=>{S.filterOn=false;S.seen.clear();renderDeck()};
+}
+function renderDeck(){
+  buildDeck(); renderMatches();
+  const w=$("deck");
+  document.querySelector(".deckarea").classList.add("empty");
+  if(fcOn()&&!fcReady()){
+    if(!FC.busy&&!LIVE.busy) fcSoon();
+    w.innerHTML=`<div class="empty"><span class="spin" style="width:22px;height:22px"></span><h3>Checking flights</h3><p class="muted">${LIVE.busy?"Waiting for live prices…":`Checking real package flights · <span id="fcProg">${FC.done}/${FC.total||"…"}</span>`}</p></div>`;
+    renderLearned();return}
+  if(fcOn()&&!DATA.some(d=>d.hotels.length&&FC.res[d.code])){
+    w.innerHTML=`<div class="empty"><h3>No flights at those times</h3><p class="muted">${FC.err||`No city has flights that match your times (${timeTxt()}). Try earlier times.`}</p><button class="btn" id="clrT">Clear times</button></div>`;
+    $("clrT").onclick=()=>{$("tOut").value="";$("tIn").value="";S.trip.tOut="";S.trip.tIn="";S.seen.clear();checkTimes()};renderLearned();return}
+  if(!deck.length){
+    const none=S.filterOn&&!S.poolN;
+    w.innerHTML=none?`<div class="empty"><h3>No match</h3><p class="muted">Raise the budget or drop a filter.</p><button class="btn" id="again">Show all</button></div>`
+      :`<div class="empty"><h3>That's all</h3><p class="muted">${S.saved.length?`${S.saved.length} saved`:"Nothing saved yet"}</p><button class="btn" id="again">Start over</button></div>`;
+    $("again").onclick=()=>{if(none)S.filterOn=false;S.seen.clear();renderDeck()};renderLearned();return}
+  w.innerHTML=deck.slice(0,4).map((o,i)=>cardHTML(o,i)).reverse().join("");
+  const top=w.querySelector(`.card[data-code="${deck[0].d.code}"]`);
+  attachDrag(top);
+  if(S.backCode===deck[0].d.code&&top){top.classList.add("back",S.backDir);setTimeout(()=>top.classList.remove("back","fromL","fromR"),450);}
+  S.backCode=null; undoState(); if(!S.demoDone&&top){S.demoDone=true;setTimeout(()=>demo(top),900);} document.querySelector(".deckarea").classList.remove("empty");
+  renderLearned();
+}
+function renderLearned(){
+  const parts=[];
+  const tv=Object.entries(S.taste.v).filter(([,w])=>w>=1).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  tv.forEach(([v])=>parts.push(VLABEL[v]));
+  if(S.taste.stars>=1) parts.push("4★ and up");
+  if(S.taste.central>=1) parts.push("central");
+  if(S.taste.price>=1) parts.push("value for money");
+  $("learned").innerHTML=parts.length?`<span class="eyebrow">You like</span>${parts.map(p=>`<span class="t">${p}</span>`).join("")}<button class="linkbtn" id="forget">Reset</button>`:"";
+  const f=$("forget"); if(f) f.onclick=()=>{S.taste={v:{},stars:0,central:0,price:0};toast("Taste reset.");renderDeck()};
+}
+
+/* ===== swipe ===== */
+function attachDrag(card){
+  if(!card) return;
+  let sx=0,sy=0,dx=0,dy=0,down=false,t0=0;
+  const like=card.querySelector(".stamp.like"),nope=card.querySelector(".stamp.nope");
+  card.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;down=true;const da=card.closest(".deckarea");da&&da.classList.add("dragging");sx=e.clientX;sy=e.clientY;t0=Date.now();card.setPointerCapture(e.pointerId);card.classList.add("dragging")});
+  card.addEventListener("pointermove",e=>{if(!down)return;dx=e.clientX-sx;dy=e.clientY-sy;
+    card.style.transform=`translate(${dx}px,${dy*0.25}px) rotate(${dx/18}deg)`;
+    like.style.opacity=Math.max(0,Math.min(1,dx/90));nope.style.opacity=Math.max(0,Math.min(1,-dx/90));binState(dx);});
+  const end=()=>{if(!down)return;down=false;card.classList.remove("dragging");const da=card.closest(".deckarea");da&&da.classList.remove("dragging");
+    const v=Math.abs(dx)/Math.max(1,Date.now()-t0);
+    if(dx>110||(dx>40&&v>.6)) fling(card,1); else if(dx<-110||(dx<-40&&v>.6)) fling(card,-1);
+    else if(Math.abs(dx)<6&&Math.abs(dy)<6){card.classList.add("anim");card.style.transform="";openSheet(card.dataset.code)}
+    else{card.classList.add("anim");card.style.transform="";like.style.opacity=0;nope.style.opacity=0;binState(0);setTimeout(()=>card.classList.remove("anim"),360)}
+    dx=dy=0;};
+  card.addEventListener("pointerup",end);card.addEventListener("pointercancel",end);
+}
+function binState(dx){const b=$("bin"); if(!b) return; b.classList.toggle("show",dx<-24); b.classList.toggle("hot",dx<-110);}
+const RM=()=>window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+function fling(card,dir){
+  if(!card||card.classList.contains("flying")) return;
+  const code=card.dataset.code;
+  card.querySelector(dir>0?".stamp.like":".stamp.nope").style.opacity=1;
+  const toSaved=dir>0&&!S.together.on;
+  const target=dir<0?$("bin"):toSaved?document.querySelector('nav [data-tab="saved"]'):null;
+  if(RM()||!target||!card.animate){
+    card.classList.add("anim");card.style.transform=`translate(${dir*560}px,-30px) rotate(${dir*28}deg)`;card.style.opacity="0";
+    binState(0); setTimeout(()=>decide(code,dir>0),260); return;
+  }
+  const bin=$("bin"); if(dir<0){bin.classList.add("show","hot");}
+  const base=$("deck").getBoundingClientRect(), tr=target.getBoundingClientRect();
+  const tx=(tr.left+tr.width/2)-(base.left+base.width/2), ty=(tr.top+tr.height/2)-(base.top+base.height/2);
+  const cur=card.style.transform||"none";
+  card.classList.add("flying"); card.classList.remove("anim");
+  const mid=dir<0?`translate(${tx*0.55}px,${ty*0.55-60}px) scale(.45) rotate(-18deg)`:`translate(${tx*0.5}px,${ty*0.5-50}px) scale(.42) rotate(10deg)`;
+  const end=dir<0?`translate(${tx}px,${ty}px) scale(.04) rotate(-40deg)`:`translate(${tx}px,${ty}px) scale(.06) rotate(0deg)`;
+  const a=card.animate([{transform:cur,opacity:1},{transform:mid,opacity:dir<0?.95:.7,offset:.55},{transform:end,opacity:dir<0?.6:.3}],{duration:dir<0?520:600,easing:"cubic-bezier(.45,.05,.4,1)",fill:"forwards"});
+  a.onfinish=()=>{
+    card.style.visibility="hidden";
+    if(dir<0){bin.classList.remove("hot");bin.classList.add("gulp");setTimeout(()=>{bin.classList.remove("gulp","show")},420);}
+    else{const t=document.querySelector('nav [data-tab="saved"]');t.classList.remove("pop");void t.offsetWidth;t.classList.add("pop");setTimeout(()=>t.classList.remove("pop"),520);}
+    decide(code,dir>0);
+  };
+}
+const HIST=[];
+function decide(code,liked){
+  S.swipes=(S.swipes||0)+1; if(S.swipes>=3){const da=document.querySelector(".deckarea");da&&da.classList.add("calm");}
+  const o=deck.find(x=>x.d.code===code); if(!o) return;
+  const hist={code,liked,taste:JSON.parse(JSON.stringify(S.taste)),saved:false,tg:null};
+  S.seen.add(code);
+  const w=liked?1:-0.5;
+  o.d.tags.forEach(t=>S.taste.v[t]=(S.taste.v[t]||0)+w*0.6);
+  if(liked){ if(o.h.stars>=4) S.taste.stars+=0.5; if(o.h.km<=1) S.taste.central+=0.5; if(o.h.price<=S.budget*0.85) S.taste.price+=0.4; }
+  else { if(o.h.price>S.budget) S.taste.price+=0.3; }
+  if(S.together.on){
+    const me=S.together.who; if(liked&&!S.together.likes[me].has(code)){S.together.likes[me].add(code);hist.tg=me}
+    if(liked&&S.together.likes[1-me].has(code)){showMatch(o)}
+  } else if(liked&&!S.saved.find(s=>s.code===code)){S.saved.push({code,j:o.h.j});hist.saved=true;updateCount();toast(`Saved ${o.d.city}`)}
+  HIST.push(hist); if(HIST.length>30) HIST.shift();
+  renderDeck();
+}
+function demo(card){
+  if(!card||!card.isConnected||RM()||(S.swipes||0)>0) return;
+  const L=card.querySelector(".stamp.nope"),R=card.querySelector(".stamp.like");
+  const step=(tx,rot,sl,sr,t)=>setTimeout(()=>{if(!card.isConnected||card.classList.contains("dragging")||card.classList.contains("flying"))return;card.classList.add("demo");card.style.transform=tx?`translate(${tx}px,0) rotate(${rot}deg)`:"";L.style.opacity=sl;R.style.opacity=sr;},t);
+  step(-70,-5,.85,0,0); step(0,0,0,0,650); step(70,5,0,.85,1150); step(0,0,0,0,1800);
+  setTimeout(()=>card.classList.remove("demo"),2300);
+}
+function undoState(){const b=$("bUndo"); if(!b) return; const ok=HIST.some(x=>S.seen.has(x.code)); b.disabled=!ok; b.classList.toggle("ready",ok);}
+function undo(){
+  let x; while((x=HIST.pop())&&!S.seen.has(x.code));
+  if(!x){undoState();return}
+  S.seen.delete(x.code); S.taste=x.taste;
+  if(x.saved){S.saved=S.saved.filter(s=>s.code!==x.code);updateCount();renderSaved();}
+  if(x.tg!=null) S.together.likes[x.tg].delete(x.code);
+  S.backCode=x.code; S.backDir=x.liked?"fromR":"fromL";
+  renderDeck();
+  const d=DATA.find(z=>z.code===x.code); toast(`${d?d.city:"Card"} is back`);
+}
+function topCard(){return $("deck").querySelector(deck.length?`.card[data-code="${deck[0].d.code}"]`:"nope")}
+$("bLike").onclick=()=>fling(topCard(),1);
+$("bNope").onclick=()=>fling(topCard(),-1);
+$("bUndo").onclick=undo;
+$("swL").onclick=()=>fling(topCard(),-1);
+$("swR").onclick=()=>fling(topCard(),1);
+document.addEventListener("keydown",e=>{if(document.querySelector('[data-s="discover"]').hidden||e.target.closest("textarea,input"))return;
+  if(e.key==="ArrowRight") fling(topCard(),1); else if(e.key==="ArrowLeft") fling(topCard(),-1); else if(e.key==="ArrowUp"&&deck.length) openSheet(deck[0].d.code); else if(e.key==="Backspace"||((e.ctrlKey||e.metaKey)&&e.key==="z")) undo();});
+$("deck").addEventListener("click",e=>{const b=e.target.closest("[data-up]");if(!b)return;const [c,j]=b.dataset.up.split("|");S.choice[c]=+j;toast("Upgraded. Price updated.");renderDeck()});
+
+/* ===== detail sheet ===== */
+function legHTML(day,l){return `<div class="leg"><span>${day}</span><b>${l[0]} ${l[2]} → ${l[1]} ${l[3]}</b><span class="fn">${l[4]}</span></div>`}
+function openSheet(code){
+  const d=DATA.find(x=>x.code===code), cur=hotelFor(d), f=FL[code];
+  const rows=d.hotels.slice().sort((a,b)=>a.price-b.price).map(h=>`<div class="hrow" role="button" tabindex="0" data-j="${h.j}" aria-pressed="${h===cur}"><div><div class="n">${h.name}</div><div class="d">${starStr(h.stars)} · ${h.rating?(h.rating/10).toFixed(1)+" "+ratingWord(h.rating):"New"} · ${h.km} km · ${h.flex?"Free cancellation":"Non-refundable"}</div></div><div class="pr">${eur(h.price)}</div></div>`).join("");
+  $("layer").innerHTML=`<div class="scrim" id="scrim"></div><div class="sheet" role="dialog" aria-label="${d.city} options"><div style="display:flex;justify-content:space-between;align-items:center"><div class="grab" style="margin:0"></div><button class="linkbtn" id="sheetClose" style="font-size:14px">Close ✕</button></div>
+    <div style="height:140px;flex:none;border-radius:16px;overflow:hidden;position:relative">${art(d)}</div>
+    ${photoLink(code)}
+    <h2>${d.city}, ${d.country}</h2>
+    <p class="muted">${dfmt(S.trip.from)} → ${dfmt(S.trip.to)} · ${S.trip.adults} adult${S.trip.adults>1?"s":""} ${hrsOf(d)>0?`· <span class="hours">${hrsOf(d)} hours there</span>`:""}</p>
+    ${fcLegs(code)?fcBlock(code):""}${!fcLegs(code)&&f&&!S.trip.live&&timeIssue(code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights matching your times (${timeTxt()}) are picked when you book</span></div>`:""}${!fcLegs(code)&&f&&!S.trip.live&&!timeIssue(code)?`<span class="eyebrow">Flights in this package</span><div class="legs">${legHTML(dayFrom(),f.o)}${legHTML(dayTo(),f.i)}</div>${f.note?`<div class="warnline">${f.note}</div>`:""}`:""}
+    <span class="eyebrow">Flight + hotel · total for ${S.trip.adults}</span>${rows}${S.budgetOn?`<div id="sheetMargin">${marginHTML(cur.price)}</div>`:""}
+    <div id="bookArea" style="display:flex;flex-direction:column;gap:10px"></div>
+    <button class="btn" id="sheetBook">Book</button>
+    <button class="btn ghost" id="sheetSave">Save</button>
+  </div>`;
+  const close=()=>{bookCtl.n++;$("layer").innerHTML=""};
+  $("scrim").onclick=close; $("sheetClose").onclick=close;
+  $("layer").querySelectorAll(".hrow").forEach(r=>{const pick=()=>{S.choice[code]=+r.dataset.j;$("layer").querySelectorAll(".hrow").forEach(x=>x.setAttribute("aria-pressed",String(x===r)));$("bookArea").innerHTML="";$("sheetBook").hidden=false;renderDeck();renderSaved()};r.onclick=()=>{pick();const m=$("sheetMargin");if(m)m.innerHTML=marginHTML(hotelFor(d).price)};r.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}}});
+  $("sheetSave").onclick=()=>{const j=hotelFor(d).j;const ex=S.saved.find(s=>s.code===code);if(ex)ex.j=j;else S.saved.push({code,j});S.seen.add(code);updateCount();close();renderDeck();toast(`Saved ${d.city}`)};
+  $("sheetBook").onclick=()=>startBooking(d,hotelFor(d));
+}
+
+/* ===== live booking through the viewer's lastminute.com connector ===== */
+const LM="lastminute.com"; const DATES_=()=>({date_from:S.trip.from,date_to:S.trip.to});
+let mcp=null; const bookCtl={n:0};
+const MEAL={ROOM_ONLY:"Room only",BED_BREAKFAST:"Breakfast",HALF_BOARD:"Half board",FULL_BOARD:"Full board",ALL_INCLUSIVE:"All inclusive"};
+function iso2(t){return t?t.slice(11,16):""}
+function mcpMsg(e){
+  const c=e&&e.code;
+  if(c==="server_not_connected") return "Live booking needs the lastminute.com connector. Add it in claude.ai Settings → Connectors, then try again.";
+  if(c==="needs_reauth") return "Reconnect lastminute.com in claude.ai Settings → Connectors, then try again.";
+  if(c==="not_in_manifest"||c==="approval_required"||c==="consent_required") return "This page needs your permission to use lastminute.com. Tap Book again and choose Allow.";
+  if(c==="blocked_by_policy") return "Your organisation blocks this connector.";
+  if(c==="tool_error") return "lastminute.com answered with an error: "+(e.message||"").slice(0,160);
+  if(c==="server_unavailable") return "lastminute.com is not responding right now. Try again in a minute.";
+  return "Live prices are not available right now. Try again in a minute.";
+}
+async function startBooking(d,h){
+  const area=$("bookArea"), btn=$("sheetBook"); const run=++bookCtl.n;
+  if(!mcp){area.innerHTML=`<div class="errbox">${mcpMsg({code:"no_mcp"})}</div><a class="checkout" href="https://www.lastminute.com" target="_blank" rel="noopener">Open lastminute.com ↗</a>`;return}
+  btn.hidden=true;
+  const step=t=>{if(run===bookCtl.n) area.innerHTML=`<div class="step"><span class="spin"></span>${t}</div>`};
+  try{
+    step("Checking today's price for this weekend…");
+    const r1=await mcp.callTool(LM,"search_flight_and_hotel_package",{origin:ORI(),destination:d.code,...DATES_(),adults:String(S.trip.adults),max_results:20,lang:"it",sort:"recommended"});
+    if(run!==bookCtl.n) return;
+    const p1=r1.payload||{}; const list=p1.products_summary||[];
+    let hit=list.find(x=>x.internal_id_hotel===h.hid);
+    if(!hit){
+      const alt=list.filter(x=>x.stars>=Math.max(3,h.stars-1)).slice(0,3);
+      area.innerHTML=`<div class="errbox">${h.name} is no longer available for these dates.</div>`+(alt.length?`<span class="eyebrow">Similar hotels available now</span>`+alt.map(x=>`<div class="hrow" role="button" tabindex="0" data-alt="${x.internal_id_hotel}"><div><div class="n">${x.name}</div><div class="d">${starStr(x.stars)} · ${x.rating?(x.rating/10).toFixed(1):"New"} · ${x.distance_km} km</div></div><div class="pr">${eur(x.price_total)}</div></div>`).join(""):"");
+      area.querySelectorAll("[data-alt]").forEach(el=>el.onclick=()=>pickRooms(d,{name:el.querySelector(".n").textContent,hid:+el.dataset.alt},p1.search_id,run));
+      btn.hidden=false;return;
+    }
+    await pickRooms(d,h,p1.search_id,run);
+  }catch(e){if(run===bookCtl.n){area.innerHTML=`<div class="errbox">${mcpMsg(e)}</div>`;btn.hidden=false}}
+}
+async function pickRooms(d,h,searchId,run){
+  const area=$("bookArea");
+  area.innerHTML=`<div class="step"><span class="spin"></span>Getting the exact flights and rooms…</div>`;
+  try{
+    const r=await mcp.callTool(LM,"select_hotel_options",{search_id:searchId,hotel_internal_id:h.hid,...DATES_()});
+    if(run!==bookCtl.n) return;
+    const p=r.payload||{};
+    if(!p.success){area.innerHTML=`<div class="errbox">${(p.message||"This hotel is no longer available.")}</div>`;$("sheetBook").hidden=false;return}
+    const fo=p.flight_details&&p.flight_details.outbound, fi=p.flight_details&&p.flight_details.inbound;
+    const fl=x=>x?`<div class="leg"><span>${x.direction==="outbound"?dayFrom():dayTo()}</span><b>${x.from} ${iso2(x.departure_time)} → ${x.to} ${iso2(x.arrival_time)}</b><span class="fn">${x.carrier_code} ${x.flight_number}${x.direct?"":" · 1 stop"}</span></div>`:"";
+    let rooms=(p.room_options||[]).slice(0,8);
+    let pre=0; if(S.flex){const k=rooms.findIndex(x=>/Free/i.test(x.cancellation)); if(k>=0) pre=k;}
+    const pkgFits=timeOK(iso2(fo&&fo.departure_time),S.trip.tOut)&&timeOK(iso2(fi&&fi.departure_time),S.trip.tIn);
+    area.innerHTML=(pkgFits?`<span class="eyebrow">Your exact flights · live</span><div class="legs">${fl(fo)}${fl(fi)}</div>`:`<div class="leg" style="grid-template-columns:1fr"><span>Choose a room, then pick flights that ${timeTxt()}</span></div>`)+`
+      <span class="eyebrow">${p.hotel?p.hotel.name:h.name} · choose a room · prices are flight + hotel total</span>
+      ${rooms.map((x,i)=>`<label class="room"><input type="radio" name="rm" value="${x.rate_id}" ${i===pre?"checked":""}><span><span class="rn">${x.room_name.trim()}</span><br><span class="rd">${MEAL[x.meal_plan]||x.meal_plan} · ${x.cancellation}</span></span><span class="rp">${eur(x.price,true)}</span></label>`).join("")}
+      <button class="btn" id="goCheckout">Continue</button>
+      <p class="note">Total for ${S.trip.adults} adult${S.trip.adults>1?"s":""}, flights and hotel. Final price is confirmed by lastminute.com at checkout.</p>`;
+    $("goCheckout").onclick=async()=>{
+      const rate=(area.querySelector('input[name="rm"]:checked')||{}).value; if(!rate) return;
+      const b=$("goCheckout"); b.disabled=true; b.textContent="Preparing…";
+      try{
+        const r3=await mcp.callTool(LM,"generate_booking_link",{pricing_id:p.pricing_id,rate_id:rate});
+        const q=r3.payload||{};
+        if(!q.booking_url) throw {code:"tool_error",message:q.message||"No booking link returned"};
+        b.remove();
+        const okOut=timeOK(iso2(fo&&fo.departure_time),S.trip.tOut), okIn=timeOK(iso2(fi&&fi.departure_time),S.trip.tIn);
+        const box=document.createElement("div"); box.style.cssText="display:flex;flex-direction:column;gap:10px"; area.appendChild(box);
+        const showLink=(url,sum)=>{const pr=sum&&sum.price?eur(parseFloat(String(sum.price).replace(/[^0-9.]/g,"")),true):"";box.insertAdjacentHTML("beforeend",`${pr?`<div class="totalbox"><span>Total price · all included</span><b>${pr}</b><small>Return flights + hotel for ${nightsOf()} night${nightsOf()>1?"s":""} · ${S.trip.adults} adult${S.trip.adults>1?"s":""}${sum.cancellation_policy?` · ${sum.cancellation_policy}`:""}</small></div>`:""}<a class="checkout" href="${url}" target="_blank" rel="noopener">Open checkout on lastminute.com ↗</a><p class="note">Opens this exact flight + hotel + room. lastminute.com confirms the final price before you pay.</p>`)};
+        if(okOut&&okIn&&!(S.trip.tOut||S.trip.tIn)){showLink(q.booking_url,q.booking_summary);box.insertAdjacentHTML("beforeend",`<button class="btn ghost" id="moreFl">See other flight times</button>`);$("moreFl").onclick=()=>{$("moreFl").remove();altFlights(p,box,showLink,true)};return}
+        if(okOut&&okIn){box.insertAdjacentHTML("beforeend",`<div class="leg" style="grid-template-columns:1fr"><span>These flights match your times.</span></div>`);showLink(q.booking_url,q.booking_summary);return}
+        area.querySelector(".legs")&&(area.querySelector(".legs").style.display="none");
+        const ey=area.querySelector(".eyebrow"); if(ey&&/exact flights/i.test(ey.textContent)) ey.style.display="none";
+        box.insertAdjacentHTML("beforeend",`<div class="step"><span class="spin"></span>Finding flights that ${timeTxt()}…</div>`);
+        box.lastElementChild.id="altFind";
+        altFlights(p,box,showLink,false,q);
+      }catch(e){b.disabled=false;b.textContent="Continue";area.insertAdjacentHTML("beforeend",`<div class="errbox">${mcpMsg(e)}</div>`)}
+    };
+  }catch(e){if(run===bookCtl.n){area.innerHTML=`<div class="errbox">${mcpMsg(e)}</div>`;$("sheetBook").hidden=false}}
+}
+
+async function altFlights(p,box,showLink,all,firstLink){
+  box.insertAdjacentHTML("beforeend",`<div class="step" id="altStep"><span class="spin"></span>Loading flight options…</div>`);
+  try{
+    const r=await mcp.callTool(LM,"get_alternative_flights",{pricing_id:p.pricing_id});
+    const q=r.payload||{}; $("altStep")&&$("altStep").remove(); $("altFind")&&$("altFind").remove();
+    let fl=(q.flights||[]);
+    const fits=x=>timeOK(x.outbound.departure.time,S.trip.tOut)&&timeOK(x.inbound.departure.time,S.trip.tIn);
+    if(!all) fl=fl.filter(fits);
+    fl=fl.slice().sort((a,b)=>a.price.total-b.price.total).slice(0,8);
+    if(!fl.length){box.insertAdjacentHTML("beforeend",`<div class="errbox">No flight for this hotel matches your times (${timeTxt()}). Try another city or change the times.</div>`);return}
+    box.insertAdjacentHTML("beforeend",`<span class="eyebrow">${all?"Other flight times":"Flights that match your times"} · total with hotel</span>`+fl.map((x,i)=>`<label class="alt"><input type="radio" name="fl" value="${x.transport_id}" ${i===0?"checked":""}><span><b>${dayFrom()}</b> ${x.outbound.departure.airport} ${x.outbound.departure.time} → ${x.outbound.arrival.airport} ${x.outbound.arrival.time} · ${x.outbound.carrier.code}<br><b>${dayTo()}</b> ${x.inbound.departure.airport} ${x.inbound.departure.time} → ${x.inbound.arrival.airport} ${x.inbound.arrival.time} · ${x.inbound.carrier.code}</span><span class="ap">${eur(x.price.total,true)}</span></label>`).join("")+`<button class="btn" id="useFl">Use this flight</button>`);
+    $("useFl").onclick=async()=>{
+      const t=(box.querySelector('input[name="fl"]:checked')||{}).value; if(!t) return;
+      const bt=$("useFl"); bt.disabled=true; bt.textContent="Updating your package…";
+      try{
+        const c=await mcp.callTool(LM,"change_flight",{pricing_id:p.pricing_id,new_transport_id:t});
+        const cp=c.payload||{}; const nr=cp.details&&cp.details.new_rate_id;
+        if(!cp.success||!nr) throw {code:"tool_error",message:cp.message||"Flight change failed"};
+        const g=await mcp.callTool(LM,"generate_booking_link",{pricing_id:p.pricing_id,rate_id:nr});
+        const gq=g.payload||{}; if(!gq.booking_url) throw {code:"tool_error",message:gq.message||"No booking link"};
+        box.querySelectorAll(".alt").forEach(el=>{el.style.opacity=el.querySelector("input").checked?"1":".45"});
+        bt.remove(); showLink(gq.booking_url,gq.booking_summary);
+      }catch(e){bt.disabled=false;bt.textContent="Use this flight";box.insertAdjacentHTML("beforeend",`<div class="errbox">${mcpMsg(e)}</div>`)}
+    };
+  }catch(e){$("altStep")&&$("altStep").remove();$("altFind")&&$("altFind").remove();box.insertAdjacentHTML("beforeend",`<div class="errbox">${mcpMsg(e)}</div>`)}
+}
+
+/* ===== saved ===== */
+function updateCount(){const c=$("savedCount");c.hidden=!S.saved.length;c.textContent=S.saved.length}
+function renderSaved(){
+  const L=$("savedList");
+  if(!S.saved.length){L.innerHTML=`<div class="box"><p>Nothing saved yet. Swipe right on a weekend you like.</p></div>`;$("cmpWrap").hidden=true;return}
+  const items=S.saved.map(s=>{const d=DATA.find(x=>x.code===s.code);const h=d.hotels[s.j];return {d,h}});
+  L.innerHTML=items.map(({d,h})=>`<div class="item open" role="button" tabindex="0" data-open="${d.code}" aria-label="Open ${d.city}"><div class="thumb">${art(d,true)}</div><div><h3>${d.city}</h3><div class="sub">${starStr(h.stars)} ${h.name}</div><div class="vlink">View & book ›</div></div><div><div class="p">${S.split?eur(h.price/2)+" pp":eur(h.price)}</div><button class="rm" data-rm="${d.code}">Remove</button></div></div>`).join("");
+  L.querySelectorAll("[data-rm]").forEach(b=>b.onclick=e=>{e.stopPropagation();S.saved=S.saved.filter(s=>s.code!==b.dataset.rm);updateCount();renderSaved()});
+  L.querySelectorAll("[data-open]").forEach(el=>{const go=()=>{const c=el.dataset.open,s=S.saved.find(x=>x.code===c);if(s)S.choice[c]=s.j;openSheet(c)};el.onclick=go;el.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}}});
+  if(items.length>=2){
+    const minP=Math.min(...items.map(i=>i.h.price)),maxR=Math.max(...items.map(i=>i.h.rating)),minKm=Math.min(...items.map(i=>i.h.km)),maxT=Math.max(...items.map(i=>i.d.temp));
+    $("cmp").innerHTML=`<thead><tr><th></th>${items.map(i=>`<th>${i.d.city}</th>`).join("")}</tr></thead><tbody>
+      <tr><td>Total for 2</td>${items.map(i=>`<td class="${i.h.price===minP?"best":""}">${eur(i.h.price)}</td>`).join("")}</tr>
+      <tr><td>Guest rating</td>${items.map(i=>`<td class="${i.h.rating===maxR?"best":""}">${i.h.rating?(i.h.rating/10).toFixed(1):"New"}</td>`).join("")}</tr>
+      <tr><td>To centre</td>${items.map(i=>`<td class="${i.h.km===minKm?"best":""}">${i.h.km} km</td>`).join("")}</tr>
+      <tr><td>Typical high</td>${items.map(i=>`<td class="${i.d.temp===maxT?"best":""}">${i.d.temp}°C</td>`).join("")}</tr>
+      <tr><td>Flight</td>${items.map(i=>`<td>${i.d.direct?"Direct":"1 stop"}${i.d.fly&&i.d.fly!=="Direct"&&i.d.fly!=="1 stop"?" · "+i.d.fly:""}</td>`).join("")}</tr>
+      <tr><td>Cancellation</td>${items.map(i=>`<td class="${i.h.flex?"best":""}">${i.h.flex?"Free":"No"}</td>`).join("")}</tr></tbody>`;
+    $("cmpWrap").hidden=false;
+  } else $("cmpWrap").hidden=true;
+}
+$("split").onchange=e=>{S.split=e.target.checked;renderSaved();renderDeck()};
+
+/* ===== together ===== */
+function renderTogether(){
+  const T=S.together;
+  $("tgMode").textContent=T.on?`On · ${T.names[T.who]} is swiping`:"Off";
+  $("tgStart").textContent=T.on?"Back to normal mode":"Start: Player 1 swipes first";
+  $("whoBar").hidden=!T.on; $("whoTxt").textContent=T.on?`${T.names[T.who]} is swiping`:"";
+  const m=[...T.likes[0]].filter(c=>T.likes[1].has(c));
+  $("matchList").innerHTML=m.length?m.map(c=>{const d=DATA.find(x=>x.code===c),h=hotelFor(d);return `<div class="item"><div class="thumb">${art(d,true)}</div><div><h3>${d.city}</h3><div class="sub">${starStr(h.stars)} ${h.name}</div></div><div class="p">${eur(h.price)}</div></div>`}).join(""):`<div class="box"><p class="muted">No matches yet. When you both swipe right on the same weekend it shows up here.</p></div>`;
+}
+$("tgStart").onclick=()=>{const T=S.together;T.on=!T.on;T.who=0;S.seen.clear();renderTogether();if(T.on){showTab("discover");toast("Player 1 swipes first. Then pass the phone.")}renderDeck()};
+$("tgReset").onclick=()=>{S.together.likes=[new Set(),new Set()];S.seen.clear();renderTogether();renderDeck();toast("Swipes cleared.")};
+$("whoSwitch").onclick=()=>{const T=S.together;T.who=1-T.who;S.seen.clear();renderTogether();renderDeck();toast(`${T.names[T.who]}: your turn. Same deck, fresh start.`)};
+function showMatch(o){
+  $("layer").innerHTML=`<div class="matchPop" role="dialog" aria-label="It's a match"><div class="in"><div style="height:130px;flex:none;border-radius:14px;overflow:hidden;position:relative">${art(o.d)}</div><h2>It's a match!</h2><p>You both want <b>${o.d.city}</b>. ${o.h.name}, ${eur(o.h.price)} for two.</p><button class="btn" id="mOk">See matches</button><button class="btn ghost" id="mGo">Keep swiping</button></div></div>`;
+  $("mOk").onclick=()=>{$("layer").innerHTML="";showTab("together")};$("mGo").onclick=()=>$("layer").innerHTML="";
+  renderTogether();
+}
+
+/* ===== drop ===== */
+function renderDrop(){
+  const top=(S.filterOn?pool():DATA.filter(fits)).map(scoreDest).sort(byBudget).filter(o=>!S.budgetOn||o.h.price<=S.budget).slice(0,3);
+  $("bestSub").textContent=`From ${oriName()} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)}${S.budgetOn?` · max ${eur(S.budget)}`:""}`;
+  $("mail").innerHTML=top.length?top.map((o,i)=>`<div class="bitem" role="button" tabindex="0" data-code="${o.d.code}"><span class="rk">${i+1}</span><div class="thumb">${art(o.d,true)}</div><div><h3>${o.d.city}</h3><div class="sub muted" style="font-size:12.5px">${starStr(o.h.stars)} ${o.h.name}</div></div><div><div class="p">${eur(o.h.price)}</div>${S.budgetOn?`<div class="lf">${eur(S.budget-o.h.price)} left</div>`:""}</div></div>`).join("")
+    :`<div class="box"><p class="muted">Nothing fits. Raise the budget.</p></div>`;
+  $("mail").querySelectorAll(".bitem").forEach(el=>el.onclick=()=>openSheet(el.dataset.code));
+}
+$("dropSave").onclick=()=>toast("Saved. Top 3 every Tuesday.");
+
+/* ===== ask / filters ===== */
+function syncChips(){document.querySelectorAll(".chip").forEach(c=>{const on=c.dataset.v?S.vibes.has(c.dataset.v):c.dataset.f==="flex"?S.flex:S.direct;c.setAttribute("aria-pressed",String(on))});$("b").value=S.budget;$("bv").textContent=S.budgetOn?eur(S.budget):"No limit";$("b").style.opacity=S.budgetOn?1:.4;$("bClear").textContent=S.budgetOn?"✕":"Set";}
+document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{if(c.dataset.v){S.vibes.has(c.dataset.v)?S.vibes.delete(c.dataset.v):S.vibes.add(c.dataset.v)}else if(c.dataset.f==="flex")S.flex=!S.flex;else S.direct=!S.direct;S.seen.clear();syncChips();renderDeck()});
+$("b").oninput=e=>{S.budget=+e.target.value;S.budgetOn=true;syncChips();renderDeck()};
+$("bClear").onclick=()=>{S.budgetOn=!S.budgetOn;syncChips();S.seen.clear();renderDeck()};
+function applyIntent(o,src){
+  if(o.budget){S.budget=Math.max(300,Math.min(3000,Math.round(o.budget/10)*10));S.budgetOn=true}else S.budgetOn=false;
+  if(Array.isArray(o.vibes)) S.vibes=new Set(o.vibes.filter(v=>VLABEL[v]));
+  S.flex=!!o.flexible; S.direct=!!o.direct;
+  S.hotelPref={stars4:!!o.nice_hotel,central:!!o.central};
+  S.filterOn=src!=="boot"; S.choice={}; S.seen.clear(); syncChips(); renderDeck();
+  $("read").textContent=src==="boot"?"":src==="claude"?"Read by Claude":"";
+}
+function parseRules(t){
+  const s=t.toLowerCase(),o={vibes:[]};
+  const m=s.match(/(?:€|eur\s*)\s*(\d{3,4})/)||s.match(/(\d{3,4})\s*(?:€|eur|euro)/)||s.match(/(?:budget|max|under|sotto|massimo)\s*(\d{3,4})/);
+  if(m) o.budget=+m[1];
+  for(const [k,w] of Object.entries(VIBE_WORDS)) if(w.some(x=>s.includes(x))) o.vibes.push(k);
+  o.flexible=/(flexib|flessib|cancel)/.test(s); o.direct=/(direct|diretto)/.test(s);
+  o.nice_hotel=/(nice hotel|4 ?star|4★|bel hotel|4 stelle|luxury|lusso|good hotel)/.test(s);
+  o.central=/(central|centre|center|centro)/.test(s);
+  return o;
+}
+async function run(){
+  const t=$("q").value.trim(); if(!t) return;
+  $("go").disabled=true;
+  if(sample){$("read").textContent="Reading…";
+    try{const o=await sample.json(`Read this weekend-trip request and reply with ONLY a JSON object:
+{"budget": total EUR for everyone or null, "vibes": array from ["sea","city","food","culture","nightlife","relax"], "flexible": bool (wants free cancellation), "direct": bool (wants direct flights), "nice_hotel": bool (wants 4 stars or a nice hotel), "central": bool (wants to be central)}
+Example: {"budget":750,"vibes":["sea","food"],"flexible":false,"direct":false,"nice_hotel":true,"central":true}
+Request: """${t.slice(0,1000)}"""`,{modelTier:"quick"});
+      if(!o||typeof o!=="object") throw {}; applyIntent(o,"claude");}
+    catch(e){if(e&&["not_granted","sampling_disabled","capability_disabled","not_declared"].includes(e.code)) sample=null; applyIntent(parseRules(t),"rules");}
+  } else applyIntent(parseRules(t),"rules");
+  $("go").disabled=false;
+}
+$("go").onclick=run;
+$("q").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();run()}});
+
+/* ===== tabs ===== */
+function showTab(t){
+  document.querySelectorAll(".screen").forEach(s=>s.hidden=s.dataset.s!==t);
+  document.querySelectorAll(".tabbar button").forEach(b=>b.setAttribute("aria-current",b.dataset.tab===t||(t==="case"&&b.dataset.tab==="drop")?"page":"false"));
+  if(t==="saved") renderSaved(); if(t==="together") renderTogether(); if(t==="drop") renderDrop();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll(".tabbar button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+$("openCase").onclick=()=>showTab("case"); $("backDrop").onclick=()=>showTab("drop");
+
+/* ===== calculator ===== */
+function calc(){const v=i=>Math.max(0,parseFloat($("c"+i).value)||0);
+  const extra=v(1)*v(2)/100*v(3)/100, drop=v(1)*v(5)/100*v(6)/100, g=(extra+drop)*v(4);
+  $("o5").textContent=eur(g); $("o6").textContent=`${Math.round(extra).toLocaleString("en-GB")} extra bookings from conversion + ${Math.round(drop).toLocaleString("en-GB")} from Top 3. About ${eur(g*12)} a year. Placeholder inputs, not company data.`;}
+for(let i=1;i<=6;i++) $("c"+i).addEventListener("input",calc); calc();
+
+/* ===== toast + boot ===== */
+function toast(m){const t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2400)}
+$("dFrom").value=S.trip.from;$("dTo").value=S.trip.to;$("dFrom").min=new Date().toISOString().slice(0,10);$("applyTrip").onclick=applyTrip;["tOut","tIn"].forEach(id=>$(id).onchange=()=>{S.trip.tOut=$("tOut").value;S.trip.tIn=$("tIn").value;S.seen.clear();fcSoon()});renderTrip();
+applyIntent(parseRules($("q").value),"boot");
+(async()=>{try{sample=window.claude?await window.claude.use("sample"):null}catch(e){sample=null}})();
+
+/* ===== Standalone mode (outside Claude): lastminute.com through this site's own /api/lm proxy ===== */
+function restMcp(){
+  let sid=null, init=null;
+  const call=async(tool,args)=>{
+    const r=await fetch("/api/lm",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({tool,args,sid})});
+    let j={}; try{j=await r.json()}catch(e){}
+    if(j.sid) sid=j.sid;
+    if(!r.ok||j.error) throw {code:(j.error&&j.error.code)||"server_unavailable",message:(j.error&&j.error.message)||("HTTP "+r.status)};
+    return {payload:j.payload};
+  };
+  return {callTool:async(server,tool,args)=>{
+    if(!sid){ if(!init) init=fetch("/api/lm",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({init:true})}).then(r=>r.json()).then(j=>{if(j.sid)sid=j.sid}).catch(()=>{}).finally(()=>{init=null}); await init; }
+    return call(tool,args);
+  }};
+}
+const STANDALONE=!window.claude&&/^https?:$/.test(location.protocol);
+(async()=>{try{mcp=window.claude?await window.claude.use("mcp"):(STANDALONE?restMcp():null)}catch(e){mcp=null} if(!mcp) return;
+  const today=new Date().toISOString().slice(0,10);
+  if(STANDALONE&&BASE.from<=today){ // saved prices are for a past weekend: search the next one live
+    const d=new Date(); d.setDate(d.getDate()+((5-d.getDay()+7)%7||7)); const f=d.toISOString().slice(0,10); d.setDate(d.getDate()+2);
+    $("dFrom").value=f; $("dTo").value=d.toISOString().slice(0,10); applyTrip();
+  } else discoverMore();})();
+</script>
+
+</body>
+</html>

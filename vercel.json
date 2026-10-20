@@ -1,0 +1,1 @@
+{ "functions": { "api/lm.js": { "maxDuration": 30 } } }

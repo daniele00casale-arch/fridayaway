@@ -1301,7 +1301,6 @@ function restMcp(){
     return {payload:j.payload};
   };
   return {callTool:async(server,tool,args)=>{
-    if(!sid){ if(!init) init=fetch("/api/lm",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({init:true})}).then(r=>r.json()).then(j=>{if(j.sid)sid=j.sid}).catch(()=>{}).finally(()=>{init=null}); await init; }
     return call(tool,args);
   }};
 }

@@ -422,6 +422,88 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
 #setupGo{position:relative;overflow:visible;font-size:18px;background:linear-gradient(135deg,#7B5CF0,#5B3FD9);margin-top:6px}
 #setupGo:before{content:"✦ ✧";position:absolute;left:22%;top:-16px;font-size:16px;color:#F5C443;letter-spacing:6px}
 #setupGo:after{content:"✦ 🎉";position:absolute;right:16%;top:-18px;font-size:16px;color:#F36BA6;letter-spacing:4px}
+
+/* ===== fix4: budget mood, vault hand-off, scratch reveal ===== */
+.budget{position:relative}
+.budget #b{-webkit-appearance:none;appearance:none;height:8px;border-radius:99px;outline:none;cursor:pointer;
+  background:linear-gradient(90deg,#8B7CF6,var(--bw,#8B7CF6)) 0/var(--bp,17%) 100% no-repeat,#E4E1F2}
+.budget #b::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:5px solid var(--bw,#6D5DE6);box-shadow:0 3px 10px rgba(60,30,120,.3);transition:transform .2s cubic-bezier(.34,1.8,.5,1)}
+.budget #b::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff;border:5px solid var(--bw,#6D5DE6);box-shadow:0 3px 10px rgba(60,30,120,.3)}
+.budget #b:active::-webkit-slider-thumb{transform:scale(1.25)}
+.bTip{--ax:50%;position:absolute;bottom:calc(100% + 4px);left:0;transform:translateX(-50%) translateY(6px) scale(.5);transform-origin:var(--ax) 100%;opacity:0;pointer-events:none;
+  background:#241A3D;color:#fff;border-radius:14px;padding:7px 12px 6px;font-size:13px;font-weight:700;white-space:nowrap;line-height:1.25;text-align:center;
+  transition:opacity .15s,transform .35s cubic-bezier(.34,1.9,.5,1);z-index:6;box-shadow:0 8px 22px rgba(40,20,90,.28);border-bottom:3px solid var(--bw,#6D5DE6)}
+.bTip.on{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
+.bTip:after{content:"";position:absolute;left:var(--ax);top:100%;margin:3px 0 0 -6px;border:6px solid transparent;border-top-color:var(--bw,#6D5DE6)}
+.bTip small{display:block;font-weight:500;opacity:.75;font-size:11px}
+.bTip .em{display:inline-block;animation:bWig .4s cubic-bezier(.34,1.9,.5,1)}
+@keyframes bWig{from{transform:scale(.4) rotate(-20deg)}}
+
+#vault{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;color:#fff;
+  background:rgba(22,14,44,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);animation:vIn .3s ease}
+#vault.dark{background:radial-gradient(circle at 50% 22%,#2E1360 0%,#0A0614 66%)}
+#vault.open{animation:vOut .45s ease forwards}
+@keyframes vIn{from{opacity:0}}
+@keyframes vOut{to{opacity:0;transform:scale(1.08)}}
+.vStage{position:relative;width:280px;height:300px;display:grid;place-items:center}
+.vPass{width:150px;height:200px;border-radius:16px;background:linear-gradient(160deg,#7A5CF5,#2A1A6E);box-shadow:inset 0 0 0 2px rgba(246,211,101,.35),0 20px 50px rgba(0,0,0,.5);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#F6D365;position:relative;animation:vPop .5s cubic-bezier(.34,1.6,.5,1)}
+.vPass small{letter-spacing:.22em;font-size:10px;font-weight:800}
+.vPass b{font-size:46px;color:#fff;line-height:1}
+.vPass span{font-size:12px;color:#fff;opacity:.85;font-weight:600;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vLock{position:absolute;bottom:-22px;font-style:normal;font-size:28px;background:#0B0716;border-radius:50%;width:54px;height:54px;display:grid;place-items:center;box-shadow:0 0 0 3px #F6D365,0 0 20px rgba(246,211,101,.5)}
+.vLock.shut{animation:vShut .5s cubic-bezier(.34,1.9,.5,1)}
+.vChip{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) translate(var(--x),var(--y));background:#fff;color:#26233A;font-weight:700;font-size:12.5px;padding:6px 11px;border-radius:99px;white-space:nowrap;
+  box-shadow:0 6px 16px rgba(0,0,0,.3);animation:vSuck .75s cubic-bezier(.55,0,.8,.4) forwards;animation-delay:calc(.3s + var(--d))}
+@keyframes vSuck{to{transform:translate(-50%,-50%) scale(.15);opacity:0}}
+@keyframes vShut{0%{transform:scale(1.5) rotate(-18deg)}100%{transform:scale(1)}}
+@keyframes vPop{from{transform:scale(.6);opacity:0}}
+.vTxt{font-weight:800;font-size:17px;margin-top:22px}
+.neonT{font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:#4FE3FF;text-shadow:0 0 6px #4FE3FF,0 0 18px #1AA8FF;font-weight:800}
+.neonAv{font-size:66px;line-height:1.1;filter:drop-shadow(0 0 18px rgba(255,79,216,.6));animation:vPop .5s cubic-bezier(.34,1.6,.5,1)}
+.neonN{font-size:34px;font-weight:900;color:#fff;letter-spacing:-.01em;text-shadow:0 0 6px #FF4FD8,0 0 18px #FF4FD8,0 0 40px #C13CFF;max-width:92vw;overflow-wrap:anywhere}
+.fp{--h:0;position:relative;width:120px;height:120px;border-radius:50%;border:0;margin-top:16px;cursor:pointer;color:#4FE3FF;padding:0;display:grid;place-items:center;
+  background:radial-gradient(circle,#150C2C 60%,transparent 61%),conic-gradient(#FF4FD8 calc(var(--h)*360deg),rgba(79,227,255,.2) 0);
+  box-shadow:0 0 26px rgba(79,227,255,.35);touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;transition:transform .15s,box-shadow .2s;overflow:hidden}
+.fp svg{width:60px;height:60px}
+.fp.on{transform:scale(.94);color:#FF4FD8;box-shadow:0 0 38px rgba(255,79,216,.65)}
+.fp.ok{color:#7DFFB2;box-shadow:0 0 44px rgba(125,255,178,.7)}
+.fp:after{content:"";position:absolute;left:24%;right:24%;height:2px;top:calc(24% + var(--h)*52%);background:#FF4FD8;box-shadow:0 0 10px #FF4FD8;opacity:0}
+.fp.on:after{opacity:1}
+.fpTxt{font-size:14px;color:rgba(255,255,255,.75);max-width:270px}
+.fpRing{animation:fpPulse 1.8s ease-in-out infinite}
+@keyframes fpPulse{50%{box-shadow:0 0 0 10px rgba(79,227,255,.08),0 0 30px rgba(79,227,255,.45)}}
+
+#matchList{position:relative}
+[data-s="together"] h3{scroll-margin-top:96px}
+.scrHead{font-weight:800;font-size:15.5px;margin:2px 0 10px}
+.scr{position:relative;border-radius:18px;overflow:hidden;box-shadow:0 12px 30px rgba(109,93,230,.28);background:var(--surface)}
+.scr canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;transition:opacity .5s}
+.scr canvas.gone{opacity:0;pointer-events:none}
+.bigM{cursor:pointer;display:block}
+.bmImg{height:150px;position:relative;overflow:hidden}
+.bmTx{padding:12px 14px 14px}
+.bmTx small{color:var(--like);font-weight:800;font-size:12px}
+.bmTx h3{margin:2px 0;font-size:22px}
+.bmTx .sub{color:var(--muted);font-size:13px}
+.bmTx b{color:var(--primary);display:block;margin-top:6px;font-size:16px}
+.scrAll{display:block;margin:10px auto 2px}
+.flip{perspective:900px;margin-top:10px}
+.fIn{position:relative;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.3,1.35,.5,1);transform:rotateY(180deg)}
+.flip.on .fIn{transform:rotateY(0deg);transition-delay:var(--d)}
+.fFront,.fBack{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.fFront .item{margin:0}
+.fBack{position:absolute;inset:0;transform:rotateY(180deg);border-radius:14px;background:linear-gradient(135deg,#F6D365,#B07CFF 50%,#6D5DE6);display:flex;align-items:center;justify-content:center;gap:8px;color:#fff;font-weight:900;font-size:26px;overflow:hidden}
+.fBack i{font-style:normal;font-size:16px;opacity:.85}
+.fBack:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);animation:shine 2.4s infinite}
+@keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.flip:not(.on) .fFront{pointer-events:none}
+.noMatch{text-align:center;padding:6px 0 4px;display:flex;flex-direction:column;gap:8px;align-items:center}
+.noMatch .item{width:100%;text-align:left}
+.nmE{font-size:46px;line-height:1}
+.cf{position:absolute;left:50%;top:120px;pointer-events:none;font-size:18px;z-index:5;animation:cf 1.2s cubic-bezier(.2,.7,.4,1) forwards}
+@keyframes cf{to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
+@media (prefers-reduced-motion:reduce){.vChip,.vPass,.neonAv,.fpRing,.fBack:after,.bTip .em{animation:none!important}.fIn{transition:none!important}}
 </style>
 
 <div class="app">
@@ -1181,7 +1263,7 @@ function decide(code,liked){
   else { if(o.h.price>S.budget) S.taste.price+=0.3; }
   if(S.together.on){
     const me=S.together.who; if(liked&&!S.together.likes[me].has(code)){S.together.likes[me].add(code);hist.tg=me}
-    if(liked&&S.together.likes.every(s=>s.has(code))){showMatch(o)}
+    /* match revealed at the end via scratch card */
   } else if(liked&&!S.saved.find(s=>s.code===code)){S.saved.push({code,j:o.h.j});hist.saved=true;updateCount();toast(`Saved ${o.d.city}`)}
   HIST.push(hist); if(HIST.length>30) HIST.shift();
   renderDeck();
@@ -1458,16 +1540,112 @@ function renderTogether(){
   const all=[...(T.likes[0]||[])].filter(c=>T.likes.every(s=>s.has(c)));
   const almost=N>2?[...new Set(T.likes.flatMap(s=>[...s]))].filter(c=>!all.includes(c)&&T.likes.filter(s=>s.has(c)).length===N-1):[];
   const item=(c,tag)=>{const d=DATA.find(x=>x.code===c),h=hotelFor(d);return `<div class="item open" role="button" tabindex="0" data-open="${c}"><div class="thumb">${art(d,true)}</div><div><h3>${d.city}</h3><div class="sub">${starStr(h.stars)} ${h.name}</div>${tag?`<div class="almost">${tag}</div>`:""}</div><div class="p">${eur(h.price)}</div></div>`};
-  $("matchList").innerHTML=all.length||almost.length
+  renderMatchList(all,almost,N,item);
+}
+$("tgStart").onclick=()=>{const T=S.together;T.fresh=false;T.on=!T.on;T.who=0;S.seen.clear();renderTogether();if(T.on){showTab("discover");toast(`${T.names[0]} swipes first. Then pass the phone.`)}renderDeck()};
+$("tgReset").onclick=()=>{S.together.fresh=false;S.together.likes=S.together.names.map(()=>new Set());S.together.on=false;S.together.who=0;S.seen.clear();renderTogether();renderDeck();toast("New game: swipes cleared.")};
+$("whoSwitch").onclick=()=>{const T=S.together, last=T.who>=T.names.length-1, me=T.who;
+  handoff(me,last,()=>{
+    if(last){T.on=false;T.who=0;T.fresh=true;S.seen.clear();showTab("together");renderTogether();renderDeck();window.scrollTo(0,0);setTimeout(()=>{const h=$("matchList").previousElementSibling;h&&h.scrollIntoView({behavior:"smooth",block:"start"})},400);return}
+    T.who++;S.seen.clear();renderTogether();renderDeck();toast(`${T.names[T.who]}: your turn. Same deck, fresh start.`)});};
+
+/* ===== hand-off vault + scratch reveal ===== */
+const hx=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const buzz=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
+const FPSVG=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 11v3a8 8 0 0 1-1.5 4.6"/><path d="M8.5 12a3.5 3.5 0 0 1 7 0v2a12 12 0 0 1-1 4.8"/><path d="M5.5 15.5V12a6.5 6.5 0 0 1 11.9-3.6"/><path d="M18.4 11.5c.1.5.1 1 .1 1.5v1a15 15 0 0 1-.6 4"/><path d="M3.5 9.5A9 9 0 0 1 17 4.2"/><path d="M20.3 7.5c.4.9.7 1.8.7 2.8"/><path d="M7.5 19.5A9 9 0 0 0 9 15"/></svg>`;
+function handoff(who,last,done){
+  const T=S.together, rm=RM(), likes=[...(T.likes[who]||[])].slice(0,6);
+  let v=$("vault"); if(!v){v=document.createElement("div");v.id="vault";v.setAttribute("role","dialog");v.setAttribute("aria-modal","true");document.body.appendChild(v)}
+  const list=likes.length?likes:[null];
+  const chips=list.map((c,i)=>{const d=c&&DATA.find(x=>x.code===c),a=(i/list.length)*Math.PI*2-Math.PI/2;
+    return `<span class="vChip" style="--x:${Math.round(Math.cos(a)*105)}px;--y:${Math.round(Math.sin(a)*130)}px;--d:${i*90}ms">${d?hx(d.city):"🤫 nothing saved"}</span>`}).join("");
+  v.className=""; v.hidden=false; document.body.style.overflow="hidden";
+  v.innerHTML=`<div class="vStage"><div class="vPass"><small>TOP SECRET</small><b>✈</b><span>${hx(T.names[who])}'s picks</span><i class="vLock">🔓</i></div>${chips}</div><p class="vTxt" aria-live="polite">Locking ${hx(T.names[who])}'s choices…</p>`;
+  setTimeout(()=>{const l=v.querySelector(".vLock");if(l){l.textContent="🔒";l.classList.add("shut");buzz(25)}const t=v.querySelector(".vTxt");if(t)t.textContent="Locked. Nobody can peek 🤫"},rm?80:1250);
+  setTimeout(stage2,rm?450:2300);
+  function stage2(){
+    const nx=who+1;
+    v.className="dark";
+    v.innerHTML=`<div class="neonT">${last?"Everyone's locked in":"Pass the phone to"}</div>
+      <div class="neonAv">${last?"🎰":AV[nx%AV.length]}</div><div class="neonN">${last?"Gather round 👀":hx(T.names[nx])}</div>
+      <button class="fp fpRing" id="fp" aria-label="${last?"Hold to reveal the matches":"Hold to unlock your turn"}">${FPSVG}</button>
+      <p class="fpTxt">${last?"Hold your thumb here to reveal your matches":`${hx(T.names[nx])}, hold your thumb here to unlock your turn`}</p>`;
+    holdBtn($("fp"),()=>{buzz([30,50,100]); v.classList.add("open"); setTimeout(()=>{v.hidden=true;v.innerHTML="";document.body.style.overflow="";done()},rm?40:450)});
+    setTimeout(()=>{const b=$("fp");b&&b.focus({preventScroll:true})},50);
+  }
+}
+function holdBtn(btn,ok){
+  let t0=0,raf=0,fired=false; const D=1500;
+  const tick=()=>{const p=Math.min(1,(performance.now()-t0)/D);btn.style.setProperty("--h",p);if(p>=1){fired=true;btn.classList.remove("on");btn.classList.add("ok");ok();return}raf=requestAnimationFrame(tick)};
+  const start=e=>{if(fired||btn.classList.contains("on"))return;e.preventDefault();btn.classList.remove("fpRing");btn.classList.add("on");t0=performance.now();buzz(12);raf=requestAnimationFrame(tick)};
+  const stop=()=>{if(fired)return;cancelAnimationFrame(raf);btn.classList.remove("on");btn.style.setProperty("--h",0)};
+  btn.addEventListener("pointerdown",start); ["pointerup","pointerleave","pointercancel"].forEach(ev=>btn.addEventListener(ev,stop));
+  btn.addEventListener("keydown",e=>{if((e.key===" "||e.key==="Enter")&&!e.repeat)start(e)}); btn.addEventListener("keyup",stop);
+  btn.addEventListener("contextmenu",e=>e.preventDefault());
+}
+function bigMatch(c,tag){const d=DATA.find(x=>x.code===c),h=hotelFor(d);
+  return `<div class="bigM" role="button" tabindex="0" data-open="${c}"><div class="bmImg">${art(d)}</div><div class="bmTx"><small>${tag}</small><h3>${d.city}</h3><div class="sub">${starStr(h.stars)} ${h.name}</div><b>${eur(h.price)} for ${S.trip.adults}</b></div></div>`}
+function renderMatchList(all,almost,N,item){
+  const T=S.together, ml=$("matchList");
+  const price=c=>{const d=DATA.find(x=>x.code===c);return d?hotelFor(d).price:1e9};
+  all=[...all].sort((a,b)=>price(a)-price(b));
+  const bind=()=>ml.querySelectorAll("[data-open]").forEach(el=>el.onclick=()=>openSheet(el.dataset.open));
+  if(T.fresh&&!T.on&&(all.length||almost.length)){
+    const key="scr|"+all.join()+"|"+almost.join(); if(ml.dataset.k===key) return; ml.dataset.k=key;
+    const tag=c=>all.includes(c)?`Liked by all ${N} ✓`:`Almost: ${N-1} of ${N} like it`;
+    const best=all[0]||almost[0], rest=[...all,...almost].filter(c=>c!==best);
+    ml.innerHTML=`<p class="scrHead">${all.length?`🎉 ${all.length} match${all.length>1?"es":""}! Scratch the card to find your #1`:"So close! Scratch to see your best bet"}</p>
+      <div class="scr" id="scr">${bigMatch(best,tag(best))}<canvas id="scrC" aria-label="Scratch card: rub to reveal"></canvas></div>
+      ${rest.map((c,i)=>`<div class="flip" style="--d:${i*170}ms"><div class="fIn"><div class="fBack"><span>?</span><i>✦</i></div><div class="fFront">${item(c,tag(c))}</div></div></div>`).join("")}
+      <button class="linkbtn scrAll" id="scrAll">Reveal all</button>`;
+    bind(); $("scrAll").onclick=revealAll; scratch($("scrC"),revealAll); return;
+  }
+  ml.dataset.k="";
+  if(T.fresh&&!T.on){
+    const cnt={}; T.likes.forEach(s=>s.forEach(c=>cnt[c]=(cnt[c]||0)+1));
+    const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]||price(a[0])-price(b[0]))[0], d=top&&DATA.find(x=>x.code===top[0]);
+    ml.innerHTML=`<div class="noMatch"><div class="nmE">🙈</div><h3>No match this time</h3><p class="muted">${d?`Closest to a deal: <b>${d.city}</b>, ${top[1]} of ${N} like it.`:"Nobody saved a weekend. Try a bigger budget?"}</p>${d?item(top[0],`${top[1]} of ${N} like it`):""}<button class="btn" id="tgAgain">Play again</button></div>`;
+    bind(); $("tgAgain").onclick=()=>$("tgReset").click(); return;
+  }
+  ml.innerHTML=all.length||almost.length
     ? all.map(c=>item(c,`Liked by all ${N} ✓`)).join("")+almost.map(c=>item(c,`Almost: ${N-1} of ${N} like it`)).join("")
     : `<div class="mystery"><div class="mc">?<i>🔒</i></div><div class="mc">?<i>🔒</i></div><div class="mc">?<i>🔒</i></div></div><p class="mysteryTxt">Your shared picks will appear here. Are you on the same wavelength? 👀✈️</p>`;
-  $("matchList").querySelectorAll("[data-open]").forEach(el=>el.onclick=()=>openSheet(el.dataset.open));
+  bind();
 }
-$("tgStart").onclick=()=>{const T=S.together;T.on=!T.on;T.who=0;S.seen.clear();renderTogether();if(T.on){showTab("discover");toast(`${T.names[0]} swipes first. Then pass the phone.`)}renderDeck()};
-$("tgReset").onclick=()=>{S.together.likes=S.together.names.map(()=>new Set());S.together.on=false;S.together.who=0;S.seen.clear();renderTogether();renderDeck();toast("New game: swipes cleared.")};
-$("whoSwitch").onclick=()=>{const T=S.together;
-  if(T.who>=T.names.length-1){T.on=false;T.who=0;S.seen.clear();renderTogether();renderDeck();showTab("together");toast("Everyone has swiped. Here are your matches!");return}
-  T.who++;S.seen.clear();renderTogether();renderDeck();toast(`${T.names[T.who]}: your turn. Same deck, fresh start.`)};
+function revealAll(){
+  const T=S.together; if(!T.fresh) return; T.fresh=false;
+  const cv=$("scrC"); if(cv){cv.classList.add("gone");setTimeout(()=>cv.remove(),550)}
+  document.querySelectorAll("#matchList .flip").forEach(f=>f.classList.add("on"));
+  const b=$("scrAll"); if(b) b.remove(); buzz([20,40,70]);
+  if(RM()) return; const ml=$("matchList"), em=["🎉","✨","✈️","💜","⭐","🥂"];
+  for(let i=0;i<26;i++){const s=document.createElement("span");s.className="cf";s.textContent=em[i%em.length];
+    const a=Math.random()*Math.PI*2,r=90+Math.random()*130;
+    s.style.cssText=`--x:${Math.round(Math.cos(a)*r)}px;--y:${Math.round(Math.sin(a)*r-40)}px;--r:${Math.round(Math.random()*540-270)}deg;animation-delay:${Math.random()*120}ms`;
+    ml.appendChild(s); setTimeout(()=>s.remove(),1500)}
+}
+function scratch(cv,onDone){
+  if(!cv||!document.body.contains(cv)) return;
+  const box=cv.parentElement, r=box.getBoundingClientRect();
+  if(!r.width||!r.height){setTimeout(()=>scratch(cv,onDone),250);return}
+  const dpr=Math.min(2,window.devicePixelRatio||1), W=r.width, H=r.height;
+  cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+  const x=cv.getContext("2d"); x.scale(dpr,dpr);
+  const g=x.createLinearGradient(0,0,W,H); g.addColorStop(0,"#F6D365"); g.addColorStop(.45,"#B07CFF"); g.addColorStop(1,"#6D5DE6");
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+  for(let i=0;i<70;i++){x.fillStyle=`rgba(255,255,255,${(Math.random()*.55+.15).toFixed(2)})`;x.beginPath();x.arc(Math.random()*W,Math.random()*H,Math.random()*1.8+.5,0,7);x.fill()}
+  x.fillStyle="#fff"; x.textAlign="center"; x.font="800 24px Inter, system-ui, sans-serif"; x.fillText("✨ Scratch here ✨",W/2,H/2-6);
+  x.font="600 13.5px Inter, system-ui, sans-serif"; x.globalAlpha=.9; x.fillText("Your #1 weekend is hiding underneath",W/2,H/2+20,W-28); x.globalAlpha=1;
+  x.globalCompositeOperation="destination-out"; x.lineCap="round"; x.lineJoin="round"; x.lineWidth=40; x.fillStyle="#000";
+  let down=false,last=null,moves=0,done=false;
+  const pos=e=>{const b=cv.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top]};
+  const dot=p=>{x.beginPath();x.arc(p[0],p[1],20,0,7);x.fill()};
+  const check=()=>{if(done)return;const d=x.getImageData(0,0,cv.width,cv.height).data;let c=0,t=0;for(let i=3;i<d.length;i+=160){t++;if(d[i]<40)c++}
+    if(c/t>.42){done=true;onDone()}};
+  cv.onpointerdown=e=>{down=true;last=pos(e);try{cv.setPointerCapture(e.pointerId)}catch(_){}dot(last)};
+  cv.onpointermove=e=>{if(!down||done)return;const p=pos(e);x.beginPath();x.moveTo(last[0],last[1]);x.lineTo(p[0],p[1]);x.stroke();last=p;if(++moves%8===0)check()};
+  cv.onpointerup=cv.onpointercancel=()=>{down=false;check()};
+  cv.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();done=true;onDone()}}; cv.tabIndex=0;
+}
 function showMatch(o){
   $("layer").innerHTML=`<div class="matchPop" role="dialog" aria-label="It's a match"><div class="in"><div style="height:130px;flex:none;border-radius:14px;overflow:hidden;position:relative">${art(o.d)}</div><h2>It's a match!</h2><p>${S.together.names.length>2?`All ${S.together.names.length} of you want`:"You both want"} <b>${o.d.city}</b>. ${o.h.name}, ${eur(o.h.price)} for ${S.trip.adults}.</p><button class="btn" id="mOk">See matches</button><button class="btn ghost" id="mGo">Keep swiping</button></div></div>`;
   $("mOk").onclick=()=>{$("layer").innerHTML="";showTab("together")};$("mGo").onclick=()=>$("layer").innerHTML="";
@@ -1489,6 +1667,31 @@ function syncChips(){ setTimeout(renderSum,0);document.querySelectorAll(".chip")
 document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{if(c.dataset.v){S.vibes.has(c.dataset.v)?S.vibes.delete(c.dataset.v):S.vibes.add(c.dataset.v)}else if(c.dataset.f==="flex")S.flex=!S.flex;else S.direct=!S.direct;S.seen.clear();syncChips();renderDeck()});
 $("b").oninput=e=>{S.budget=+e.target.value;S.budgetOn=true;syncChips();renderDeck()};
 $("bClear").onclick=()=>{S.budgetOn=!S.budgetOn;syncChips();S.seen.clear();renderDeck()};
+/* ===== budget mood tooltip ===== */
+const BTIERS=[[150,"🎒","Backpack mode"],[250,"🧳","Smart & cheap"],[400,"🥂","Sweet spot"],[650,"🌴","Treat yourselves"],[1e9,"👑","Imperial suite"]];
+function budgetMood(show){
+  const r=$("b"); if(!r) return; const wrap=r.closest(".budget"); if(!wrap) return;
+  let tip=$("bTip"); if(!tip){tip=document.createElement("span");tip.id="bTip";tip.className="bTip";tip.setAttribute("aria-hidden","true");wrap.appendChild(tip);}
+  const min=+r.min,max=+r.max,v=+r.value,p=Math.max(0,Math.min(1,(v-min)/(max-min)));
+  const n=Math.max(1,+(($("adults")||{}).value)||+(S.trip&&S.trip.adults)||2), pp=v/n;
+  const t=BTIERS.find(x=>pp<x[0]);
+  const col=`hsl(${Math.round(250+125*p)%360} 82% 60%)`;
+  r.style.setProperty("--bp",(p*100).toFixed(1)+"%"); r.style.setProperty("--bw",col); tip.style.setProperty("--bw",col);
+  const html=`<span class="em">${t[1]}</span> ${t[2]}<small>${n>1?`${eur(Math.round(pp))} per person`:"just you"}</small>`;
+  if(tip.dataset.t!==t[2]){tip.innerHTML=html;tip.dataset.t=t[2]} else tip.querySelector("small").innerHTML=html.split("<small>")[1].replace("</small>","");
+  if(!r.offsetWidth) return;
+  const cx=r.offsetLeft+13+p*(r.offsetWidth-26), w=tip.offsetWidth||140, W=wrap.clientWidth;
+  const x=Math.max(w/2,Math.min(W-w/2,cx));
+  tip.style.left=x+"px"; tip.style.setProperty("--ax",(50+(cx-x)/w*100).toFixed(1)+"%");
+  if(show){tip.classList.add("on");clearTimeout(tip.t)}
+}
+function budgetTipHide(){const t=$("bTip");if(t){clearTimeout(t.t);t.t=setTimeout(()=>t.classList.remove("on"),800)}}
+(()=>{const r=$("b"); if(!r) return; const oi=r.oninput; r.oninput=e=>{oi&&oi(e);budgetMood(true)};
+  ["pointerdown","focus"].forEach(ev=>r.addEventListener(ev,()=>requestAnimationFrame(()=>budgetMood(true))));
+  ["pointerup","pointercancel","blur","change"].forEach(ev=>r.addEventListener(ev,budgetTipHide));
+  const a=$("adults"); if(a) a.addEventListener("change",()=>budgetMood(false));
+  const sc=syncChips; syncChips=function(){sc.apply(this,arguments);budgetMood(false)}; budgetMood(false);})();
+
 function applyIntent(o,src){
   if(o.budget){S.budget=Math.max(300,Math.min(3000,Math.round(o.budget/10)*10));S.budgetOn=true}else S.budgetOn=false;
   if(Array.isArray(o.vibes)) S.vibes=new Set(o.vibes.filter(v=>VLABEL[v]));

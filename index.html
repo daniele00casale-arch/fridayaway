@@ -520,6 +520,21 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
 .split.wait span{opacity:.55}
 .split small{flex-basis:100%;font-weight:500;font-size:11px;opacity:.8}
 .totalbox + .split{margin-top:-2px}
+
+.mGrid{display:flex;flex-wrap:wrap;justify-content:center;gap:18px 12px;padding:12px 0 8px}
+.flip.mini{width:100px;height:140px;margin:0;perspective:700px;cursor:pointer;flex:none}
+.flip.mini:nth-child(3n+1){transform:rotate(-6deg) translateY(6px)}
+.flip.mini:nth-child(3n+3){transform:rotate(6deg) translateY(6px)}
+.flip.mini .fIn{width:100%;height:100%}
+.flip.mini .fBack{border-radius:14px;font-size:30px;flex-direction:column;gap:4px;box-shadow:var(--shadow);background:linear-gradient(160deg,color-mix(in srgb,var(--primary) 35%,var(--surface)),color-mix(in srgb,#14b8b0 40%,var(--surface)))}
+.flip.mini .fBack i{font-size:20px;opacity:1}
+.flip.mini .fFront{position:absolute;inset:0;border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);border:1px solid var(--line)}
+.miCard{display:flex;flex-direction:column;height:100%;text-align:left}
+.miImg{height:66px;position:relative;overflow:hidden;flex:none}
+.miImg>*{width:100%;height:100%}
+.miCard b{font-size:13px;padding:6px 8px 0;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.miCard span{font-size:12.5px;color:var(--primary);font-weight:800;padding:2px 8px 0}
+.miCard small{font-size:10.5px;color:var(--like);font-weight:700;padding:1px 8px}
 </style>
 </head>
 <body>
@@ -1653,10 +1668,15 @@ function renderMatchList(all,almost,N,item){
     const key="scr|"+all.join()+"|"+almost.join(); if(ml.dataset.k===key) return; ml.dataset.k=key;
     const tag=c=>all.includes(c)?`Liked by all ${N} ✓`:`Almost: ${N-1} of ${N} like it`;
     const list=[...all,...almost], n=all.length;
-    ml.innerHTML=`<p class="scrHead">${n?`🎉 ${n} match${n>1?"es":""}! Turning the cards…`:"So close! Turning the cards…"}</p>
-      ${list.map((c,i)=>`<div class="flip big" style="--d:${i*260}ms" role="button" tabindex="0" aria-label="Reveal card"><div class="fIn"><div class="fBack"><span>?</span><i>✦</i></div><div class="fFront">${bigMatch(c,tag(c))}</div></div></div>`).join("")}`;
-    bind(); ml.querySelectorAll(".flip").forEach(f=>f.addEventListener("click",()=>{if(!f.classList.contains("on"))revealAll()}));
-    const go=()=>{if(!document.body.contains(ml)||!S.together.fresh)return; if(!ml.offsetParent){setTimeout(go,300);return} setTimeout(revealAll,900)}; go(); return;
+    const mini=c=>{const d=DATA.find(x=>x.code===c),h=hotelFor(d);return `<div class="miCard" role="button" tabindex="0" data-open="${c}"><div class="miImg">${art(d,true)}</div><b>${d.city}</b><span>${eur(h.price)}</span><small>${all.includes(c)?"All ✓":`${N-1}/${N} ✓`}</small></div>`};
+    ml.innerHTML=`<p class="scrHead">${n?`🎉 ${n} match${n>1?"es":""}! Tap a card to flip it`:"So close! Tap a card to flip it"}</p>
+      <div class="mGrid">${list.map((c,i)=>`<div class="flip mini" style="--d:${i*150}ms" role="button" tabindex="0" aria-label="Flip card ${i+1}"><div class="fIn"><div class="fBack"><span>?</span><i>🔒</i></div><div class="fFront">${mini(c)}</div></div></div>`).join("")}</div>
+      <button class="linkbtn scrAll" id="scrAll">Flip all</button>`;
+    bind(); $("scrAll").onclick=revealAll;
+    ml.querySelectorAll(".flip.mini").forEach(f=>{const go=e=>{if(f.classList.contains("on"))return; if(e)e.stopPropagation(); f.style.setProperty("--d","0ms"); f.classList.add("on"); buzz(15);
+        if([...ml.querySelectorAll(".flip.mini")].every(x=>x.classList.contains("on"))) revealAll();};
+      f.addEventListener("click",go); f.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go(e)}});});
+    return;
   }
   ml.dataset.k="";
   if(T.fresh&&!T.on){
@@ -1675,7 +1695,7 @@ function revealAll(){
   const T=S.together; if(!T.fresh) return; T.fresh=false;
   const cv=$("scrC"); if(cv){cv.classList.add("gone");setTimeout(()=>cv.remove(),550)}
   document.querySelectorAll("#matchList .flip").forEach(f=>f.classList.add("on"));
-  const b=$("scrAll"); if(b) b.remove(); buzz([20,40,70]); const h=ml0().querySelector(".scrHead"); if(h){const k=ml0().querySelectorAll(".flip").length; h.textContent=h.textContent.replace("Turning the cards…", "Here they are!")}
+  const b=$("scrAll"); if(b) b.remove(); buzz([20,40,70]); const h=ml0().querySelector(".scrHead"); if(h){const k=ml0().querySelectorAll(".flip").length; h.textContent=h.textContent.replace("Tap a card to flip it", "Here they are! Tap one to book")}
   if(RM()) return; const ml=$("matchList"), em=["🎉","✨","✈️","💜","⭐","🥂"];
   for(let i=0;i<26;i++){const s=document.createElement("span");s.className="cf";s.textContent=em[i%em.length];
     const a=Math.random()*Math.PI*2,r=90+Math.random()*130;

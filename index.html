@@ -383,6 +383,11 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
   .sumbar{margin-top:24px}
   .topToast{bottom:24px}
 }
+.deckwrap{isolation:isolate;z-index:0}
+.deckwrap.flyup{z-index:44}
+.top{z-index:20}
+.tabbar{z-index:42}
+.scrim{z-index:46}.sheet{z-index:47}.matchPop{z-index:48}
 </style>
 
 <div class="app">
@@ -1119,7 +1124,7 @@ function fling(card,dir){
   const base=$("deck").getBoundingClientRect(), tr=target.getBoundingClientRect();
   const tx=(tr.left+tr.width/2)-(base.left+base.width/2), ty=(tr.top+tr.height/2)-(base.top+base.height/2);
   const cur=card.style.transform||"none";
-  card.classList.add("flying"); card.classList.remove("anim");
+  card.classList.add("flying"); card.classList.remove("anim"); const dw=$("deck"); dw.classList.add("flyup"); setTimeout(()=>dw.classList.remove("flyup"),700);
   const mid=dir<0?`translate(${tx*0.55}px,${ty*0.55-60}px) scale(.45) rotate(-18deg)`:`translate(${tx*0.5}px,${ty*0.5-50}px) scale(.42) rotate(10deg)`;
   const end=dir<0?`translate(${tx}px,${ty}px) scale(.04) rotate(-40deg)`:`translate(${tx}px,${ty}px) scale(.06) rotate(0deg)`;
   const a=card.animate([{transform:cur,opacity:1},{transform:mid,opacity:dir<0?.95:.7,offset:.55},{transform:end,opacity:dir<0?.6:.3}],{duration:dir<0?520:600,easing:"cubic-bezier(.45,.05,.4,1)",fill:"forwards"});
@@ -1437,7 +1442,7 @@ function showMatch(o){
 
 /* ===== drop ===== */
 function renderDrop(){
-  const top=(S.filterOn?pool():DATA.filter(fits)).map(scoreDest).sort(byBudget).filter(o=>!S.budgetOn||o.h.price<=S.budget).slice(0,3);
+  const top=topList();
   $("bestSub").textContent=`From ${oriName()} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)}${S.budgetOn?` · max ${eur(S.budget)}`:""}`;
   $("mail").innerHTML=top.length?top.map((o,i)=>`<div class="bitem" role="button" tabindex="0" data-code="${o.d.code}"><span class="rk">${i+1}</span><div class="thumb">${art(o.d,true)}</div><div><h3>${o.d.city}</h3><div class="sub muted" style="font-size:12.5px">${starStr(o.h.stars)} ${o.h.name}</div></div><div><div class="p">${eur(o.h.price)}</div>${S.budgetOn?`<div class="lf">${eur(S.budget-o.h.price)} left</div>`:""}</div></div>`).join("")
     :`<div class="box"><p class="muted">Nothing fits. Raise the budget.</p></div>`;

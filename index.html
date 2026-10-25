@@ -498,6 +498,7 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
 .flip{perspective:900px;margin-top:10px}
 .fIn{position:relative;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.3,1.35,.5,1);transform:rotateY(180deg)}
 .flip.on .fIn{transform:rotateY(0deg);transition-delay:var(--d)}
+.flip.big{margin-top:12px;cursor:pointer}.flip.big .fBack{border-radius:18px;font-size:44px;box-shadow:0 12px 30px rgba(109,93,230,.28)}.flip.big .fFront{border-radius:18px;overflow:hidden;background:var(--surface);box-shadow:0 12px 30px rgba(109,93,230,.18)}.flip.big .fIn{transition-duration:.85s}.flip.big .fBack span{animation:qBob 1.4s ease-in-out infinite}@keyframes qBob{50%{transform:translateY(-6px) rotate(-6deg)}}
 .fFront,.fBack{-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .fFront .item{margin:0}
 .fBack{position:absolute;inset:0;transform:rotateY(180deg);border-radius:14px;background:linear-gradient(135deg,#F6D365,#B07CFF 50%,#6D5DE6);display:flex;align-items:center;justify-content:center;gap:8px;color:#fff;font-weight:900;font-size:26px;overflow:hidden}
@@ -1602,12 +1603,11 @@ function renderMatchList(all,almost,N,item){
   if(T.fresh&&!T.on&&(all.length||almost.length)){
     const key="scr|"+all.join()+"|"+almost.join(); if(ml.dataset.k===key) return; ml.dataset.k=key;
     const tag=c=>all.includes(c)?`Liked by all ${N} ✓`:`Almost: ${N-1} of ${N} like it`;
-    const best=all[0]||almost[0], rest=[...all,...almost].filter(c=>c!==best);
-    ml.innerHTML=`<p class="scrHead">${all.length?`🎉 ${all.length} match${all.length>1?"es":""}! Scratch the card to find your #1`:"So close! Scratch to see your best bet"}</p>
-      <div class="scr" id="scr">${bigMatch(best,tag(best))}<canvas id="scrC" aria-label="Scratch card: rub to reveal"></canvas></div>
-      ${rest.map((c,i)=>`<div class="flip" style="--d:${i*170}ms"><div class="fIn"><div class="fBack"><span>?</span><i>✦</i></div><div class="fFront">${item(c,tag(c))}</div></div></div>`).join("")}
-      <button class="linkbtn scrAll" id="scrAll">Reveal all</button>`;
-    bind(); $("scrAll").onclick=revealAll; scratch($("scrC"),revealAll); return;
+    const list=[...all,...almost], n=all.length;
+    ml.innerHTML=`<p class="scrHead">${n?`🎉 ${n} match${n>1?"es":""}! Turning the cards…`:"So close! Turning the cards…"}</p>
+      ${list.map((c,i)=>`<div class="flip big" style="--d:${i*260}ms" role="button" tabindex="0" aria-label="Reveal card"><div class="fIn"><div class="fBack"><span>?</span><i>✦</i></div><div class="fFront">${bigMatch(c,tag(c))}</div></div></div>`).join("")}`;
+    bind(); ml.querySelectorAll(".flip").forEach(f=>f.addEventListener("click",()=>{if(!f.classList.contains("on"))revealAll()}));
+    const go=()=>{if(!document.body.contains(ml)||!S.together.fresh)return; if(!ml.offsetParent){setTimeout(go,300);return} setTimeout(revealAll,900)}; go(); return;
   }
   ml.dataset.k="";
   if(T.fresh&&!T.on){
@@ -1621,11 +1621,12 @@ function renderMatchList(all,almost,N,item){
     : `<div class="mystery"><div class="mc">?<i>🔒</i></div><div class="mc">?<i>🔒</i></div><div class="mc">?<i>🔒</i></div></div><p class="mysteryTxt">Your shared picks will appear here. Are you on the same wavelength? 👀✈️</p>`;
   bind();
 }
+const ml0=()=>$("matchList");
 function revealAll(){
   const T=S.together; if(!T.fresh) return; T.fresh=false;
   const cv=$("scrC"); if(cv){cv.classList.add("gone");setTimeout(()=>cv.remove(),550)}
   document.querySelectorAll("#matchList .flip").forEach(f=>f.classList.add("on"));
-  const b=$("scrAll"); if(b) b.remove(); buzz([20,40,70]);
+  const b=$("scrAll"); if(b) b.remove(); buzz([20,40,70]); const h=ml0().querySelector(".scrHead"); if(h){const k=ml0().querySelectorAll(".flip").length; h.textContent=h.textContent.replace("Turning the cards…", "Here they are!")}
   if(RM()) return; const ml=$("matchList"), em=["🎉","✨","✈️","💜","⭐","🥂"];
   for(let i=0;i<26;i++){const s=document.createElement("span");s.className="cf";s.textContent=em[i%em.length];
     const a=Math.random()*Math.PI*2,r=90+Math.random()*130;

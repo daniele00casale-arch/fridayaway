@@ -515,6 +515,7 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
 
 .split{display:flex;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:6px;font-weight:600}
 .split:empty{display:none}
+.cardSplit{margin-top:auto}.cardSplit + .priceRow{margin-top:0}
 .split span{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:3px 8px;white-space:nowrap}
 .split.wait span{opacity:.55}
 .split small{flex-basis:100%;font-weight:500;font-size:11px;opacity:.8}
@@ -1173,7 +1174,7 @@ function cardHTML(o,pos){
       ${fcLegs(d.code)?fcBlock(d.code):FL[d.code]&&!S.trip.live&&!timeIssue(d.code)?`<div class="legs"><div class="leg"><span>${dayFrom()}</span><b>${FL[d.code].o[0]} ${FL[d.code].o[2]} → ${FL[d.code].o[1]} ${FL[d.code].o[3]}</b><span class="fn">${FL[d.code].o[4].split(" · ")[0]}</span></div><div class="leg"><span>${dayTo()}</span><b>${FL[d.code].i[0]} ${FL[d.code].i[2]} → ${FL[d.code].i[1]} ${FL[d.code].i[3]}</b><span class="fn">${FL[d.code].i[4].split(" · ")[0]}</span></div></div>`:""}
       ${fcLegs(d.code)?"":S.trip.live||!FL[d.code]?`<div class="leg" style="grid-template-columns:1fr"><span>Exact flights are shown when you open this weekend</span></div>`:timeIssue(d.code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights to match your times (${timeTxt()}) are picked when you book</span></div>`:FL[d.code]&&FL[d.code].note?`<div class="warnline">${FL[d.code].note}</div>`:earlyReturn(d.code)?`<div class="warnline">Early flight home on Sunday (${FL[d.code].i[2]})</div>`:""}
       ${up?`<div class="upg"><span><b>+${eur(up.price-h.price)}</b> for ${starStr(up.stars)} ${up.name.length>26?up.name.slice(0,25)+"…":up.name}${up.rating?` · ${(up.rating/10).toFixed(1)}`:""}</span><button data-up="${d.code}|${up.j}">Step up</button></div>`:""}
-      <div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}${pos<2?splitHTML(d.code,h.price):""}</div>${marginPill(h.price)}</div>
+      ${pos<2?splitHTML(d.code,h.price).replace('class="split','class="split cardSplit'):""}<div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}</div>${marginPill(h.price)}</div>
     </div></article>`;
 }
 /* Budget margin: what is left of the budget once flight + hotel are paid, and what that is per day there. */

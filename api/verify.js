@@ -28,8 +28,9 @@ async function pkgVerify(o, d, f, t, a, tOut, tIn, budget) {
   if (!p2.success) return false;
   const fo = p2.flight_details && p2.flight_details.outbound, fi = p2.flight_details && p2.flight_details.inbound;
   const L = (x) => (x ? { ap: x.from, t: iso(x.departure_time), to: `${x.to} ${iso(x.arrival_time)}`, air: x.carrier_code || "", stops: x.direct ? "Direct" : "1 stop" } : null);
-  if (ok(iso(fo && fo.departure_time), tOut) && ok(iso(fi && fi.departure_time), tIn)) return { o: L(fo), i: L(fi) };
-  const rate = (p2.room_options || [])[0] && p2.room_options[0].rate_id;
+  if (ok(iso(fo && fo.departure_time), tOut) && ok(iso(fi && fi.departure_time), tIn)) return { o: L(fo), i: L(fi), extra: 0 };
+  const room0 = (p2.room_options || [])[0];
+  const rate = room0 && room0.rate_id;
   if (!rate) return false;
   await callTool("generate_booking_link", { pricing_id: p2.pricing_id, rate_id: rate }, sid);
   const r3 = await callTool("get_alternative_flights", { pricing_id: p2.pricing_id }, sid);
@@ -37,7 +38,9 @@ async function pkgVerify(o, d, f, t, a, tOut, tIn, budget) {
   const m = fl.filter((x) => ok(x.outbound.departure.time, tOut) && ok(x.inbound.departure.time, tIn)).sort((x, y) => x.price.total - y.price.total)[0];
   if (!m) return false;
   const A = (x) => ({ ap: x.departure.airport, t: x.departure.time, to: `${x.arrival.airport} ${x.arrival.time}`, air: x.carrier.code, stops: x.stops });
-  return { o: A(m.outbound), i: A(m.inbound) };
+  // extra = what the time-matching flights add on top of the package price (same flights for every hotel in this city)
+  const extra = room0 && room0.price ? Math.max(0, Math.round((m.price.total - room0.price) * 100) / 100) : 0;
+  return { o: A(m.outbound), i: A(m.inbound), extra };
 }
 
 module.exports = async (req, res) => {

@@ -3,81 +3,8 @@
 // and returns {payload, sid}. The MCP session id is handed back to the browser so that multi-step tools
 // (select_hotel_options → generate_booking_link → get_alternative_flights → change_flight) share one session.
 
-const ENDPOINT = process.env.LM_MCP_URL || "https://mcp.lastminute.com/mcp";
-const ALLOWED = new Set([
-  "search_flight_and_hotel_package",
-  "select_hotel_options",
-  "generate_booking_link",
-  "get_alternative_flights",
-  "change_flight",
-  "search_flights",
-]);
-const PROTOCOL = "2025-03-26";
-
-async function rpc(body, sid) {
-  const headers = {
-    "content-type": "application/json",
-    accept: "application/json, text/event-stream",
-    "mcp-protocol-version": PROTOCOL,
-  };
-  if (sid) headers["mcp-session-id"] = sid;
-  const r = await fetch(ENDPOINT, { method: "POST", headers, body: JSON.stringify(body) });
-  const newSid = r.headers.get("mcp-session-id") || sid;
-  const text = await r.text();
-  if (!r.ok) {
-    const err = new Error(`MCP HTTP ${r.status}: ${text.slice(0, 200)}`);
-    err.status = r.status;
-    throw err;
-  }
-  if (!text) return { msg: null, sid: newSid };
-  let msg = null;
-  if ((r.headers.get("content-type") || "").includes("text/event-stream")) {
-    // take the last JSON-RPC message carried in "data:" lines
-    for (const block of text.split(/\n\n/)) {
-      const data = block.split("\n").filter((l) => l.startsWith("data:")).map((l) => l.slice(5).trim()).join("");
-      if (!data) continue;
-      try { const m = JSON.parse(data); if (m.id === body.id || m.result || m.error) msg = m; } catch (e) {}
-    }
-  } else {
-    try { msg = JSON.parse(text); } catch (e) {}
-  }
-  return { msg, sid: newSid };
-}
-
-async function openSession() {
-  const { msg, sid } = await rpc({
-    jsonrpc: "2.0", id: 1, method: "initialize",
-    params: { protocolVersion: PROTOCOL, capabilities: {}, clientInfo: { name: "fridayaway", version: "1.0" } },
-  });
-  if (msg && msg.error) throw new Error("initialize failed: " + JSON.stringify(msg.error).slice(0, 200));
-  try { await rpc({ jsonrpc: "2.0", method: "notifications/initialized" }, sid); } catch (e) {}
-  return sid;
-}
-
-function toPayload(result) {
-  if (!result) return null;
-  const txt = (result.content || []).filter((c) => c.type === "text").map((c) => c.text).join("");
-  if (txt) { try { return JSON.parse(txt); } catch (e) {} }
-  if (result.structuredContent) return result.structuredContent.result ?? result.structuredContent;
-  return txt ? { text: txt } : null;
-}
-
-async function callTool(tool, args, sid) {
-  if (!sid) sid = await openSession();
-  let out;
-  try {
-    out = await rpc({ jsonrpc: "2.0", id: Date.now() % 1e9, method: "tools/call", params: { name: tool, arguments: args || {} } }, sid);
-  } catch (e) {
-    if (e.status === 404 || e.status === 400) { // session expired → new session, retry once
-      sid = await openSession();
-      out = await rpc({ jsonrpc: "2.0", id: Date.now() % 1e9, method: "tools/call", params: { name: tool, arguments: args || {} } }, sid);
-    } else throw e;
-  }
-  const m = out.msg || {};
-  if (m.error) return { sid: out.sid, error: { code: "tool_error", message: m.error.message || "Tool error" } };
-  if (m.result && m.result.isError) return { sid: out.sid, error: { code: "tool_error", message: (toPayload(m.result) || {}).text || "Tool error" } };
-  return { sid: out.sid, payload: toPayload(m.result) };
-}
+const { callTool, openSession, ENDPOINT } = require("./_mcp");
+const ALLOWED = new Set(["search_flight_and_hotel_package","select_hotel_options","generate_booking_link","get_alternative_flights","change_flight","search_flights"]);
 
 module.exports = async (req, res) => {
   res.setHeader("cache-control", "no-store");

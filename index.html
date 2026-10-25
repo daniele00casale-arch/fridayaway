@@ -664,7 +664,7 @@ function timeIssue(code){
 /* ===== flight-time check: a city is shown only if a real flight leaves after the chosen times ===== */
 const FC={key:"",busy:false,res:{},done:0,total:0,src:"",err:""};
 const fcOn=()=>hasTimes();
-const fcKey=()=>[S.trip.from,S.trip.to,S.trip.tOut,S.trip.tIn,S.trip.adults,S.trip.live].join("|");
+const fcKey=()=>[ORI(),S.trip.from,S.trip.to,S.trip.tOut,S.trip.tIn,S.trip.adults,S.trip.live,S.budgetOn?S.budget:0].join("|");
 const fcCand=()=>DATA.filter(d=>d.hotels.length&&(!S.filterOn||fits(d)));
 const fcReady=()=>!fcOn()||(FC.key===fcKey()&&!FC.busy&&!LIVE.busy&&fcCand().every(d=>FC.res[d.code]!==undefined));
 function fcOK(code){ if(!fcOn()) return true; if(!fcReady()) return false; return !!FC.res[code]; }
@@ -723,7 +723,19 @@ async function checkTimes(){
     FC.done++; const s=$("fcProg"); if(s) s.textContent=`${FC.done}/${FC.total}`;
   };
   try{
-    const q=list.slice(); await Promise.all(Array.from({length:5},async()=>{while(q.length) await one(q.shift())}));
+    if(mcp&&mcp.verify){
+      const chunks=[]; for(let k=0;k<list.length;k+=6) chunks.push(list.slice(k,k+6));
+      let fails=0;
+      await Promise.all(chunks.map(async ch=>{
+        let res=null; try{res=await mcp.verify({o:ORI(),f:S.trip.from,t:S.trip.to,a:S.trip.adults,tOut:S.trip.tOut,tIn:S.trip.tIn,b:S.budgetOn?S.budget:0,d:ch.map(d=>d.code)});}catch(e){fails++;}
+        if(FC.key!==key) return;
+        ch.forEach(d=>{FC.res[d.code]=res&&res[d.code]?res[d.code]:false;});
+        FC.done+=ch.length; const s=$("fcProg"); if(s) s.textContent=`${FC.done}/${FC.total}`;
+      }));
+      if(fails===chunks.length) throw {code:"server_unavailable"};
+    } else {
+      const q=list.slice(); await Promise.all(Array.from({length:8},async()=>{while(q.length) await one(q.shift())}));
+    }
   }catch(e){ FC.err=mcpMsg(e); FC.res={}; fcSnapshot(); }
   FC.busy=false;
   if(FC.again){FC.again=false; return checkTimes();}
@@ -747,6 +759,11 @@ function liveBar(){const b=$("liveBar"); if(!b) return;
   if(LIVE.busy){b.hidden=false;b.innerHTML=`<span><span class="spin" style="width:12px;height:12px;vertical-align:-1px"></span> Finding weekends in more cities · <b>${LIVE.done}/${LIVE.total}</b></span>`;}
   else if(LIVE.msg){b.hidden=false;b.innerHTML=`<span>${LIVE.msg}</span>`;}
   else b.hidden=true;}
+let rT=0; function renderSoon(){ if(rT) return; rT=setTimeout(()=>{rT=0; renderDeck();},350); }
+function setHotels(d,list){
+  d.hotels=(list||[]).map((x,j)=>({j,name:x.name,stars:x.stars||0,rating:x.rating||0,reviews:x.reviews||0,km:x.distance_km,fac:x.facilities||[],price:x.price_total,flex:!!x.cancellable,hid:x.internal_id_hotel}));
+  if(list&&list[0]){d.direct=!!list[0].flight_direct;d.carrier=list[0].carrier||d.carrier;d.fly=d.direct?"Direct":"1 stop"}
+}
 async function liveOne(d,from,to,ad){
   if(d.code===ORI()){d.hotels=[];return}
   try{
@@ -759,9 +776,20 @@ async function liveOne(d,from,to,ad){
 }
 async function liveSearch(list,from,to,ad){
   LIVE.busy=true;LIVE.done=0;LIVE.total=list.length;LIVE.msg="";liveBar();
-  const q=list.slice();
   try{
-    await Promise.all(Array.from({length:6},async()=>{while(q.length){const d=q.shift();await liveOne(d,from,to,ad);LIVE.done++;liveBar();}}));
+    if(mcp&&mcp.batchSearch){
+      const chunks=[]; for(let k=0;k<list.length;k+=8) chunks.push(list.slice(k,k+8));
+      let fails=0;
+      await Promise.all(chunks.map(async ch=>{
+        let res=null; try{res=await mcp.batchSearch(ORI(),from,to,ad,ch.map(d=>d.code));}catch(e){fails++;}
+        ch.forEach(d=>{ if(d.code===ORI()) d.hotels=[]; else setHotels(d,res&&res[d.code]); d.hrs=d.more?null:d.hrs; });
+        LIVE.done+=ch.length; liveBar(); renderSoon();
+      }));
+      if(fails===chunks.length) throw {code:"server_unavailable"};
+    } else {
+      const q=list.slice();
+      await Promise.all(Array.from({length:10},async()=>{while(q.length){const d=q.shift();await liveOne(d,from,to,ad);LIVE.done++;liveBar();renderSoon();}}));
+    }
     return null;
   }catch(e){return e}
   finally{LIVE.busy=false;liveBar();}
@@ -794,11 +822,11 @@ async function applyTrip(){
   }
   if(!mcp){$("orig").value=S.trip.origin;st.textContent="Other departure cities and new dates need live prices from the lastminute.com connector. Try again in a minute.";return}
   $("applyTrip").disabled=true; st.textContent="Searching live prices from "+ORIGINS[org]+"…";
-  const prevO=S.trip.origin; S.trip.origin=org;
+  S.trip={...S.trip,from,to,adults:ad,live:true,origin:org};
+  DATA.forEach(d=>{d.hotels=[];d.hrs=null;d.tried=true});
+  S.choice={};S.seen.clear();FC.key="";FC.res={};renderTrip();renderDeck();
   const err=await liveSearch(DATA.slice(),from,to,ad);
   if(!err){
-    DATA.forEach(d=>{d.tried=true;d.hrs=null});
-    S.trip={...S.trip,from,to,adults:ad,live:true,origin:org};
     const n=DATA.filter(d=>d.hotels.length).length;
     st.textContent=`Live prices for ${n} cities · ${new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})}`;
   }else{st.textContent=mcpMsg(err); DATA.forEach(d=>{d.hotels=ORIG.find(o=>o.code===d.code).hotels.slice();d.hrs=hoursThere(d.code)}); S.trip={...S.trip,from:BASE.from,to:BASE.to,adults:2,live:false,origin:"MIL"};$("orig").value="MIL"}
@@ -1286,7 +1314,8 @@ for(let i=1;i<=6;i++) $("c"+i).addEventListener("input",calc); calc();
 
 /* ===== toast + boot ===== */
 function toast(m){const t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2400)}
-$("dFrom").value=S.trip.from;$("dTo").value=S.trip.to;$("dFrom").min=new Date().toISOString().slice(0,10);$("applyTrip").onclick=applyTrip;["tOut","tIn"].forEach(id=>$(id).onchange=()=>{S.trip.tOut=$("tOut").value;S.trip.tIn=$("tIn").value;S.seen.clear();fcSoon()});renderTrip();
+$("dFrom").value=S.trip.from;$("dTo").value=S.trip.to;$("dFrom").min=new Date().toISOString().slice(0,10);$("applyTrip").onclick=applyTrip;$("orig").onchange=()=>applyTrip();
+["tOut","tIn"].forEach(id=>$(id).onchange=()=>{S.trip.tOut=$("tOut").value;S.trip.tIn=$("tIn").value;S.seen.clear();fcSoon()});renderTrip();
 applyIntent(parseRules($("q").value),"boot");
 (async()=>{try{sample=window.claude?await window.claude.use("sample"):null}catch(e){sample=null}})();
 
@@ -1300,9 +1329,12 @@ function restMcp(){
     if(!r.ok||j.error) throw {code:(j.error&&j.error.code)||"server_unavailable",message:(j.error&&j.error.message)||("HTTP "+r.status)};
     return {payload:j.payload};
   };
-  return {callTool:async(server,tool,args)=>{
-    return call(tool,args);
-  }};
+  const getJSON=async url=>{const r=await fetch(url);const j=await r.json().catch(()=>({}));if(!r.ok||j.error) throw {code:"server_unavailable",message:(j.error&&j.error.message)||("HTTP "+r.status)};return j.results||{};};
+  return {
+    callTool:async(server,tool,args)=>call(tool,args),
+    batchSearch:(o,f,t,a,ds)=>getJSON(`/api/search?o=${o}&f=${f}&t=${t}&a=${a}&d=${ds.join(",")}`),
+    verify:(q)=>getJSON(`/api/verify?o=${q.o}&f=${q.f}&t=${q.t}&a=${q.a}&tOut=${encodeURIComponent(q.tOut||"")}&tIn=${encodeURIComponent(q.tIn||"")}&b=${Math.round(q.b||0)}&d=${q.d.join(",")}`)
+  };
 }
 const STANDALONE=!window.claude&&/^https?:$/.test(location.protocol);
 (async()=>{try{mcp=window.claude?await window.claude.use("mcp"):(STANDALONE?restMcp():null)}catch(e){mcp=null} if(!mcp) return;

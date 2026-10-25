@@ -304,6 +304,85 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
 .actions{gap:10px;justify-content:space-between;max-width:440px;margin-left:auto;margin-right:auto}
 .actions .act.like{padding:0 16px 0 20px}
 .card.demo{transition:transform .45s cubic-bezier(.4,0,.2,1)}
+
+/* ===== setup popup (search panel) ===== */
+.setup{position:fixed;inset:0;z-index:60;background:var(--app);overflow:auto;display:flex;justify-content:center;animation:fadeIn .18s ease}
+.setup[hidden]{display:none}
+.setupIn{width:100%;max-width:520px;padding:max(18px,env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+.setupHead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.setupHead .brand{font-size:17px}
+.setupIn h2{font-size:26px;letter-spacing:-.02em;margin-top:6px}
+.setupIn .ask{margin-top:0}
+.setupIn #go,.setupIn #applyTrip{display:none}
+.setupIn .chips{flex-wrap:wrap;overflow:visible}
+.setupIn textarea{height:78px}
+.btn.big{height:54px;font-size:16.5px;border-radius:16px;box-shadow:0 6px 0 color-mix(in srgb,var(--primary) 70%,#000);transition:transform .08s}
+.btn.big:active{transform:translateY(3px);box-shadow:0 3px 0 color-mix(in srgb,var(--primary) 70%,#000)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.sumbar{margin-top:12px;width:100%;display:flex;align-items:center;gap:10px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;cursor:pointer;color:var(--ink);font:inherit;box-shadow:var(--shadow)}
+.sumbar .sb-ic{flex:none;width:34px;height:34px;border-radius:10px;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;font-size:16px}
+.sumbar .sb-t{flex:1;min-width:0}
+.sumbar .sb-t b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sumbar .sb-t span{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sumbar .sb-e{flex:none;font-size:12.5px;font-weight:700;color:var(--primary)}
+/* ===== loading overlay ===== */
+.loadOv{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:24px;background:color-mix(in srgb,var(--app) 72%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fadeIn .2s ease}
+.loadOv[hidden]{display:none}
+.ldCard{width:100%;max-width:340px;background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:24px 22px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.ldSpin{position:relative;width:74px;height:74px;display:grid;place-items:center;font-size:26px;margin-bottom:6px}
+.ldSpin .ring{position:absolute;inset:0;border-radius:50%;border:6px solid var(--primary-soft);border-top-color:var(--primary);border-right-color:#14b8b0;animation:sp .9s linear infinite}
+.ldSpin .pl{animation:bob 1.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-4px) rotate(8deg)}}
+.ldCard b{font-size:17px;letter-spacing:-.01em}
+.ldCard p{font-size:13.5px;color:var(--muted);min-height:20px}
+.ldBar{width:100%;height:8px;border-radius:99px;background:var(--primary-soft);overflow:hidden;margin-top:6px}
+.ldBar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--primary),#14b8b0);transition:width .35s ease}
+.ldCard small{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){.ldSpin .ring,.ldSpin .pl{animation:none}}
+/* ===== top 1 mini popup ===== */
+.topToast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;width:calc(100% - 24px);max-width:436px;display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(20,16,60,.18);padding:8px 8px 8px 10px;cursor:pointer;animation:ttIn .35s cubic-bezier(.2,1.2,.4,1)}
+.topToast[hidden]{display:none}
+.topToast .tt-img{flex:none;width:44px;height:44px;border-radius:12px;overflow:hidden;position:relative}
+.topToast .tt-t{flex:1;min-width:0}
+.topToast small{display:block;font-size:11px;font-weight:700;color:#C08A00;letter-spacing:.02em}
+.topToast b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topToast .tt-x{flex:none;border:0;background:none;color:var(--muted);font-size:15px;padding:6px 8px;cursor:pointer}
+@keyframes ttIn{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+/* ===== together: game lobby ===== */
+.lobby{position:relative;overflow:hidden;border-radius:22px;padding:18px 14px 14px;background:linear-gradient(135deg,color-mix(in srgb,var(--primary) 30%,var(--surface)),color-mix(in srgb,#14b8b0 32%,var(--surface)));box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+.lobby:before{content:"✈︎";position:absolute;right:14px;top:8px;font-size:22px;opacity:.35;transform:rotate(-12deg)}
+.lobby:after{content:"☁";position:absolute;left:10px;bottom:-6px;font-size:46px;color:#fff;opacity:.45}
+.lobbyHead{text-align:center}
+.lobbyHead b{font-size:18px}
+.lobbyHead span{display:block;font-size:12.5px;color:var(--muted)}
+.players{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px;position:relative;z-index:1}
+.pl{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;background:color-mix(in srgb,var(--surface) 70%,transparent);border-radius:16px;padding:10px 6px 8px}
+.pl .av{width:58px;height:58px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-size:30px;box-shadow:0 4px 12px rgba(20,16,60,.15);border:3px solid transparent}
+.pl.turn .av{border-color:var(--primary);animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--primary) 45%,transparent)}50%{box-shadow:0 0 0 8px transparent}}
+.pl input{width:100%;border:0;background:none;text-align:center;font:inherit;font-weight:700;font-size:13.5px;color:var(--ink);padding:2px;border-radius:6px}
+.pl input:focus{background:var(--surface);outline:2px solid var(--primary)}
+.pl .st{font-size:11.5px;color:var(--muted);font-weight:600}
+.pl.turn .st{color:var(--primary)}
+.pl .rmP{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;border:0;background:var(--surface);color:var(--muted);font-size:11px;cursor:pointer;line-height:20px;padding:0}
+.pl.add{border:2px dashed color-mix(in srgb,var(--primary) 45%,transparent);background:transparent;cursor:pointer;color:var(--primary);font:inherit;font-weight:700;font-size:13px;justify-content:center;min-height:118px}
+.pl.add .av{background:var(--primary-soft);box-shadow:none;font-size:26px;color:var(--primary)}
+.lobby .btn{position:relative;z-index:1}
+.lobby .linkbtn{position:relative;z-index:1;align-self:center;font-size:13.5px}
+.mystery{display:flex;justify-content:center;gap:0;padding:18px 0 6px}
+.mystery .mc{width:84px;height:116px;border-radius:14px;background:linear-gradient(160deg,color-mix(in srgb,var(--primary) 35%,var(--surface)),color-mix(in srgb,#14b8b0 40%,var(--surface)));box-shadow:var(--shadow);display:grid;place-items:center;font-size:30px;font-weight:800;color:#fff;position:relative;margin:0 -6px}
+.mystery .mc:nth-child(1){transform:rotate(-10deg) translateY(8px)}
+.mystery .mc:nth-child(3){transform:rotate(10deg) translateY(8px)}
+.mystery .mc:nth-child(2){z-index:1}
+.mystery .mc i{position:absolute;bottom:10px;font-style:normal;font-size:20px}
+.mysteryTxt{text-align:center;color:var(--muted);font-size:13.5px;padding:0 10px 6px}
+.almost{font-size:12px;color:var(--muted);font-weight:600}
+@media (min-width:960px){
+  .setupIn{padding-top:48px}
+  main[data-s="discover"]:not([hidden]){grid-template-columns:minmax(300px,380px) minmax(0,1fr)}
+  .sumbar{margin-top:24px}
+  .topToast{bottom:24px}
+}
 </style>
 
 <div class="app">
@@ -315,6 +394,7 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
   <!-- DISCOVER -->
   <main class="screen gut" data-s="discover">
    <div class="dleft">
+    <button class="sumbar" id="sumBar" aria-label="Edit your search"><span class="sb-ic">⌕</span><span class="sb-t"><b id="sumA"></b><span id="sumB"></span></span><span class="sb-e">Edit ✎</span></button>
     <div class="ask">
       <div class="askrow">
         <label for="q" class="eyebrow" style="position:absolute;left:-9999px">Describe your weekend</label>
@@ -386,11 +466,12 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
   <main class="screen gut" data-s="together" hidden>
     <div class="sec">
       <h2>Decide together</h2>
-      <p class="muted">You both swipe. Only shared likes show up.</p>
-      <div class="box">
-        <div class="toggle"><span>Mode</span><b id="tgMode">Off</b></div>
-        <button class="btn" id="tgStart">Start: Player 1 swipes first</button>
-        <button class="btn ghost" id="tgReset">Reset swipes</button>
+      <p class="muted">Everyone swipes the same deck. Only weekends you all like show up.</p>
+      <div class="lobby">
+        <div class="lobbyHead"><b>Game lobby</b><span id="lobbyN"></span></div>
+        <div class="players" id="players"></div>
+        <button class="btn big" id="tgStart">Start: Player 1 swipes first</button>
+        <button class="linkbtn" id="tgReset">↻ Start over</button>
       </div>
       <h3>Your matches</h3>
       <div id="matchList" class="sec" style="margin-top:0"></div>
@@ -487,6 +568,17 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
     <button data-tab="drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1-4.5-4.2 6.1-.8z"/></svg>Top 3</button>
   </nav>
 </div>
+<div class="setup" id="setup" hidden role="dialog" aria-modal="true" aria-label="Plan your weekend">
+  <div class="setupIn">
+    <div class="setupHead"><div class="brand" id="setupBrand"></div><button class="linkbtn" id="setupX">Close ✕</button></div>
+    <h2>Plan your weekend</h2>
+    <p class="muted">Budget, mood, departure and dates. We find the flight + hotel weekends that fit.</p>
+    <div id="setupSlot"></div>
+    <button class="btn big" id="setupGo">Show my weekends</button>
+  </div>
+</div>
+<div class="loadOv" id="loadOv" hidden aria-live="polite"><div class="ldCard"><div class="ldSpin"><span class="ring"></span><span class="pl">✈︎</span></div><b id="ldTitle">Finding your perfect weekends</b><p id="ldSub">It only takes a few seconds.</p><div class="ldBar"><i id="ldFill"></i></div><small id="ldCount"></small></div></div>
+<div class="topToast" id="topToast" hidden role="status"></div>
 <div id="layer"></div>
 <div class="toast" id="toast" hidden></div>
 
@@ -634,7 +726,7 @@ const VLABEL={sea:"sea",city:"city",food:"food",culture:"culture",nightlife:"nig
 
 /* ===== state ===== */
 const S={budget:750,budgetOn:true,filterOn:false,vibes:new Set(["sea","food"]),flex:false,direct:false,hotelPref:{stars4:true,central:true},
-  taste:{v:{},stars:0,central:0,price:0},seen:new Set(),saved:[],choice:{},together:{on:false,who:0,names:["Player 1","Player 2"],likes:[new Set(),new Set()]},split:false};
+  taste:{v:{},stars:0,central:0,price:0},seen:new Set(),saved:[],choice:{},together:{on:false,who:0,names:["Player 1","Player 2"],likes:[new Set(),new Set()]},lastQ:"",lastTop:"",split:false};
 let deck=[], sample=null;
 const $=id=>document.getElementById(id);
 const eur=(n,dec)=>"€"+(dec?n.toFixed(2):Math.round(n).toLocaleString("en-GB"));
@@ -648,7 +740,7 @@ const ORI=()=>S.trip.origin||"MIL"; const oriName=()=>ORIGINS[ORI()]||ORI();
 const nightsOf=()=>Math.round((new Date(S.trip.to)-new Date(S.trip.from))/864e5);
 const dfmt=iso=>new Date(iso+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
 const wd=iso=>new Date(iso+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short"}); const dayFrom=()=>wd(S.trip.from), dayTo=()=>wd(S.trip.to);
-function renderTrip(){
+function renderTrip(){ setTimeout(renderSum,0);
   $("tripTxt").innerHTML=`<b>From ${oriName()} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)}</b><br>${S.trip.adults} adult${S.trip.adults>1?"s":""} · ${nightsOf()} night${nightsOf()>1?"s":""} · flight + hotel`;
   $("bLabel").textContent=`Budget for ${S.trip.adults}`;
 }
@@ -739,7 +831,7 @@ async function checkTimes(){
   }catch(e){ FC.err=mcpMsg(e); FC.res={}; fcSnapshot(); }
   FC.busy=false;
   if(FC.again){FC.again=false; return checkTimes();}
-  S.seen.clear(); renderDeck();
+  S.seen.clear(); renderDeck(); loadUI(); topSoon();
 }
 let fcT=0; const fcSoon=()=>{clearTimeout(fcT);fcT=setTimeout(checkTimes,500)};
 function fcHours(code){
@@ -754,8 +846,8 @@ function fcBlock(code){
   return `<span class="eyebrow">Flights in your package after your times · live</span><div class="legs">${fcLegHTML(dayFrom(),v.o)}${fcLegHTML(dayTo(),v.i)}</div>`;
 }
 /* ===== live search over many cities ===== */
-const LIVE={busy:false,done:0,total:0,msg:""};
-function liveBar(){const b=$("liveBar"); if(!b) return;
+const LIVE={busy:false,done:0,total:0,msg:"",gen:0,fg:false};
+function liveBar(){loadUI();const b=$("liveBar"); if(!b) return;
   if(LIVE.busy){b.hidden=false;b.innerHTML=`<span><span class="spin" style="width:12px;height:12px;vertical-align:-1px"></span> Finding weekends in more cities · <b>${LIVE.done}/${LIVE.total}</b></span>`;}
   else if(LIVE.msg){b.hidden=false;b.innerHTML=`<span>${LIVE.msg}</span>`;}
   else b.hidden=true;}
@@ -775,13 +867,14 @@ async function liveOne(d,from,to,ad){
   d.hrs=d.more?null:d.hrs;
 }
 async function liveSearch(list,from,to,ad){
-  LIVE.busy=true;LIVE.done=0;LIVE.total=list.length;LIVE.msg="";liveBar();
+  const g=++LIVE.gen; LIVE.busy=true;LIVE.done=0;LIVE.total=list.length;LIVE.msg="";liveBar();
   try{
     if(mcp&&mcp.batchSearch){
       const chunks=[]; for(let k=0;k<list.length;k+=8) chunks.push(list.slice(k,k+8));
       let fails=0;
       await Promise.all(chunks.map(async ch=>{
         let res=null; try{res=await mcp.batchSearch(ORI(),from,to,ad,ch.map(d=>d.code));}catch(e){fails++;}
+        if(g!==LIVE.gen) return;
         ch.forEach(d=>{ if(d.code===ORI()) d.hotels=[]; else setHotels(d,res&&res[d.code]); d.hrs=d.more?null:d.hrs; });
         LIVE.done+=ch.length; liveBar(); renderSoon();
       }));
@@ -792,7 +885,7 @@ async function liveSearch(list,from,to,ad){
     }
     return null;
   }catch(e){return e}
-  finally{LIVE.busy=false;liveBar();}
+  finally{ if(g===LIVE.gen){LIVE.busy=false;LIVE.fg=false;} liveBar(); }
 }
 async function discoverMore(){
   if(!mcp||LIVE.busy) return;
@@ -822,15 +915,17 @@ async function applyTrip(){
   }
   if(!mcp){$("orig").value=S.trip.origin;st.textContent="Other departure cities and new dates need live prices from the lastminute.com connector. Try again in a minute.";return}
   $("applyTrip").disabled=true; st.textContent="Searching live prices from "+ORIGINS[org]+"…";
-  S.trip={...S.trip,from,to,adults:ad,live:true,origin:org};
+  S.trip={...S.trip,from,to,adults:ad,live:true,origin:org}; LIVE.fg=true;
   DATA.forEach(d=>{d.hotels=[];d.hrs=null;d.tried=true});
   S.choice={};S.seen.clear();FC.key="";FC.res={};renderTrip();renderDeck();
+  const myGen=LIVE.gen+1;
   const err=await liveSearch(DATA.slice(),from,to,ad);
+  if(myGen!==LIVE.gen) return;
   if(!err){
     const n=DATA.filter(d=>d.hotels.length).length;
     st.textContent=`Live prices for ${n} cities · ${new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})}`;
   }else{st.textContent=mcpMsg(err); DATA.forEach(d=>{d.hotels=ORIG.find(o=>o.code===d.code).hotels.slice();d.hrs=hoursThere(d.code)}); S.trip={...S.trip,from:BASE.from,to:BASE.to,adults:2,live:false,origin:"MIL"};$("orig").value="MIL"}
-  $("applyTrip").disabled=false; S.choice={};S.seen.clear();renderTrip();renderDeck();checkTimes();
+  $("applyTrip").disabled=false; S.choice={};S.seen.clear();renderTrip();renderDeck();checkTimes();loadUI();topSoon();
 }
 
 /* ===== scoring ===== */
@@ -1047,7 +1142,7 @@ function decide(code,liked){
   else { if(o.h.price>S.budget) S.taste.price+=0.3; }
   if(S.together.on){
     const me=S.together.who; if(liked&&!S.together.likes[me].has(code)){S.together.likes[me].add(code);hist.tg=me}
-    if(liked&&S.together.likes[1-me].has(code)){showMatch(o)}
+    if(liked&&S.together.likes.every(s=>s.has(code))){showMatch(o)}
   } else if(liked&&!S.saved.find(s=>s.code===code)){S.saved.push({code,j:o.h.j});hist.saved=true;updateCount();toast(`Saved ${o.d.city}`)}
   HIST.push(hist); if(HIST.length>30) HIST.shift();
   renderDeck();
@@ -1229,20 +1324,113 @@ function renderSaved(){
 }
 $("split").onchange=e=>{S.split=e.target.checked;renderSaved();renderDeck()};
 
+
+/* ===== setup popup ===== */
+function renderSum(){
+  const a=$("sumA"), b=$("sumB"); if(!a) return;
+  const v=[...S.vibes].map(x=>VLABEL[x]); const t=S.trip;
+  a.textContent=`${oriName()} · ${dfmt(t.from)} → ${dfmt(t.to)}`;
+  b.textContent=[`${t.adults} adult${t.adults>1?"s":""}`, S.budgetOn?`max ${eur(S.budget)}`:"no budget limit", v.length?v.join(", "):"", t.tOut?`leave after ${t.tOut}`:"", t.tIn?`home after ${t.tIn}`:""].filter(Boolean).join(" · ");
+}
+function openSetup(){
+  $("dFrom").value=S.trip.from; $("dTo").value=S.trip.to; $("adults").value=String(S.trip.adults);
+  $("orig").value=ORI(); $("tOut").value=S.trip.tOut||""; $("tIn").value=S.trip.tIn||"";
+  const td=new Date().toISOString().slice(0,10);
+  if($("dFrom").value<td){ const d=new Date(); d.setDate(d.getDate()+((5-d.getDay()+7)%7||7)); $("dFrom").value=d.toISOString().slice(0,10); d.setDate(d.getDate()+2); $("dTo").value=d.toISOString().slice(0,10); }
+  $("liveStatus").textContent="";
+  $("setup").hidden=false; document.body.style.overflow="hidden";
+  setTimeout(()=>{try{$("setupGo").focus({preventScroll:true})}catch(e){}},50);
+}
+function closeSetup(){ $("setup").hidden=true; document.body.style.overflow=""; }
+async function applySetup(){
+  const f=$("dFrom").value,t=$("dTo").value,ad=+$("adults").value,o=$("orig").value,tO=$("tOut").value,tI=$("tIn").value;
+  const st=$("liveStatus"), today=new Date().toISOString().slice(0,10);
+  if(!f||!t||t<=f){st.textContent="Pick a return date after the departure date.";return}
+  if(f<today){st.textContent="The departure date must be today or later.";return}
+  if((new Date(t)-new Date(f))/864e5>7){st.textContent="Fridayaway is built for short breaks: up to 7 nights.";return}
+  const tripChanged=f!==S.trip.from||t!==S.trip.to||ad!==S.trip.adults||o!==ORI();
+  const timesChanged=tO!==(S.trip.tOut||"")||tI!==(S.trip.tIn||"");
+  const q=$("q").value.trim(), qChanged=q&&q!==S.lastQ;
+  closeSetup(); showTab("discover");
+  if(qChanged){ S.lastQ=q; await run(); }
+  if(tripChanged){ await applyTrip(); }
+  else if(timesChanged){ S.trip.tOut=tO; S.trip.tIn=tI; S.seen.clear(); renderSum(); checkTimes(); }
+  else { S.seen.clear(); renderDeck(); }
+  renderSum(); topSoon();
+}
+
+/* ===== loading overlay ===== */
+const LD={reading:false,msgI:0,t:0};
+const LD_MSG=["Checking flights from your city…","Comparing hotels for your dates…","Matching your budget and mood…","Almost there…"];
+function loadUI(){
+  const ov=$("loadOv"); if(!ov) return;
+  let show=false, title="Finding your perfect weekends", done=0, total=0;
+  if(LD.reading){ show=true; title="Reading your request"; }
+  else if(fcOn()&&FC.busy){ show=true; title="Checking real flight times"; done=FC.done; total=FC.total; }
+  else if(LIVE.busy&&LIVE.fg){
+    done=LIVE.done; total=LIVE.total;
+    const cards=(typeof deck!=="undefined"&&deck)?deck.length:0;
+    show=!(cards>=4&&done>=total*0.4);
+  }
+  ov.hidden=!show || !$("setup").hidden;
+  if(!show){ clearInterval(LD.t); LD.t=0; return; }
+  $("ldTitle").textContent=title;
+  const pct=total?Math.round(done/total*100):(LD.reading?60:15);
+  $("ldFill").style.width=Math.max(8,pct)+"%";
+  $("ldCount").textContent=total?`${done} of ${total} destinations`:"";
+  if(!LD.t){ LD.msgI=0; $("ldSub").textContent="It only takes a few seconds."; LD.t=setInterval(()=>{ $("ldSub").textContent=LD_MSG[LD.msgI++%LD_MSG.length]; },2200); }
+}
+setInterval(()=>{ if(LIVE.busy||FC.busy||LD.reading||!$("loadOv").hidden) loadUI(); },400);
+
+/* ===== top 1 mini popup ===== */
+function topList(){ return (S.filterOn?pool():DATA.filter(d=>fits(d)&&fcOK(d.code))).map(scoreDest).sort(byBudget).filter(o=>!S.budgetOn||o.h.price<=S.budget).slice(0,3); }
+let topT=0;
+function topSoon(){
+  clearTimeout(topT); let tries=0;
+  const go=()=>{ if((LIVE.busy&&LIVE.fg)||FC.busy||LD.reading||!$("setup").hidden){ if(tries++<240) topT=setTimeout(go,500); return; } showTop1(); };
+  topT=setTimeout(go,700);
+}
+function showTop1(){
+  const top=topList(), el=$("topToast"); if(!el||!top.length||S.together.on) return;
+  const o=top[0], key=[o.d.code,o.h.j,ORI(),S.trip.from,S.budget].join("|");
+  if(key===S.lastTop) return; S.lastTop=key;
+  el.innerHTML=`<div class="tt-img">${art(o.d,true)}</div><div class="tt-t"><small>★ YOUR #1 OF TOP 3</small><b>${o.d.city} · ${eur(o.h.price)} for ${S.trip.adults}</b></div><button class="tt-x" aria-label="Close">✕</button>`;
+  el.hidden=false;
+  el.onclick=e=>{ if(e.target.closest(".tt-x")){el.hidden=true;return} el.hidden=true; openSheet(o.d.code); };
+  clearTimeout(el.t); el.t=setTimeout(()=>{el.hidden=true},7000);
+}
+
+/* ===== together: N players ===== */
+const AV=["😎","🕵️","🧑‍🚀","🏄","🧑‍🎤","🦸"];
+function tgStatus(i){ const T=S.together; if(!T.on) return T.likes[i]&&T.likes[i].size?"Done ✓":"Ready"; return i<T.who?"Done ✓":i===T.who?"Swiping now":"🔒 Waiting"; }
 /* ===== together ===== */
 function renderTogether(){
-  const T=S.together;
-  $("tgMode").textContent=T.on?`On · ${T.names[T.who]} is swiping`:"Off";
-  $("tgStart").textContent=T.on?"Back to normal mode":"Start: Player 1 swipes first";
-  $("whoBar").hidden=!T.on; $("whoTxt").textContent=T.on?`${T.names[T.who]} is swiping`:"";
-  const m=[...T.likes[0]].filter(c=>T.likes[1].has(c));
-  $("matchList").innerHTML=m.length?m.map(c=>{const d=DATA.find(x=>x.code===c),h=hotelFor(d);return `<div class="item"><div class="thumb">${art(d,true)}</div><div><h3>${d.city}</h3><div class="sub">${starStr(h.stars)} ${h.name}</div></div><div class="p">${eur(h.price)}</div></div>`}).join(""):`<div class="box"><p class="muted">No matches yet. When you both swipe right on the same weekend it shows up here.</p></div>`;
+  const T=S.together, N=T.names.length;
+  $("lobbyN").textContent=`${N} players · ${T.on?`${T.names[T.who]} is swiping`:"add friends, then start"}`;
+  $("players").innerHTML=T.names.map((n,i)=>`<div class="pl${T.on&&i===T.who?" turn":""}"><div class="av">${AV[i%AV.length]}</div><input value="${n.replace(/"/g,"&quot;")}" data-i="${i}" maxlength="14" aria-label="Player ${i+1} name" ${T.on?"disabled":""}><span class="st">${tgStatus(i)}</span>${!T.on&&N>2?`<button class="rmP" data-rm="${i}" aria-label="Remove ${n}">✕</button>`:""}</div>`).join("")
+    +(!T.on&&N<6?`<button class="pl add" id="addP"><span class="av">＋</span>Add player</button>`:"");
+  $("players").querySelectorAll("input").forEach(inp=>inp.onchange=()=>{T.names[+inp.dataset.i]=inp.value.trim()||`Player ${+inp.dataset.i+1}`;renderTogether()});
+  $("players").querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{const i=+b.dataset.rm;T.names.splice(i,1);T.likes.splice(i,1);renderTogether()});
+  const ad=$("addP"); if(ad) ad.onclick=()=>{T.names.push(`Player ${N+1}`);T.likes.push(new Set());renderTogether()};
+  $("tgStart").textContent=T.on?"Stop the game":`Start: ${T.names[0]} swipes first`;
+  const last=T.on&&T.who===N-1;
+  $("whoBar").hidden=!T.on; $("whoTxt").textContent=T.on?`${AV[T.who%AV.length]} ${T.names[T.who]} is swiping · ${T.who+1}/${N}`:"";
+  $("whoSwitch").textContent=T.on?(last?"See results ▸":`Pass to ${T.names[T.who+1]} ▸`):"";
+  const all=[...(T.likes[0]||[])].filter(c=>T.likes.every(s=>s.has(c)));
+  const almost=N>2?[...new Set(T.likes.flatMap(s=>[...s]))].filter(c=>!all.includes(c)&&T.likes.filter(s=>s.has(c)).length===N-1):[];
+  const item=(c,tag)=>{const d=DATA.find(x=>x.code===c),h=hotelFor(d);return `<div class="item open" role="button" tabindex="0" data-open="${c}"><div class="thumb">${art(d,true)}</div><div><h3>${d.city}</h3><div class="sub">${starStr(h.stars)} ${h.name}</div>${tag?`<div class="almost">${tag}</div>`:""}</div><div class="p">${eur(h.price)}</div></div>`};
+  $("matchList").innerHTML=all.length||almost.length
+    ? all.map(c=>item(c,`Liked by all ${N} ✓`)).join("")+almost.map(c=>item(c,`Almost: ${N-1} of ${N} like it`)).join("")
+    : `<div class="mystery"><div class="mc">?<i>🔒</i></div><div class="mc">?<i>🔒</i></div><div class="mc">?<i>🔒</i></div></div><p class="mysteryTxt">Your shared picks will appear here. Are you on the same wavelength? 👀✈️</p>`;
+  $("matchList").querySelectorAll("[data-open]").forEach(el=>el.onclick=()=>openSheet(el.dataset.open));
 }
-$("tgStart").onclick=()=>{const T=S.together;T.on=!T.on;T.who=0;S.seen.clear();renderTogether();if(T.on){showTab("discover");toast("Player 1 swipes first. Then pass the phone.")}renderDeck()};
-$("tgReset").onclick=()=>{S.together.likes=[new Set(),new Set()];S.seen.clear();renderTogether();renderDeck();toast("Swipes cleared.")};
-$("whoSwitch").onclick=()=>{const T=S.together;T.who=1-T.who;S.seen.clear();renderTogether();renderDeck();toast(`${T.names[T.who]}: your turn. Same deck, fresh start.`)};
+$("tgStart").onclick=()=>{const T=S.together;T.on=!T.on;T.who=0;S.seen.clear();renderTogether();if(T.on){showTab("discover");toast(`${T.names[0]} swipes first. Then pass the phone.`)}renderDeck()};
+$("tgReset").onclick=()=>{S.together.likes=S.together.names.map(()=>new Set());S.together.on=false;S.together.who=0;S.seen.clear();renderTogether();renderDeck();toast("New game: swipes cleared.")};
+$("whoSwitch").onclick=()=>{const T=S.together;
+  if(T.who>=T.names.length-1){T.on=false;T.who=0;S.seen.clear();renderTogether();renderDeck();showTab("together");toast("Everyone has swiped. Here are your matches!");return}
+  T.who++;S.seen.clear();renderTogether();renderDeck();toast(`${T.names[T.who]}: your turn. Same deck, fresh start.`)};
 function showMatch(o){
-  $("layer").innerHTML=`<div class="matchPop" role="dialog" aria-label="It's a match"><div class="in"><div style="height:130px;flex:none;border-radius:14px;overflow:hidden;position:relative">${art(o.d)}</div><h2>It's a match!</h2><p>You both want <b>${o.d.city}</b>. ${o.h.name}, ${eur(o.h.price)} for two.</p><button class="btn" id="mOk">See matches</button><button class="btn ghost" id="mGo">Keep swiping</button></div></div>`;
+  $("layer").innerHTML=`<div class="matchPop" role="dialog" aria-label="It's a match"><div class="in"><div style="height:130px;flex:none;border-radius:14px;overflow:hidden;position:relative">${art(o.d)}</div><h2>It's a match!</h2><p>${S.together.names.length>2?`All ${S.together.names.length} of you want`:"You both want"} <b>${o.d.city}</b>. ${o.h.name}, ${eur(o.h.price)} for ${S.trip.adults}.</p><button class="btn" id="mOk">See matches</button><button class="btn ghost" id="mGo">Keep swiping</button></div></div>`;
   $("mOk").onclick=()=>{$("layer").innerHTML="";showTab("together")};$("mGo").onclick=()=>$("layer").innerHTML="";
   renderTogether();
 }
@@ -1258,7 +1446,7 @@ function renderDrop(){
 $("dropSave").onclick=()=>toast("Saved. Top 3 every Tuesday.");
 
 /* ===== ask / filters ===== */
-function syncChips(){document.querySelectorAll(".chip").forEach(c=>{const on=c.dataset.v?S.vibes.has(c.dataset.v):c.dataset.f==="flex"?S.flex:S.direct;c.setAttribute("aria-pressed",String(on))});$("b").value=S.budget;$("bv").textContent=S.budgetOn?eur(S.budget):"No limit";$("b").style.opacity=S.budgetOn?1:.4;$("bClear").textContent=S.budgetOn?"✕":"Set";}
+function syncChips(){ setTimeout(renderSum,0);document.querySelectorAll(".chip").forEach(c=>{const on=c.dataset.v?S.vibes.has(c.dataset.v):c.dataset.f==="flex"?S.flex:S.direct;c.setAttribute("aria-pressed",String(on))});$("b").value=S.budget;$("bv").textContent=S.budgetOn?eur(S.budget):"No limit";$("b").style.opacity=S.budgetOn?1:.4;$("bClear").textContent=S.budgetOn?"✕":"Set";}
 document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{if(c.dataset.v){S.vibes.has(c.dataset.v)?S.vibes.delete(c.dataset.v):S.vibes.add(c.dataset.v)}else if(c.dataset.f==="flex")S.flex=!S.flex;else S.direct=!S.direct;S.seen.clear();syncChips();renderDeck()});
 $("b").oninput=e=>{S.budget=+e.target.value;S.budgetOn=true;syncChips();renderDeck()};
 $("bClear").onclick=()=>{S.budgetOn=!S.budgetOn;syncChips();S.seen.clear();renderDeck()};
@@ -1283,7 +1471,7 @@ function parseRules(t){
 async function run(){
   const t=$("q").value.trim(); if(!t) return;
   $("go").disabled=true;
-  if(sample){$("read").textContent="Reading…";
+  if(sample){$("read").textContent="Reading…"; LD.reading=true; loadUI();
     try{const o=await sample.json(`Read this weekend-trip request and reply with ONLY a JSON object:
 {"budget": total EUR for everyone or null, "vibes": array from ["sea","city","food","culture","nightlife","relax"], "flexible": bool (wants free cancellation), "direct": bool (wants direct flights), "nice_hotel": bool (wants 4 stars or a nice hotel), "central": bool (wants to be central)}
 Example: {"budget":750,"vibes":["sea","food"],"flexible":false,"direct":false,"nice_hotel":true,"central":true}
@@ -1291,10 +1479,10 @@ Request: """${t.slice(0,1000)}"""`,{modelTier:"quick"});
       if(!o||typeof o!=="object") throw {}; applyIntent(o,"claude");}
     catch(e){if(e&&["not_granted","sampling_disabled","capability_disabled","not_declared"].includes(e.code)) sample=null; applyIntent(parseRules(t),"rules");}
   } else applyIntent(parseRules(t),"rules");
-  $("go").disabled=false;
+  $("go").disabled=false; LD.reading=false; loadUI(); renderSum();
 }
 $("go").onclick=run;
-$("q").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();run()}});
+$("q").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();applySetup()}});
 
 /* ===== tabs ===== */
 function showTab(t){
@@ -1314,9 +1502,14 @@ for(let i=1;i<=6;i++) $("c"+i).addEventListener("input",calc); calc();
 
 /* ===== toast + boot ===== */
 function toast(m){const t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2400)}
-$("dFrom").value=S.trip.from;$("dTo").value=S.trip.to;$("dFrom").min=new Date().toISOString().slice(0,10);$("applyTrip").onclick=applyTrip;$("orig").onchange=()=>applyTrip();
-["tOut","tIn"].forEach(id=>$(id).onchange=()=>{S.trip.tOut=$("tOut").value;S.trip.tIn=$("tIn").value;S.seen.clear();fcSoon()});renderTrip();
+$("dFrom").value=S.trip.from;$("dTo").value=S.trip.to;$("dFrom").min=new Date().toISOString().slice(0,10);$("applyTrip").onclick=applyTrip;renderTrip();
 applyIntent(parseRules($("q").value),"boot");
+S.lastQ=$("q").value.trim();
+(function(){ const ask=document.querySelector(".ask"); $("setupSlot").appendChild(ask); $("more").open=true;
+  const br=document.querySelector(".top .brand"); if(br) $("setupBrand").innerHTML=br.innerHTML;
+  $("setupGo").onclick=applySetup; $("setupX").onclick=()=>{closeSetup();loadUI();}; $("sumBar").onclick=openSetup;
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("setup").hidden){closeSetup();loadUI();} });
+  renderSum(); openSetup(); })();
 (async()=>{try{sample=window.claude?await window.claude.use("sample"):null}catch(e){sample=null}})();
 
 /* ===== Standalone mode (outside Claude): lastminute.com through this site's own /api/lm proxy ===== */

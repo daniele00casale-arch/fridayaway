@@ -512,6 +512,13 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
 .cf{position:absolute;left:50%;top:120px;pointer-events:none;font-size:18px;z-index:5;animation:cf 1.2s cubic-bezier(.2,.7,.4,1) forwards}
 @keyframes cf{to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
 @media (prefers-reduced-motion:reduce){.vChip,.vPass,.neonAv,.fpRing,.fBack:after,.bTip .em{animation:none!important}.fIn{transition:none!important}}
+
+.split{display:flex;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:6px;font-weight:600}
+.split:empty{display:none}
+.split span{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:3px 8px;white-space:nowrap}
+.split.wait span{opacity:.55}
+.split small{flex-basis:100%;font-weight:500;font-size:11px;opacity:.8}
+.totalbox + .split{margin-top:-2px}
 </style>
 </head>
 <body>
@@ -1166,7 +1173,7 @@ function cardHTML(o,pos){
       ${fcLegs(d.code)?fcBlock(d.code):FL[d.code]&&!S.trip.live&&!timeIssue(d.code)?`<div class="legs"><div class="leg"><span>${dayFrom()}</span><b>${FL[d.code].o[0]} ${FL[d.code].o[2]} → ${FL[d.code].o[1]} ${FL[d.code].o[3]}</b><span class="fn">${FL[d.code].o[4].split(" · ")[0]}</span></div><div class="leg"><span>${dayTo()}</span><b>${FL[d.code].i[0]} ${FL[d.code].i[2]} → ${FL[d.code].i[1]} ${FL[d.code].i[3]}</b><span class="fn">${FL[d.code].i[4].split(" · ")[0]}</span></div></div>`:""}
       ${fcLegs(d.code)?"":S.trip.live||!FL[d.code]?`<div class="leg" style="grid-template-columns:1fr"><span>Exact flights are shown when you open this weekend</span></div>`:timeIssue(d.code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights to match your times (${timeTxt()}) are picked when you book</span></div>`:FL[d.code]&&FL[d.code].note?`<div class="warnline">${FL[d.code].note}</div>`:earlyReturn(d.code)?`<div class="warnline">Early flight home on Sunday (${FL[d.code].i[2]})</div>`:""}
       ${up?`<div class="upg"><span><b>+${eur(up.price-h.price)}</b> for ${starStr(up.stars)} ${up.name.length>26?up.name.slice(0,25)+"…":up.name}${up.rating?` · ${(up.rating/10).toFixed(1)}`:""}</span><button data-up="${d.code}|${up.j}">Step up</button></div>`:""}
-      <div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}</div>${marginPill(h.price)}</div>
+      <div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}${pos<2?splitHTML(d.code,h.price):""}</div>${marginPill(h.price)}</div>
     </div></article>`;
 }
 /* Budget margin: what is left of the budget once flight + hotel are paid, and what that is per day there. */
@@ -1209,7 +1216,7 @@ function renderDeck(){
   const top=w.querySelector(`.card[data-code="${deck[0].d.code}"]`);
   attachDrag(top);
   if(S.backCode===deck[0].d.code&&top){top.classList.add("back",S.backDir);setTimeout(()=>top.classList.remove("back","fromL","fromR"),450);}
-  S.backCode=null; undoState(); if(!S.demoDone&&top){S.demoDone=true;setTimeout(()=>demo(top),900);} document.querySelector(".deckarea").classList.remove("empty");
+  S.backCode=null; undoState(); deck.slice(0,2).forEach(o=>loadSplit(o.d.code)); if(!S.demoDone&&top){S.demoDone=true;setTimeout(()=>demo(top),900);} document.querySelector(".deckarea").classList.remove("empty");
   renderLearned();
 }
 function renderLearned(){
@@ -1323,16 +1330,17 @@ function openSheet(code){
     <h2>${d.city}, ${d.country}</h2>
     <p class="muted">${dfmt(S.trip.from)} → ${dfmt(S.trip.to)} · ${S.trip.adults} adult${S.trip.adults>1?"s":""} ${hrsOf(d)>0?`· <span class="hours">${hrsOf(d)} hours there</span>`:""}</p>
     ${fcLegs(code)?fcBlock(code):""}${!fcLegs(code)&&f&&!S.trip.live&&timeIssue(code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights matching your times (${timeTxt()}) are picked when you book</span></div>`:""}${!fcLegs(code)&&f&&!S.trip.live&&!timeIssue(code)?`<span class="eyebrow">Flights in this package</span><div class="legs">${legHTML(dayFrom(),f.o)}${legHTML(dayTo(),f.i)}</div>${f.note?`<div class="warnline">${f.note}</div>`:""}`:""}
-    <span class="eyebrow">Flight + hotel · total for ${S.trip.adults}</span>${rows}${S.budgetOn?`<div id="sheetMargin">${marginHTML(cur.price)}</div>`:""}
+    <span class="eyebrow">Flight + hotel · total for ${S.trip.adults}</span>${rows}<div id="sheetSplit">${splitHTML(code,cur.price,true)}</div>${S.budgetOn?`<div id="sheetMargin">${marginHTML(cur.price)}</div>`:""}
     <div id="bookArea" style="display:flex;flex-direction:column;gap:10px"></div>
     <button class="btn" id="sheetBook">Book</button>
     <button class="btn ghost" id="sheetSave">Save</button>
   </div>`;
   const close=()=>{bookCtl.n++;$("layer").innerHTML=""};
   $("scrim").onclick=close; $("sheetClose").onclick=close;
-  $("layer").querySelectorAll(".hrow").forEach(r=>{const pick=()=>{S.choice[code]=+r.dataset.j;$("layer").querySelectorAll(".hrow").forEach(x=>x.setAttribute("aria-pressed",String(x===r)));$("bookArea").innerHTML="";$("sheetBook").hidden=false;renderDeck();renderSaved()};r.onclick=()=>{pick();const m=$("sheetMargin");if(m)m.innerHTML=marginHTML(hotelFor(d).price)};r.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}}});
+  $("layer").querySelectorAll(".hrow").forEach(r=>{const pick=()=>{S.choice[code]=+r.dataset.j;$("layer").querySelectorAll(".hrow").forEach(x=>x.setAttribute("aria-pressed",String(x===r)));$("bookArea").innerHTML="";$("sheetBook").hidden=false;renderDeck();renderSaved()};r.onclick=()=>{pick();const m=$("sheetMargin");if(m)m.innerHTML=marginHTML(hotelFor(d).price);const sp=$("sheetSplit");if(sp)sp.innerHTML=splitHTML(code,hotelFor(d).price,true)};r.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}}});
   $("sheetSave").onclick=()=>{const j=hotelFor(d).j;const ex=S.saved.find(s=>s.code===code);if(ex)ex.j=j;else S.saved.push({code,j});S.seen.add(code);updateCount();close();renderDeck();toast(`Saved ${d.city}`)};
   $("sheetBook").onclick=()=>startBooking(d,hotelFor(d));
+  loadSplit(code);
 }
 
 /* ===== live booking through the viewer's lastminute.com connector ===== */
@@ -1398,7 +1406,7 @@ async function pickRooms(d,h,searchId,run){
         b.remove();
         const okOut=timeOK(iso2(fo&&fo.departure_time),S.trip.tOut), okIn=timeOK(iso2(fi&&fi.departure_time),S.trip.tIn);
         const box=document.createElement("div"); box.style.cssText="display:flex;flex-direction:column;gap:10px"; area.appendChild(box);
-        const showLink=(url,sum)=>{const pr=sum&&sum.price?eur(parseFloat(String(sum.price).replace(/[^0-9.]/g,"")),true):"";box.insertAdjacentHTML("beforeend",`${pr?`<div class="totalbox"><span>Total price · all included</span><b>${pr}</b><small>Return flights + hotel for ${nightsOf()} night${nightsOf()>1?"s":""} · ${S.trip.adults} adult${S.trip.adults>1?"s":""}${sum.cancellation_policy?` · ${sum.cancellation_policy}`:""}</small></div>`:""}<a class="checkout" href="${url}" target="_blank" rel="noopener">Open checkout on lastminute.com ↗</a><p class="note">Opens this exact flight + hotel + room. lastminute.com confirms the final price before you pay.</p>`)};
+        const showLink=(url,sum)=>{setTimeout(()=>{const v=sum&&sum.price?parseFloat(String(sum.price).replace(/[^0-9.]/g,"")):0;const tb=box.querySelectorAll(".totalbox"),last=tb[tb.length-1];if(v&&last){const sp=$("sheetSplit");if(sp)sp.innerHTML="";last.insertAdjacentHTML("afterend",splitHTML(d.code,v,true));loadSplit(d.code)}},0);const pr=sum&&sum.price?eur(parseFloat(String(sum.price).replace(/[^0-9.]/g,"")),true):"";box.insertAdjacentHTML("beforeend",`${pr?`<div class="totalbox"><span>Total price · all included</span><b>${pr}</b><small>Return flights + hotel for ${nightsOf()} night${nightsOf()>1?"s":""} · ${S.trip.adults} adult${S.trip.adults>1?"s":""}${sum.cancellation_policy?` · ${sum.cancellation_policy}`:""}</small></div>`:""}<a class="checkout" href="${url}" target="_blank" rel="noopener">Open checkout on lastminute.com ↗</a><p class="note">Opens this exact flight + hotel + room. lastminute.com confirms the final price before you pay.</p>`)};
         if(okOut&&okIn&&!(S.trip.tOut||S.trip.tIn)){showLink(q.booking_url,q.booking_summary);box.insertAdjacentHTML("beforeend",`<button class="btn ghost" id="moreFl">See other flight times</button>`);$("moreFl").onclick=()=>{$("moreFl").remove();altFlights(p,box,showLink,true)};return}
         if(okOut&&okIn){box.insertAdjacentHTML("beforeend",`<div class="leg" style="grid-template-columns:1fr"><span>These flights match your times.</span></div>`);showLink(q.booking_url,q.booking_summary);return}
         area.querySelector(".legs")&&(area.querySelector(".legs").style.display="none");
@@ -1436,6 +1444,40 @@ async function altFlights(p,box,showLink,all,firstLink){
       }catch(e){bt.disabled=false;bt.textContent="Use this flight";box.insertAdjacentHTML("beforeend",`<div class="errbox">${mcpMsg(e)}</div>`)}
     };
   }catch(e){$("altStep")&&$("altStep").remove();$("altFind")&&$("altFind").remove();box.insertAdjacentHTML("beforeend",`<div class="errbox">${mcpMsg(e)}</div>`)}
+}
+
+
+/* ===== flight / hotel split =====
+   lastminute.com sells one package price. We look up the same round-trip flights on their own (search_flights)
+   and show: flights ≈ that price, hotel ≈ package total − flights. */
+const SPLIT={};
+const splitKey=code=>[ORI(),code,S.trip.from,S.trip.to,S.trip.adults,S.trip.tOut||"",S.trip.tIn||""].join("|");
+function splitInner(code,total,full){
+  const v=SPLIT[splitKey(code)];
+  if(v==="busy") return `<span>✈️ Flights …</span><span>🏨 Hotel …</span>`;
+  if(!v) return "";
+  const hot=total-v.fl; if(hot<total*0.12) return "";
+  return `<span>✈️ Flights ≈ ${eur(v.fl)}</span><span>🏨 Hotel ≈ ${eur(hot)}</span>${full?`<small>Estimated split. You pay the package total, flight + hotel together.</small>`:""}`;
+}
+function splitHTML(code,total,full){return `<div class="split${SPLIT[splitKey(code)]==="busy"?" wait":""}" data-split="${code}" data-total="${total}"${full?' data-full="1"':""}>${splitInner(code,total,full)}</div>`}
+function refreshSplit(code){document.querySelectorAll(`[data-split="${code}"]`).forEach(el=>{el.classList.toggle("wait",SPLIT[splitKey(code)]==="busy");el.innerHTML=splitInner(code,+el.dataset.total,!!el.dataset.full)})}
+async function loadSplit(code){
+  const k=splitKey(code); if(SPLIT[k]!==undefined||!mcp) return;
+  SPLIT[k]="busy"; refreshSplit(code);
+  try{
+    const a={departure:ORI(),arrival:code,start_date:S.trip.from,end_date:S.trip.to,adults:+S.trip.adults,max_results:20};
+    if(S.trip.tOut){a.departure_time_start=S.trip.tOut;a.departure_time_end="23:59";}
+    const r=await mcp.callTool(LM,"search_flights",a);
+    const p=(r&&r.payload)||{}; let fl=(p.flights||[]).filter(x=>x&&x.price_amount>0);
+    if(p.currency&&p.currency!=="EUR") fl=[];
+    const tm=s=>{const m=/(\d{1,2}:\d{2})/.exec(String(s||""));return m?m[1].padStart(5,"0"):""};
+    const legs=fcLegs(code);
+    if(legs&&legs.o&&legs.i){const ex=fl.filter(x=>tm(x.outbound)===legs.o.t&&tm(x.return)===legs.i.t); if(ex.length) fl=ex;}
+    if(S.trip.tIn) fl=fl.filter(x=>timeOK(tm(x.return),S.trip.tIn));
+    const best=fl.sort((x,y)=>x.price_amount-y.price_amount)[0];
+    SPLIT[k]=best?{fl:Math.round(best.price_amount)/100}:null;
+  }catch(e){SPLIT[k]=null}
+  refreshSplit(code);
 }
 
 /* ===== saved ===== */

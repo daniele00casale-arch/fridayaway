@@ -1788,5 +1788,6 @@ const STANDALONE=!window.claude&&/^https?:$/.test(location.protocol);
   } else discoverMore();})();
 </script>
 
+<script>if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));</script>
 </body>
 </html>

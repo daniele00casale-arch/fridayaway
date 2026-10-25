@@ -85,8 +85,8 @@ textarea{flex:1;min-width:0;resize:none;height:62px;font:inherit;font-size:15px;
 .art .temp{position:absolute;right:12px;top:12px;background:rgba(255,255,255,.88);color:#111C33;border-radius:999px;padding:4px 10px;font-weight:700;font-size:13px}
 .art .match{position:absolute;left:12px;top:12px;background:var(--butter);color:var(--butter-ink);border-radius:999px;padding:4px 10px;font-weight:700;font-size:12.5px}
 .stamp{position:absolute;top:26px;font-family:var(--display);font-weight:700;font-size:28px;border:4px solid;border-radius:10px;padding:2px 12px;opacity:0;pointer-events:none;z-index:3;background:rgba(255,255,255,.85)}
-.stamp.like{left:18px;color:var(--like);transform:rotate(-12deg)}
-.stamp.nope{right:18px;color:var(--nope);transform:rotate(12deg)}
+.stamp.like{right:18px;color:var(--like);transform:rotate(12deg)}
+.stamp.nope{left:18px;color:var(--nope);transform:rotate(-12deg)}
 .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
 .hotel{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
 .hotel h3{font-size:18px;font-family:var(--body);font-weight:700;line-height:1.2}
@@ -388,6 +388,40 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
 .top{z-index:20}
 .tabbar{z-index:42}
 .scrim{z-index:46}.sheet{z-index:47}.matchPop{z-index:48}
+
+/* ===== playful setup ===== */
+.setupIn .ask{position:relative;overflow:visible;border:0;border-radius:24px;padding:18px 14px 16px;gap:12px;
+  background:linear-gradient(160deg,color-mix(in srgb,#B9A8FF 45%,var(--surface)) 0%,color-mix(in srgb,#9EE7F0 45%,var(--surface)) 45%,color-mix(in srgb,#FFC2DD 45%,var(--surface)) 100%);
+  box-shadow:0 14px 34px rgba(109,93,230,.18)}
+.setupIn .ask:before{content:"✈︎";position:absolute;left:14px;top:-18px;font-size:30px;color:var(--ink);transform:rotate(-18deg);opacity:.85}
+.setupIn .ask:after{content:"☁";position:absolute;right:-6px;top:58px;font-size:44px;color:#fff;text-shadow:0 0 1px rgba(0,0,0,.35)}
+.setupIn .askrow{position:relative}
+.setupIn .askrow:before{content:"★";position:absolute;right:-4px;top:-10px;font-size:20px;color:#8F7BFF;z-index:2}
+.setupIn .askrow:after{content:"★";position:absolute;left:-8px;bottom:-8px;font-size:18px;color:#F5C443;z-index:2}
+.setupIn textarea{height:96px;font-size:16px;line-height:1.45;padding:14px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.8);
+  background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.45));box-shadow:0 6px 18px rgba(109,93,230,.12);color:var(--ink)}
+.setupIn .chip{padding:9px 16px;font-size:14px;background:var(--surface);border-color:color-mix(in srgb,var(--primary) 18%,transparent);box-shadow:0 2px 6px rgba(109,93,230,.08)}
+.setupIn .chip[aria-pressed="true"]{background:var(--ink);color:var(--app);border-color:var(--ink)}
+.setupIn .chip[data-f][aria-pressed="true"]{background:linear-gradient(135deg,#FFD0E6,#E9D8FF);color:var(--ink);border-color:#F4A8CC}
+.setupIn details.more summary{font-size:13.5px}
+.setupIn .when{gap:10px 12px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.setupIn .when label{min-width:0}
+#setup .setupIn .when input{padding:0 2px 0 32px;font-size:13.5px;background-position:9px center;background-size:16px;letter-spacing:-.01em}
+.setupIn .when input::-webkit-calendar-picker-indicator{margin:0;padding:0 2px;opacity:.55}
+.setupIn .when input,.setupIn .when select{box-sizing:border-box;max-width:100%}
+.setupIn .when label{font-size:13px;color:var(--ink);font-weight:600}
+.setupIn .when input,.setupIn .when select{height:46px;border-radius:14px;background-color:var(--surface);border:1px solid color-mix(in srgb,var(--primary) 18%,transparent);
+  box-shadow:0 2px 8px rgba(109,93,230,.08);padding:0 10px 0 38px;background-repeat:no-repeat;background-position:11px center;background-size:18px;font-size:15px}
+.setupIn .when select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236D5DE6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 16l20-8-7 13-3-6-6-2z'/%3E%3C/svg%3E");}
+.setupIn #adults{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236D5DE6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='8' r='3'/%3E%3Cpath d='M3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M21 20c0-2-1-4-3-4.5'/%3E%3C/svg%3E")}
+.setupIn #dFrom,.setupIn #dTo{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236D5DE6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M16 3v4M8 3v4M3 10h18'/%3E%3C/svg%3E")}
+.setupIn #tOut,.setupIn #tIn{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236D5DE6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E")}
+.setupIn .budget{font-size:14px;font-weight:600}
+.setupIn .budget b{color:var(--primary);font-size:17px}
+.setupIn .budget input{height:28px}
+#setupGo{position:relative;overflow:visible;font-size:18px;background:linear-gradient(135deg,#7B5CF0,#5B3FD9);margin-top:6px}
+#setupGo:before{content:"✦ ✧";position:absolute;left:22%;top:-16px;font-size:16px;color:#F5C443;letter-spacing:6px}
+#setupGo:after{content:"✦ 🎉";position:absolute;right:16%;top:-18px;font-size:16px;color:#F36BA6;letter-spacing:4px}
 </style>
 
 <div class="app">
@@ -579,7 +613,7 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
     <h2>Plan your weekend</h2>
     <p class="muted">Budget, mood, departure and dates. We find the flight + hotel weekends that fit.</p>
     <div id="setupSlot"></div>
-    <button class="btn big" id="setupGo">Show my weekends</button>
+    <button class="btn big" id="setupGo">Show my destination!</button>
   </div>
 </div>
 <div class="loadOv" id="loadOv" hidden aria-live="polite"><div class="ldCard"><div class="ldSpin"><span class="ring"></span><span class="pl">✈︎</span></div><b id="ldTitle">Finding your perfect weekends</b><p id="ldSub">It only takes a few seconds.</p><div class="ldBar"><i id="ldFill"></i></div><small id="ldCount"></small></div></div>

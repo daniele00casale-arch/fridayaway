@@ -1,5 +1,5 @@
 // Fridayaway service worker: makes the site installable and opens the last loaded page when offline.
-const CACHE = "fridayaway-v2";
+const CACHE = "fridayaway-v3";
 self.addEventListener("install", (e) => {
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(["/", "/manifest.webmanifest", "/icons/icon-192.png", "/icons/icon-512.png"])).catch(() => {}));

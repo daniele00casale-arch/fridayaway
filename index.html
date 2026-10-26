@@ -2057,7 +2057,7 @@ function restMcp(){
   const getJSON=async url=>{const r=await fetch(url);const j=await r.json().catch(()=>({}));if(!r.ok||j.error) throw {code:"server_unavailable",message:(j.error&&j.error.message)||("HTTP "+r.status)};return j.results||{};};
   return {
     callTool:async(server,tool,args)=>call(tool,args),
-    sights:(city)=>getJSON(`/api/sights?v=2&city=${encodeURIComponent(city)}`),
+    sights:(city)=>getJSON(`/api/sights?v=3&city=${encodeURIComponent(city)}`),
     detail:(q)=>getJSON(`/api/detail?o=${q.o}&d=${q.d}&f=${q.f}&t=${q.t}&a=${q.a}&h=${q.h}`),
     batchSearch:(o,f,t,a,ds)=>getJSON(`/api/search?o=${o}&f=${f}&t=${t}&a=${a}&d=${ds.join(",")}`),
     verify:(q)=>getJSON(`/api/verify?v=2&o=${q.o}&f=${q.f}&t=${q.t}&a=${q.a}&tOut=${encodeURIComponent(q.tOut||"")}&tIn=${encodeURIComponent(q.tIn||"")}&b=${Math.round(q.b||0)}&d=${q.d.join(",")}`)

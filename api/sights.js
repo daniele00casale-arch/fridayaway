@@ -10,7 +10,7 @@ const WV = (q) => get("https://en.wikivoyage.org/w/api.php?format=json&formatver
 const WP = (q) => get("https://en.wikipedia.org/w/api.php?format=json&formatversion=2&" + q);
 const ALIAS = { "Faro & Algarve": "Algarve", "Cyprus (Larnaca)": "Larnaca", "Salento (Brindisi)": "Lecce", "Calabria (Lamezia)": "Tropea", "Ibiza": "Ibiza Town", "Krakow": "Kraków" };
 const BADIMG = /map|flag|coat.of.arms|logo|locator|icon|banner|seal|blank|diagram|\bplan\b|\bsign\b|\.svg/i;
-const NOT = /railway|train station|metro station|bus station|airport|stadium|arena|university|school|college|hospital|hotel|company|football|parish|municipality|district|neighbou?rhood|quarter|freguesia|barrio|roundabout|society|diocese|archdiocese|bank\b|ministry|embassy|olympic|human settlement|village|commune|comune|frazione|island in|archipelago|province|region of|capital of|city in|town in|municipality in|administrative/i;
+const NOT = /railway|train station|metro station|bus station|airport|stadium|arena|university|school|college|hospital|hotel|company|football|parish|municipality|district|neighbou?rhood|quarter|freguesia|barrio|roundabout|society|diocese|archdiocese|bank\b|ministry|embassy|olympic|human settlement|village|commune|comune|frazione|island in|archipelago|province|region of|capital of|city in|town in|municipality in|administrative|festival|event\b|holiday|celebration|parade|fire of|disaster|earthquake|siege|battle|\bwar\b|list of|sport\b|football|game\b|dance|music|cuisine|dish\b|food|drink|beer|wine|tradition|custom|swimming|ball game|person|painter|sculptor|saint\b|king of|queen of|bishop|politician|writer|novel|film|song/i;
 const LANDMARK = /cathedral|church|basilica|palace|castle|fortress|museum|monument|square|plaza|piazza|park|garden|tower|bridge|theat(re|er)|beach|mosque|temple|market|gallery|\bfort\b|abbey|monastery|citadel|alcazaba|alcázar|acropolis|ruins|archaeolog|lighthouse|viewpoint|promenade|gate|\barch\b|fountain|chapel|synagogue|aqueduct|harbou?r|old town|world heritage|cave|grotto|volcano|national park|mountain|lake|bay\b|cliff|canyon|tomb|mausoleum|landmark|attraction|historic/i;
 
 // split a template body on top-level "|" (ignoring the ones inside [[...]] and {{...}})
@@ -32,13 +32,13 @@ const clean = (s) => String(s || "").replace(/\[\[(?:[^|\]]*\|)?([^\]]*)\]\]/g, 
 
 function listings(wt) {
   const out = [];
-  const re = /\{\{\s*(see|do|listing)\s*\|/gi;
+  const re = /\{\{\s*(see|listing)\s*\|/gi;
   let m;
   while ((m = re.exec(wt))) {
     let i = re.lastIndex, depth = 1;
     while (i < wt.length && depth > 0) { const two = wt.slice(i, i + 2); if (two === "{{") { depth++; i += 2; } else if (two === "}}") { depth--; i += 2; } else i++; }
     const p = params(wt.slice(re.lastIndex, i - 2));
-    if (m[1].toLowerCase() === "listing" && !/^(see|do)$/i.test(p.type || "")) continue;
+    if (m[1].toLowerCase() === "listing" && !/^see$/i.test(p.type || "")) continue;
     const name = clean(p.name), img = String(p.image || "").replace(/^(File|Image):/i, "").trim();
     if (name && name.length < 70) out.push({ name, file: /\.(jpe?g|webp)$/i.test(img) && !BADIMG.test(img) ? img : "", wd: p.wikidata || "" });
   }
@@ -120,10 +120,11 @@ module.exports = async (req, res) => {
       if (key === cityKey || key.startsWith(cityKey + "/")) return;
       const desc = (w && w.desc) || "";
       const fromGuide = wvFile !== undefined;
-      if (NOT.test(desc)) return;
-      if (!fromGuide && !LANDMARK.test(desc + " " + name)) return;
+      if (NOT.test(desc) || /^list of/i.test(w ? w.title : name)) return;
+      const sure = LANDMARK.test(desc + " " + (w ? w.title : name));
+      if (!fromGuide && !sure) return;
       const prev = cand.get(key);
-      const item = { name: w ? w.title.replace(/\s*\([^)]*\)$/, "") : name, views: w ? w.views : 0, wvFile: wvFile || (prev && prev.wvFile) || "", wpImg: w && w.img, wpFile: w && w.file, url: w && w.url };
+      const item = { name: w && sure ? w.title.replace(/\s*\([^)]*\)$/, "") : name, views: w && sure ? w.views : 0, wpImg: sure && w ? w.img : undefined, wvFile: wvFile || (prev && prev.wvFile) || "", wpFile: sure && w ? w.file : undefined, url: w && w.url };
       if (!prev || item.views > prev.views || (!prev.wvFile && item.wvFile)) cand.set(key, { ...prev, ...item });
     };
     wv.forEach((x) => add(x.name, x.file));

@@ -1622,7 +1622,7 @@ function renderPanels(){
     <div class="psub">${starStr(h.stars)}${h.rating?` · ${(h.rating/10).toFixed(1)} ${ratingWord(h.rating)}`:""}${h.km!=null?` · ${h.km} km from centre`:""}</div>
     ${ok&&det.hotel.address?`<div class="psub">📍 ${esc_(det.hotel.address)}</div>`:""}
     ${ok&&(det.hotel.checkIn||det.hotel.checkOut)?`<div class="psub">Check-in ${esc_(det.hotel.checkIn||"—")} · Check-out ${esc_(det.hotel.checkOut||"—")}</div>`:""}
-    ${ok&&det.hotel.description?`<p class="pdesc">${esc_(det.hotel.description.slice(0,280))}${det.hotel.description.length>280?"…":""}</p>`:""}
+    ${det===null?`<p class="pnote">Rooms and photos for this hotel are not available right now. Pick another hotel below.</p>`:""}
     ${ok&&det.rooms&&det.rooms.length?`<span class="eyebrow">Rooms · flight + hotel total</span>${det.rooms.slice(0,4).map(x=>`<div class="proom"><span>${esc_(x.name)}<small>${esc_(MEAL[x.meal]||x.meal||"")}${x.cancellation?" · "+esc_(x.cancellation):""}</small></span><b>${eur(x.price,true)}</b></div>`).join("")}`:""}
     ${others.length>1?`<span class="eyebrow">Hotels in ${esc_(d.city)} · tap to switch</span>${others.map(x=>`<button class="pother${x.hid===h.hid?" on":""}" data-j="${x.j}" aria-pressed="${x.hid===h.hid}"><span class="po-img">${x.img?`<img src="${esc_(x.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:"🏨"}</span><span class="po-t"><b>${esc_(x.name)}</b><small>${starStr(x.stars)}${x.km!=null?` · ${x.km} km`:""}</small></span><b>${eur(x.price)}</b></button>`).join("")}`:""}
   </div>`;

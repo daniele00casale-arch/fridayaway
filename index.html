@@ -1202,6 +1202,7 @@ function byBudget(a,b){
   return k(b)-k(a);
 }
 function buildDeck(){applyFcPrices();const p=pool();S.poolN=p.length;deck=p.filter(d=>!S.seen.has(d.code)).map(scoreDest).sort(byBudget);
+  if(S.pin){const i=deck.findIndex(o=>o.d.code===S.pin); if(i>0) deck.unshift(deck.splice(i,1)[0]); else if(i<0) S.pin=null;}
   if(S.backCode){const i=deck.findIndex(o=>o.d.code===S.backCode); if(i>0) deck.unshift(deck.splice(i,1)[0]); if(i<0&&!DATA.some(d=>d.code===S.backCode&&pool().includes(d))) S.backCode=null;}}
 
 /* ===== illustration ===== */
@@ -1410,7 +1411,7 @@ function openSheet(code){
   </div>`;
   const close=()=>{bookCtl.n++;$("layer").innerHTML=""};
   $("scrim").onclick=close; $("sheetClose").onclick=close;
-  $("layer").querySelectorAll(".hrow").forEach(r=>{const pick=()=>{S.choice[code]=+r.dataset.j;$("layer").querySelectorAll(".hrow").forEach(x=>x.setAttribute("aria-pressed",String(x===r)));$("bookArea").innerHTML="";$("sheetBook").hidden=false;renderDeck();renderSaved()};r.onclick=()=>{pick();const m=$("sheetMargin");if(m)m.innerHTML=marginHTML(hotelFor(d).price);const sp=$("sheetSplit");if(sp)sp.innerHTML=splitHTML(code,hotelFor(d).price,true)};r.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}}});
+  $("layer").querySelectorAll(".hrow").forEach(r=>{const pick=()=>{S.choice[code]=+r.dataset.j;if(deck[0]&&deck[0].d.code===code)S.pin=code;$("layer").querySelectorAll(".hrow").forEach(x=>x.setAttribute("aria-pressed",String(x===r)));$("bookArea").innerHTML="";$("sheetBook").hidden=false;renderDeck();renderSaved()};r.onclick=()=>{pick();const m=$("sheetMargin");if(m)m.innerHTML=marginHTML(hotelFor(d).price);const sp=$("sheetSplit");if(sp)sp.innerHTML=splitHTML(code,hotelFor(d).price,true)};r.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}}});
   $("sheetSave").onclick=()=>{const j=hotelFor(d).j;const ex=S.saved.find(s=>s.code===code);if(ex)ex.j=j;else S.saved.push({code,j});S.seen.add(code);updateCount();close();renderDeck();toast(`Saved ${d.city}`)};
   $("sheetBook").onclick=()=>startBooking(d,hotelFor(d));
   loadSplit(code);
@@ -1627,7 +1628,7 @@ function renderPanels(){
     ${others.length>1?`<span class="eyebrow">Hotels in ${esc_(d.city)} · tap to switch</span>${others.map(x=>`<button class="pother${x.hid===h.hid?" on":""}" data-j="${x.j}" aria-pressed="${x.hid===h.hid}"><span class="po-img">${x.img?`<img src="${esc_(x.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:"🏨"}</span><span class="po-t"><b>${esc_(x.name)}</b><small>${starStr(x.stars)}${x.km!=null?` · ${x.km} km`:""}</small></span><b>${eur(x.price)}</b></button>`).join("")}`:""}
   </div>`;
   M.querySelectorAll("[data-ph]").forEach(b=>b.onclick=()=>{PANEL.photo=+b.dataset.ph;renderPanels()});
-  M.querySelectorAll(".pother").forEach(b=>b.onclick=()=>{S.choice[d.code]=+b.dataset.j;renderDeck();renderSaved();});
+  M.querySelectorAll(".pother").forEach(b=>b.onclick=()=>{S.choice[d.code]=+b.dataset.j;S.pin=d.code;renderDeck();renderSaved();});
 }
 /* logo → home */
 function goHome(){

@@ -615,6 +615,25 @@ header.top .brand,#setupBrand{cursor:pointer}
 .pdest-h h3{font-size:20px}.pdest-h span{font-size:12.5px;color:var(--muted)}
 .pcred{font-size:11px;color:var(--muted)}
 .pcred a{color:inherit}
+
+/* ===== phone: top-sights strip under the search bar + tap-to-enlarge ===== */
+.msights{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.msights .msh{font-size:12px;font-weight:700;color:var(--muted)}
+.msRow{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.msRow::-webkit-scrollbar{display:none}
+.msRow button{flex:none;width:76px;scroll-snap-align:start;border:0;background:none;padding:0;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.msRow img{width:76px;height:50px;object-fit:cover;border-radius:10px;display:block;background:var(--bg);box-shadow:0 1px 4px rgba(38,35,58,.12)}
+.msRow span{display:block;font-size:10.5px;line-height:1.2;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.msSkel{display:flex;gap:8px}.msSkel i{width:76px;height:50px;border-radius:10px;flex:none;background:linear-gradient(90deg,var(--bg) 0%,var(--line) 50%,var(--bg) 100%);background-size:200% 100%;animation:pskel 1.2s linear infinite}
+@media (min-width:960px){.msights{display:none!important}}
+.sightBox{position:fixed;inset:0;z-index:49;background:rgba(14,10,30,.78);display:flex;align-items:center;justify-content:center;padding:16px;animation:vIn .2s ease}
+.sightBox figure{margin:0;width:100%;max-width:430px;background:var(--surface);border-radius:18px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4);position:relative}
+.sightBox img{width:100%;height:min(52vh,320px);object-fit:cover;display:block;background:#222}
+.sightBox figcaption{padding:10px 14px 12px;display:flex;flex-direction:column;gap:3px}
+.sightBox figcaption b{font-size:16px}.sightBox figcaption small{font-size:11.5px;color:var(--muted)}.sightBox figcaption a{color:var(--primary)}
+.sbX{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.92);font-size:16px;cursor:pointer}
+.sbNav{position:absolute;top:calc(min(52vh,320px)/2 - 18px);width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.85);font-size:18px;cursor:pointer}
+.sbNav.l{left:10px}.sbNav.r{right:10px}
 </style>
 </head>
 <body>
@@ -629,6 +648,7 @@ header.top .brand,#setupBrand{cursor:pointer}
   <main class="screen gut" data-s="discover">
    <div class="dleft">
     <button class="sumbar" id="sumBar" aria-label="Edit your search"><span class="sb-ic">⌕</span><span class="sb-t"><b id="sumA"></b><span id="sumB"></span></span><span class="sb-e">Edit ✎</span></button>
+    <div class="msights" id="mSights" hidden aria-label="Top sights"></div>
     <div class="ask">
       <div class="askrow">
         <label for="q" class="eyebrow" style="position:absolute;left:-9999px">Describe your weekend</label>
@@ -1636,6 +1656,35 @@ async function loadDetail(d,h){
   if(PANEL.code===d.code) renderPanels();
 }
 
+
+/* phone: sights strip for the destination on top; tap a photo to see it larger */
+function renderMSights(d){
+  const box=$("mSights"); if(!box) return;
+  const sg=d&&SIGHTS[d.code];
+  if(!d||(!Array.isArray(sg)&&sg!=="busy")||(Array.isArray(sg)&&!sg.length)){box.hidden=true;box.dataset.k="";return}
+  const k=d.code+"|"+(Array.isArray(sg)?sg.length:"busy"); if(box.dataset.k===k){box.hidden=false;return} box.dataset.k=k; box.hidden=false;
+  if(sg==="busy"){box.innerHTML=`<span class="msh">📸 Top sights in ${esc_(d.city)}</span><div class="msSkel"><i></i><i></i><i></i><i></i></div>`;return}
+  box.innerHTML=`<span class="msh">📸 Top sights in ${esc_(d.city)} · tap to enlarge</span><div class="msRow">${sg.map((x,i)=>`<button data-ms="${i}" aria-label="${esc_(x.name)}"><img src="${esc_(x.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"><span>${esc_(x.name)}</span></button>`).join("")}</div>`;
+  box.querySelectorAll("[data-ms]").forEach(b=>b.onclick=()=>openSight(d,+b.dataset.ms));
+}
+function openSight(d,i){
+  const sg=SIGHTS[d.code]; if(!Array.isArray(sg)||!sg.length) return;
+  i=(i+sg.length)%sg.length; const s=sg[i];
+  let el=$("sightBox"); if(!el){el=document.createElement("div");el.id="sightBox";el.className="sightBox";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");document.body.appendChild(el);}
+  el.hidden=false;
+  el.innerHTML=`<figure><img src="${esc_(s.img)}" alt="${esc_(s.name)}" referrerpolicy="no-referrer"><button class="sbX" aria-label="Close">✕</button>${sg.length>1?`<button class="sbNav l" aria-label="Previous">‹</button><button class="sbNav r" aria-label="Next">›</button>`:""}
+    <figcaption><b>${esc_(s.name)}</b><small>${esc_(d.city)} · ${i+1}/${sg.length} · <a href="${esc_(s.page)}" target="_blank" rel="noopener">Photo: Wikimedia Commons (author & licence)</a></small></figcaption></figure>`;
+  const close=()=>{el.hidden=true;el.innerHTML="";document.removeEventListener("keydown",kd)};
+  const kd=e=>{if(e.key==="Escape")close();if(e.key==="ArrowRight")openSight(d,i+1);if(e.key==="ArrowLeft")openSight(d,i-1)};
+  document.removeEventListener("keydown",el._kd||(()=>{})); el._kd=kd; document.addEventListener("keydown",kd);
+  el.onclick=e=>{if(e.target===el)close()};
+  el.querySelector(".sbX").onclick=close;
+  const l=el.querySelector(".sbNav.l"),r=el.querySelector(".sbNav.r"); if(l)l.onclick=()=>openSight(d,i-1); if(r)r.onclick=()=>openSight(d,i+1);
+  let x0=null; const im=el.querySelector("img");
+  im.addEventListener("touchstart",e=>{x0=e.touches[0].clientX},{passive:true});
+  im.addEventListener("touchend",e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>40)openSight(d,dx<0?i+1:i-1)});
+}
+
 function heroHTML(d){
   const sg=SIGHTS[d.code], head=`<div class="pdest-h"><h3>${esc_(d.city)}</h3><span>${esc_(d.country)}${d.carrier?" · "+esc_(d.carrier):""}</span></div>`;
   if(Array.isArray(sg)&&sg.length){const i=Math.min(PANEL.sight||0,sg.length-1), s=sg[i];
@@ -1649,12 +1698,12 @@ let pnT=0; function panelsSoon(){clearTimeout(pnT);pnT=setTimeout(renderPanels,2
 function renderPanels(){
   const I=$("dInfo"),M=$("dMedia"); if(!I||!M) return;
   const shown=!document.querySelector(".deckarea.empty");
-  const o=shown&&deck[0]; if(!o){I.hidden=M.hidden=true;PANEL.code="";return}
+  const o=shown&&deck[0]; if(!o){I.hidden=M.hidden=true;PANEL.code="";renderMSights(null);return}
   I.hidden=M.hidden=false;
   const d=o.d,h=hotelFor(d); if(!h){I.hidden=M.hidden=true;return}
   if(PANEL.code!==d.code){PANEL.sight=0}
   if(PANEL.code!==d.code||PANEL.hid!==h.hid){PANEL.code=d.code;PANEL.hid=h.hid;PANEL.photo=0}
-  loadDetail(d,h); loadSplit(d.code); loadSights(d);
+  loadDetail(d,h); loadSplit(d.code); loadSights(d); renderMSights(d);
   if(deck[1]){const n=deck[1].d,nh=hotelFor(n); if(nh) loadDetail(n,nh);}
   const det=DET[detKey(d,h)], ok=det&&det!=="busy", wait=det==="busy"||det===undefined;
   const legs=fcLegs(d.code);

@@ -590,6 +590,31 @@ header.top .brand,#setupBrand{cursor:pointer}
   .dright{grid-column:2;grid-row:1/span 2}
   .dmedia{grid-column:3;grid-row:1/span 2;margin-top:12px;align-self:start;position:sticky;top:96px;max-height:calc(100vh - 112px);overflow:auto;scrollbar-width:thin}
 }
+
+/* ===== card facts (phone) + sights gallery (desktop) ===== */
+.cardFacts{display:flex;flex-direction:column;gap:6px;min-height:0;overflow:hidden}
+.cardFacts:empty{display:none}
+.cf4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.cf4 div{background:var(--bg);border-radius:10px;padding:6px 10px;display:flex;flex-direction:column;min-width:0}
+.cf4 span{font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cf4 b{font-size:14px;white-space:nowrap}
+.cfT{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+.cardFacts .pfl{font-size:13px}
+.cardFacts .pfl small{font-size:11px}
+@media (max-width:959px){
+  .dinfo{display:none!important}
+  .card .body:has(.cardFacts .pfl) .exactNote{display:none}
+}
+@media (min-width:960px){.cardFacts{display:none}}
+.psight{display:flex;flex-direction:column;gap:8px}
+.psMain{position:relative;display:block;height:190px;border-radius:14px;overflow:hidden;background:var(--bg)}
+.psMain img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.psMain:hover img{transform:scale(1.03)}
+.psMain.broken img{display:none}
+.psCap{position:absolute;left:0;right:0;bottom:0;padding:22px 12px 9px;color:#fff;font-weight:700;font-size:14px;background:linear-gradient(transparent,rgba(0,0,0,.6));text-shadow:0 1px 4px rgba(0,0,0,.4)}
+.pdest-h h3{font-size:20px}.pdest-h span{font-size:12.5px;color:var(--muted)}
+.pcred{font-size:11px;color:var(--muted)}
+.pcred a{color:inherit}
 </style>
 </head>
 <body>
@@ -1245,7 +1270,8 @@ function cardHTML(o,pos){
         ${h.rating?`<div class="score">${(h.rating/10).toFixed(1)}<small>${ratingWord(h.rating)}</small></div>`:`<div class="score">New</div>`}</div>
       <div class="badges">${h.flex?`<span class="badge mint">Free cancellation</span>`:`<span class="badge rose">Non-refundable</span>`}${d.direct?`<span class="badge sky">Direct flights</span>`:`<span class="badge butter">1 stop</span>`}${hrsOf(d)>0?`<span class="badge lilac">${hrsOf(d)} h there</span>`:""}${h.fac.filter(f=>/Pool|Spa/.test(f)).slice(0,1).map(f=>`<span class="badge">${f}</span>`).join("")}</div>
       ${fcLegs(d.code)?fcBlock(d.code):FL[d.code]&&!S.trip.live&&!timeIssue(d.code)?`<div class="legs"><div class="leg"><span>${dayFrom()}</span><b>${FL[d.code].o[0]} ${FL[d.code].o[2]} → ${FL[d.code].o[1]} ${FL[d.code].o[3]}</b><span class="fn">${FL[d.code].o[4].split(" · ")[0]}</span></div><div class="leg"><span>${dayTo()}</span><b>${FL[d.code].i[0]} ${FL[d.code].i[2]} → ${FL[d.code].i[1]} ${FL[d.code].i[3]}</b><span class="fn">${FL[d.code].i[4].split(" · ")[0]}</span></div></div>`:""}
-      ${fcLegs(d.code)?"":S.trip.live||!FL[d.code]?`<div class="leg" style="grid-template-columns:1fr"><span>Exact flights are shown when you open this weekend</span></div>`:timeIssue(d.code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights to match your times (${timeTxt()}) are picked when you book</span></div>`:FL[d.code]&&FL[d.code].note?`<div class="warnline">${FL[d.code].note}</div>`:earlyReturn(d.code)?`<div class="warnline">Early flight home on Sunday (${FL[d.code].i[2]})</div>`:""}
+      ${fcLegs(d.code)?"":S.trip.live||!FL[d.code]?`<div class="leg exactNote" style="grid-template-columns:1fr"><span>Exact flights are shown when you open this weekend</span></div>`:timeIssue(d.code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights to match your times (${timeTxt()}) are picked when you book</span></div>`:FL[d.code]&&FL[d.code].note?`<div class="warnline">${FL[d.code].note}</div>`:earlyReturn(d.code)?`<div class="warnline">Early flight home on Sunday (${FL[d.code].i[2]})</div>`:""}
+      ${pos<2?`<div class="cardFacts" data-cf="${d.code}">${cardFactsInner(d,h)}</div>`:""}
       ${up?`<div class="upg"><span><b>+${eur(up.price-h.price)}</b> for ${starStr(up.stars)} ${up.name.length>26?up.name.slice(0,25)+"…":up.name}${up.rating?` · ${(up.rating/10).toFixed(1)}`:""}</span><button data-up="${d.code}|${up.j}">Step up</button></div>`:""}
       <div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}${pos<2?splitHTML(d.code,h.price).replace('class="split','class="split cardSplit'):""}</div>${marginPill(h.price)}</div>
     </div></article>`;
@@ -1555,6 +1581,33 @@ async function loadSplit(code){
 }
 
 
+
+/* ===== facts on the card (phone) ===== */
+function hoursWith(d,det){let hrs=hrsOf(d);
+  if(!(hrs>0)&&!fcLegs(d.code)&&det&&det!=="busy"&&det.flights&&det.flights.out&&det.flights.back){const fo=det.flights.out,a=hm(fo.arr)+(hm(fo.arr)<hm(fo.dep)?24:0);hrs=Math.round(nightsOf()*24-a+hm(det.flights.back.dep));}
+  return hrs;}
+function cardFactsInner(d,h){
+  const det=DET[detKey(d,h)], ok=det&&det!=="busy", hrs=hoursWith(d,det);
+  const tiles=`<div class="cf4"><div><span>☀️ Typical high</span><b>${d.temp}°C</b></div><div><span>🕑 Time there</span><b>${hrs>0?hrs+" h":"—"}</b></div><div><span>📍 Hotel to centre</span><b>${h.km!=null?h.km+" km":"—"}</b></div><div><span>⭐ Guest rating</span><b>${h.rating?(h.rating/10).toFixed(1):"New"}</b></div></div>`;
+  let fl="";
+  if(!fcLegs(d.code)){
+    if(ok&&det.flights&&det.flights.out) fl=`<span class="cfT">Flights in this package</span>`+[["out",dayFrom()],["back",dayTo()]].map(([k,lab])=>{const x=det.flights[k];return x?`<div class="pfl"><span>${lab}</span><b>${x.from} ${x.dep} → ${x.to} ${x.arr}</b><small>${[durTxt(x.min),x.direct?"direct":"1 stop",(x.carrier+" "+x.num).trim()].filter(Boolean).join(" · ")}</small></div>`:""}).join("");
+    else if(det==="busy"||det===undefined&&mcp) fl=`<div class="pskel" style="height:26px"></div><div class="pskel" style="height:26px"></div>`;
+  }
+  return tiles+fl;
+}
+function refreshCardFacts(code){const d=DATA.find(x=>x.code===code); if(!d) return; const h=hotelFor(d); if(!h) return;
+  document.querySelectorAll(`[data-cf="${code}"]`).forEach(el=>{el.innerHTML=cardFactsInner(d,h)});}
+/* ===== sights photos (desktop left panel) ===== */
+const SIGHTS={};
+async function loadSights(d){
+  if(SIGHTS[d.code]!==undefined) return;
+  if(!mcp||!mcp.sights){SIGHTS[d.code]=[];return}
+  SIGHTS[d.code]="busy";
+  try{const r=await mcp.sights(d.city); SIGHTS[d.code]=((r&&r.sights)||[]).filter(x=>x&&x.img);}catch(e){SIGHTS[d.code]=[]}
+  if(PANEL.code===d.code) renderPanels();
+}
+
 /* ===== trip preview: real details for the card on top (desktop: side panels, phone: below the cards) ===== */
 const DET={}, PANEL={code:"",hid:null,photo:0};
 const detKey=(d,h)=>[ORI(),d.code,h.hid,S.trip.from,S.trip.to,S.trip.adults].join("|");
@@ -1579,7 +1632,18 @@ async function loadDetail(d,h){
     }
     DET[k]=r&&r.hotel?r:null;
   }catch(e){DET[k]=null}
+  refreshCardFacts(d.code);
   if(PANEL.code===d.code) renderPanels();
+}
+
+function heroHTML(d){
+  const sg=SIGHTS[d.code], head=`<div class="pdest-h"><h3>${esc_(d.city)}</h3><span>${esc_(d.country)}${d.carrier?" · "+esc_(d.carrier):""}</span></div>`;
+  if(Array.isArray(sg)&&sg.length){const i=Math.min(PANEL.sight||0,sg.length-1), s=sg[i];
+    return `<div class="psight"><a class="psMain" href="${esc_(s.page)}" target="_blank" rel="noopener" title="Photo on Wikimedia Commons: author and licence"><img src="${esc_(s.img)}" alt="${esc_(s.name)}" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('broken')"><span class="psCap">${esc_(s.name)}</span></a>
+      ${sg.length>1?`<div class="pthumbs">${sg.map((x,k)=>`<button data-sg="${k}" class="${k===i?"on":""}" aria-label="${esc_(x.name)}" title="${esc_(x.name)}"><img src="${esc_(x.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"></button>`).join("")}</div>`:""}
+      ${head}<small class="pcred">Top sights · photos from Wikimedia Commons, tap a photo for author and licence</small></div>`;}
+  if(sg==="busy") return `<div class="psMain pskel"></div>${head}`;
+  return `<div class="pdest">${art(d)}<div class="pdest-t"><h3>${esc_(d.city)}</h3><span>${esc_(d.country)}${d.carrier?" · "+esc_(d.carrier):""}</span></div></div>`;
 }
 let pnT=0; function panelsSoon(){clearTimeout(pnT);pnT=setTimeout(renderPanels,200)}
 function renderPanels(){
@@ -1588,8 +1652,10 @@ function renderPanels(){
   const o=shown&&deck[0]; if(!o){I.hidden=M.hidden=true;PANEL.code="";return}
   I.hidden=M.hidden=false;
   const d=o.d,h=hotelFor(d); if(!h){I.hidden=M.hidden=true;return}
+  if(PANEL.code!==d.code){PANEL.sight=0}
   if(PANEL.code!==d.code||PANEL.hid!==h.hid){PANEL.code=d.code;PANEL.hid=h.hid;PANEL.photo=0}
-  loadDetail(d,h); loadSplit(d.code);
+  loadDetail(d,h); loadSplit(d.code); loadSights(d);
+  if(deck[1]){const n=deck[1].d,nh=hotelFor(n); if(nh) loadDetail(n,nh);}
   const det=DET[detKey(d,h)], ok=det&&det!=="busy", wait=det==="busy"||det===undefined;
   const legs=fcLegs(d.code);
   const fl=(lab,x)=>x?`<div class="pfl"><span>${lab}</span><b>${x.from} ${x.dep} → ${x.to} ${x.arr}</b><small>${[durTxt(x.min),x.direct?"direct":"1 stop",(x.carrier+" "+x.num).trim()].filter(Boolean).join(" · ")}</small></div>`:"";
@@ -1597,10 +1663,10 @@ function renderPanels(){
   if(legs&&legs.o&&legs.i) flights=`<div class="pfl"><span>${dayFrom()}</span><b>${legs.o.ap} ${legs.o.t} → ${legs.o.to}</b><small>${legs.o.air||""}</small></div><div class="pfl"><span>${dayTo()}</span><b>${legs.i.ap} ${legs.i.t} → ${legs.i.to}</b><small>${legs.i.air||""}</small></div><p class="pnote">Flights that match your times</p>`;
   else if(ok&&det.flights&&det.flights.out) flights=fl(dayFrom(),det.flights.out)+fl(dayTo(),det.flights.back);
   else flights=wait?`<div class="pskel"></div><div class="pskel"></div>`:`<p class="pnote">Exact flights are shown when you book.</p>`;
-  const at=ok?det.at:d.at; let hrs=hrsOf(d);
+  const at=ok?det.at:d.at; let hrs=hoursWith(d,det);
   if(!(hrs>0)&&!legs&&ok&&det.flights&&det.flights.out&&det.flights.back){const fo=det.flights.out,a=hm(fo.arr)+(hm(fo.arr)<hm(fo.dep)?24:0);hrs=Math.round(nightsOf()*24-a+hm(det.flights.back.dep));}
   I.innerHTML=`<div class="pcard" aria-label="${esc_(d.city)} trip details">
-    <div class="pdest">${art(d)}<div class="pdest-t"><h3>${esc_(d.city)}</h3><span>${esc_(d.country)}${d.carrier?" · "+esc_(d.carrier):""}</span></div></div>
+    ${heroHTML(d)}
     <div class="pfacts">
       <div><span>☀️ Typical high</span><b>${d.temp}°C</b></div>
       <div><span>🕑 Time there</span><b>${hrs>0?hrs+" h":"—"}</b></div>
@@ -1627,6 +1693,7 @@ function renderPanels(){
     ${ok&&det.rooms&&det.rooms.length?`<span class="eyebrow">Rooms · flight + hotel total</span>${det.rooms.slice(0,4).map(x=>`<div class="proom"><span>${esc_(x.name)}<small>${esc_(MEAL[x.meal]||x.meal||"")}${x.cancellation?" · "+esc_(x.cancellation):""}</small></span><b>${eur(x.price,true)}</b></div>`).join("")}`:""}
     ${others.length>1?`<span class="eyebrow">Hotels in ${esc_(d.city)} · tap to switch</span>${others.map(x=>`<button class="pother${x.hid===h.hid?" on":""}" data-j="${x.j}" aria-pressed="${x.hid===h.hid}"><span class="po-img">${x.img?`<img src="${esc_(x.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:"🏨"}</span><span class="po-t"><b>${esc_(x.name)}</b><small>${starStr(x.stars)}${x.km!=null?` · ${x.km} km`:""}</small></span><b>${eur(x.price)}</b></button>`).join("")}`:""}
   </div>`;
+  I.querySelectorAll("[data-sg]").forEach(b=>b.onclick=()=>{PANEL.sight=+b.dataset.sg;renderPanels()});
   M.querySelectorAll("[data-ph]").forEach(b=>b.onclick=()=>{PANEL.photo=+b.dataset.ph;renderPanels()});
   M.querySelectorAll(".pother").forEach(b=>b.onclick=()=>{S.choice[d.code]=+b.dataset.j;S.pin=d.code;renderDeck();renderSaved();});
 }
@@ -1990,6 +2057,7 @@ function restMcp(){
   const getJSON=async url=>{const r=await fetch(url);const j=await r.json().catch(()=>({}));if(!r.ok||j.error) throw {code:"server_unavailable",message:(j.error&&j.error.message)||("HTTP "+r.status)};return j.results||{};};
   return {
     callTool:async(server,tool,args)=>call(tool,args),
+    sights:(city)=>getJSON(`/api/sights?city=${encodeURIComponent(city)}`),
     detail:(q)=>getJSON(`/api/detail?o=${q.o}&d=${q.d}&f=${q.f}&t=${q.t}&a=${q.a}&h=${q.h}`),
     batchSearch:(o,f,t,a,ds)=>getJSON(`/api/search?o=${o}&f=${f}&t=${t}&a=${a}&d=${ds.join(",")}`),
     verify:(q)=>getJSON(`/api/verify?v=2&o=${q.o}&f=${q.f}&t=${q.t}&a=${q.a}&tOut=${encodeURIComponent(q.tOut||"")}&tIn=${encodeURIComponent(q.tIn||"")}&b=${Math.round(q.b||0)}&d=${q.d.join(",")}`)

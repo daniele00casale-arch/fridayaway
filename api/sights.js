@@ -1,85 +1,143 @@
 // GET /api/sights?city=Valencia
-// Photos of the main sights of a city, from Wikivoyage "See" listings (curated, named),
-// topped up with nearby Wikipedia landmarks when a guide lists too few.
-// Every photo links to its Wikimedia Commons page (author + licence). Cached on the CDN for a week.
+// Photos of a city's best-known sights.
+// Candidates: Wikivoyage "See" listings (curated travel guide, incl. district pages for big cities)
+// plus Wikipedia landmarks near the city centre. They are ranked by how many people read about
+// each sight on Wikipedia in the last 30 days, so the famous ones come first.
+// Every photo links to its Wikimedia Commons / Wikipedia page (author + licence). CDN-cached for a week.
 const UA = { "user-agent": "Fridayaway/1.0 (https://fridayaway.vercel.app)" };
-const j = (u) => fetch(u, { headers: UA }).then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
-const WV = (q) => j("https://en.wikivoyage.org/w/api.php?format=json&formatversion=2&" + q);
-const WP = (q) => j("https://en.wikipedia.org/w/api.php?format=json&formatversion=2&" + q);
-const clean = (s) => String(s || "").replace(/\[\[(?:[^|\]]*\|)?([^\]]*)\]\]/g, "$1").replace(/'{2,}/g, "").replace(/<[^>]+>/g, "").replace(/\{\{[^}]*\}\}/g, "").trim();
-const BAD = /map|flag|coat|logo|locator|icon|banner|seal|blank|diagram|plan\b|sign\b|svg$/i;
+const get = (u) => fetch(u, { headers: UA }).then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
+const WV = (q) => get("https://en.wikivoyage.org/w/api.php?format=json&formatversion=2&" + q);
+const WP = (q) => get("https://en.wikipedia.org/w/api.php?format=json&formatversion=2&" + q);
+const ALIAS = { "Faro & Algarve": "Algarve", "Cyprus (Larnaca)": "Larnaca", "Salento (Brindisi)": "Lecce", "Calabria (Lamezia)": "Tropea", "Ibiza": "Ibiza Town", "Krakow": "Kraków" };
+const BADIMG = /map|flag|coat.of.arms|logo|locator|icon|banner|seal|blank|diagram|\bplan\b|\bsign\b|\.svg/i;
+const NOT = /railway|train station|metro station|bus station|airport|stadium|arena|university|school|college|hospital|hotel|company|football|parish|municipality|district|neighbou?rhood|quarter|freguesia|barrio|roundabout|society|diocese|archdiocese|bank\b|ministry|embassy|olympic|human settlement|village|commune|comune|frazione|island in|archipelago|province|region of|capital of|city in|town in|municipality in|administrative/i;
+const LANDMARK = /cathedral|church|basilica|palace|castle|fortress|museum|monument|square|plaza|piazza|park|garden|tower|bridge|theat(re|er)|beach|mosque|temple|market|gallery|\bfort\b|abbey|monastery|citadel|alcazaba|alcázar|acropolis|ruins|archaeolog|lighthouse|viewpoint|promenade|gate|\barch\b|fountain|chapel|synagogue|aqueduct|harbou?r|old town|world heritage|cave|grotto|volcano|national park|mountain|lake|bay\b|cliff|canyon|tomb|mausoleum|landmark|attraction|historic/i;
+
+// split a template body on top-level "|" (ignoring the ones inside [[...]] and {{...}})
+function params(body) {
+  const out = {}; let depth = 0, cur = "";
+  const parts = [];
+  for (let i = 0; i < body.length; i++) {
+    const two = body.slice(i, i + 2);
+    if (two === "[[" || two === "{{") { depth++; cur += two; i++; continue; }
+    if ((two === "]]" || two === "}}") && depth > 0) { depth--; cur += two; i++; continue; }
+    if (body[i] === "|" && depth === 0) { parts.push(cur); cur = ""; continue; }
+    cur += body[i];
+  }
+  parts.push(cur);
+  parts.forEach((p) => { const k = p.indexOf("="); if (k > 0) out[p.slice(0, k).trim().toLowerCase()] = p.slice(k + 1).trim(); });
+  return out;
+}
+const clean = (s) => String(s || "").replace(/\[\[(?:[^|\]]*\|)?([^\]]*)\]\]/g, "$1").replace(/\{\{[^}]*\}\}/g, "").replace(/'{2,}/g, "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 
 function listings(wt) {
-  const out = [], re = /\{\{\s*(?:see|do|listing\s*\|[^}]*?type\s*=\s*(?:see|do))\b([\s\S]*?)\}\}/gi;
+  const out = [];
+  const re = /\{\{\s*(see|do|listing)\s*\|/gi;
   let m;
   while ((m = re.exec(wt))) {
-    const b = m[1];
-    const name = clean((/\|\s*name\s*=\s*([^|\n]+)/.exec(b) || [])[1]);
-    const img = String((/\|\s*image\s*=\s*([^|\n]+)/.exec(b) || [])[1] || "").trim();
-    if (name && img && /\.(jpe?g|webp)$/i.test(img) && !BAD.test(img)) out.push({ name, file: img.replace(/^(File|Image):/i, "") });
+    let i = re.lastIndex, depth = 1;
+    while (i < wt.length && depth > 0) { const two = wt.slice(i, i + 2); if (two === "{{") { depth++; i += 2; } else if (two === "}}") { depth--; i += 2; } else i++; }
+    const p = params(wt.slice(re.lastIndex, i - 2));
+    if (m[1].toLowerCase() === "listing" && !/^(see|do)$/i.test(p.type || "")) continue;
+    const name = clean(p.name), img = String(p.image || "").replace(/^(File|Image):/i, "").trim();
+    if (name && name.length < 70) out.push({ name, file: /\.(jpe?g|webp)$/i.test(img) && !BADIMG.test(img) ? img : "", wd: p.wikidata || "" });
   }
   return out;
 }
 
-async function fromWikivoyage(city) {
+async function wikivoyage(city) {
   const p = await WV("action=parse&redirects=1&prop=wikitext|links&page=" + encodeURIComponent(city));
-  if (!p.parse) return { list: [], title: city };
+  if (!p.parse) return [];
   const title = p.parse.title;
   let list = listings(p.parse.wikitext || "");
-  if (list.length < 4) {
-    // big cities keep their sights in district pages ("Lisbon/Baixa"...)
-    const subs = (p.parse.links || []).map((l) => l.title).filter((t) => t.startsWith(title + "/")).slice(0, 4);
-    for (const s of subs) {
-      const q = await WV("action=parse&prop=wikitext&page=" + encodeURIComponent(s));
-      list = list.concat(listings((q.parse && q.parse.wikitext) || ""));
-      if (list.length >= 8) break;
-    }
+  const subs = (p.parse.links || []).map((l) => l.title).filter((t) => t.startsWith(title + "/")).slice(0, 6);
+  for (const s of subs) {
+    if (list.length >= 45) break;
+    const q = await WV("action=parse&prop=wikitext&page=" + encodeURIComponent(s));
+    list = list.concat(listings((q.parse && q.parse.wikitext) || ""));
   }
-  const seen = new Set(); list = list.filter((x) => !seen.has(x.file) && seen.add(x.file)).slice(0, 8);
-  if (!list.length) return { list: [], title };
-  const info = await WV("action=query&prop=imageinfo&iiprop=url&iiurlwidth=640&titles=" + encodeURIComponent(list.map((x) => "File:" + x.file).join("|")));
-  const byName = {};
-  ((info.query && info.query.pages) || []).forEach((pg) => {
-    const ii = pg.imageinfo && pg.imageinfo[0];
-    if (ii && ii.thumburl) byName[pg.title.replace(/^File:/, "").replace(/_/g, " ")] = { img: ii.thumburl, page: ii.descriptionurl };
-  });
-  const norm = ((info.query && info.query.normalized) || []).reduce((a, n) => ((a[n.from.replace(/^File:/, "")] = n.to.replace(/^File:/, "")), a), {});
-  return {
-    title,
-    list: list.map((x) => { const k = (norm[x.file] || x.file).replace(/_/g, " "); const v = byName[k] || byName[k.charAt(0).toUpperCase() + k.slice(1)]; return v ? { name: x.name, img: v.img, page: v.page } : null; }).filter(Boolean),
-  };
+  return list.slice(0, 50);
 }
 
-const LANDMARK = /cathedral|church|basilica|palace|castle|fortress|museum|monument|square|plaza|piazza|park|garden|tower|bridge|theatre|theater|beach|mosque|temple|market|gallery|fort\b|abbey|monastery|citadel|alcazaba|acropolis|ruins|archaeological|lighthouse|viewpoint|promenade|gate|arch\b|fountain|chapel|synagogue|aqueduct|harbou?r|old town|world heritage|cave|grotto|volcano|national park|mountain|lake|island|bay\b/i;
-const NOT = /district|neighbou?rhood|municipality|station|airport|stadium|arena|university|school|hospital|hotel|company|football|metro|railway|parish|barrio|quarter|freguesia|street|road|avenue|roundabout|society|diocese|bank|ministry|embassy|olympic|human settlement|village|town in|city in|commune|frazione|comune/i;
-
-async function fromWikipedia(city) {
+async function nearby(city) {
   const c = await WP("action=query&redirects=1&prop=coordinates&titles=" + encodeURIComponent(city));
   const pg = ((c.query && c.query.pages) || [])[0];
   const co = pg && pg.coordinates && pg.coordinates[0];
   if (!co) return [];
-  const r = await WP(`action=query&generator=geosearch&ggscoord=${co.lat}|${co.lon}&ggsradius=10000&ggslimit=100&prop=pageimages|description|pageviews|info&inprop=url&piprop=thumbnail|name&pithumbsize=640&pvipdays=30`);
-  return ((r.query && r.query.pages) || [])
-    .filter((p) => p.thumbnail && /\.jpe?g/i.test(p.thumbnail.source) && LANDMARK.test((p.description || "") + " " + p.title) && !NOT.test(p.description || "") && !BAD.test(p.pageimage || ""))
-    .map((p) => ({ name: p.title.replace(/\s*\(.*\)$/, ""), img: p.thumbnail.source, page: p.pageimage ? "https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(p.pageimage) : p.fullurl, v: Object.values(p.pageviews || {}).reduce((a, b) => a + (b || 0), 0) }))
-    .sort((a, b) => b.v - a.v)
-    .map(({ v, ...x }) => x);
+  const r = await WP(`action=query&list=geosearch&gscoord=${co.lat}|${co.lon}&gsradius=10000&gslimit=100`);
+  return ((r.query && r.query.geosearch) || []).map((x) => x.title);
+}
+
+// Wikipedia facts for up to 50 titles: page views (fame), description, lead image
+async function wpInfo(titles) {
+  const out = {};
+  for (let k = 0; k < titles.length; k += 50) {
+    const chunk = titles.slice(k, k + 50);
+    let cont = "";
+    for (let guard = 0; guard < 4; guard++) {
+      const r = await WP("action=query&redirects=1&prop=pageviews|pageimages|description|info&inprop=url&pvipdays=30&piprop=thumbnail|name&pithumbsize=640&titles=" + encodeURIComponent(chunk.join("|")) + cont);
+      const q = r.query || {};
+      const back = {}; (q.normalized || []).concat(q.redirects || []).forEach((n) => { back[n.to] = (back[n.to] || []).concat(n.from, back[n.from] || []); });
+      (q.pages || []).forEach((p) => {
+        if (p.missing) return;
+        const views = Object.values(p.pageviews || {}).reduce((a, b) => a + (b || 0), 0);
+        const rec = out[p.title] || { title: p.title, views: 0 };
+        rec.views = Math.max(rec.views, views); rec.desc = p.description || rec.desc || "";
+        if (p.thumbnail) { rec.img = p.thumbnail.source; rec.file = p.pageimage; }
+        rec.url = p.fullurl;
+        out[p.title] = rec; (back[p.title] || []).forEach((f) => (out[f] = rec));
+      });
+      if (!r.continue) break;
+      cont = "&" + Object.entries(r.continue).map(([a, b]) => a + "=" + encodeURIComponent(b)).join("&");
+    }
+  }
+  return out;
+}
+
+async function commonsUrls(files) {
+  const out = {};
+  if (!files.length) return out;
+  const r = await WV("action=query&prop=imageinfo&iiprop=url&iiurlwidth=640&titles=" + encodeURIComponent(files.map((f) => "File:" + f).join("|")));
+  const q = r.query || {};
+  const norm = {}; (q.normalized || []).forEach((n) => (norm[n.to] = n.from));
+  (q.pages || []).forEach((p) => { const ii = p.imageinfo && p.imageinfo[0]; if (ii && ii.thumburl) out[(norm[p.title] || p.title).replace(/^File:/, "")] = { img: ii.thumburl, page: ii.descriptionurl }; });
+  return out;
 }
 
 module.exports = async (req, res) => {
-  const city = String((req.query && req.query.city) || "").slice(0, 60).trim();
-  if (!city || /[<>{}|[\]]/.test(city)) return res.status(400).json({ error: { code: "bad_request", message: "city required" } });
+  const raw = String((req.query && req.query.city) || "").slice(0, 60).trim();
+  if (!raw || /[<>{}|[\]]/.test(raw)) return res.status(400).json({ error: { code: "bad_request", message: "city required" } });
+  const city = ALIAS[raw] || raw;
   try {
-    const wv = await fromWikivoyage(city);
-    let list = wv.list;
-    if (list.length < 4) {
-      const extra = await fromWikipedia(city);
-      const have = new Set(list.map((x) => x.name.toLowerCase()));
-      list = list.concat(extra.filter((x) => !have.has(x.name.toLowerCase())));
-    }
-    list = list.slice(0, 6);
-    res.setHeader("cache-control", list.length ? "public, s-maxage=604800, stale-while-revalidate=86400" : "public, s-maxage=3600");
-    return res.status(200).json({ results: { city, source: wv.list.length ? "https://en.wikivoyage.org/wiki/" + encodeURIComponent(wv.title.replace(/ /g, "_")) : "", sights: list } });
+    const [wv, near] = await Promise.all([wikivoyage(city), nearby(city)]);
+    const names = [...new Set(wv.map((x) => x.name).concat(near))].slice(0, 150);
+    const info = await wpInfo(names);
+    const cityKey = city.toLowerCase();
+    const cand = new Map();
+    const add = (name, wvFile) => {
+      const w = info[name];
+      const key = (w ? w.title : name).toLowerCase();
+      if (key === cityKey || key.startsWith(cityKey + "/")) return;
+      const desc = (w && w.desc) || "";
+      const fromGuide = wvFile !== undefined;
+      if (NOT.test(desc)) return;
+      if (!fromGuide && !LANDMARK.test(desc + " " + name)) return;
+      const prev = cand.get(key);
+      const item = { name: w ? w.title.replace(/\s*\([^)]*\)$/, "") : name, views: w ? w.views : 0, wvFile: wvFile || (prev && prev.wvFile) || "", wpImg: w && w.img, wpFile: w && w.file, url: w && w.url };
+      if (!prev || item.views > prev.views || (!prev.wvFile && item.wvFile)) cand.set(key, { ...prev, ...item });
+    };
+    wv.forEach((x) => add(x.name, x.file));
+    near.forEach((n) => add(n));
+    let ranked = [...cand.values()].filter((x) => x.wvFile || (x.wpImg && /\.jpe?g/i.test(x.wpImg) && !BADIMG.test(x.wpFile || ""))).sort((a, b) => b.views - a.views).slice(0, 6);
+    const urls = await commonsUrls(ranked.filter((x) => x.wvFile).map((x) => x.wvFile));
+    const sights = ranked.map((x) => {
+      const c = x.wvFile && urls[x.wvFile];
+      if (c) return { name: x.name, img: c.img, page: c.page };
+      if (x.wpImg) return { name: x.name, img: x.wpImg, page: x.wpFile ? "https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(x.wpFile) : x.url };
+      return null;
+    }).filter(Boolean);
+    res.setHeader("cache-control", sights.length ? "public, s-maxage=604800, stale-while-revalidate=86400" : "public, s-maxage=3600");
+    return res.status(200).json({ results: { city: raw, sights } });
   } catch (e) {
     res.setHeader("cache-control", "no-store");
     return res.status(502).json({ error: { code: "server_unavailable", message: String(e.message || e).slice(0, 200) } });

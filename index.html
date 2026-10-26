@@ -515,7 +515,7 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
 
 .split{display:flex;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:6px;font-weight:600}
 .split:empty{display:none}
-.cardSplit{margin-top:auto}.cardSplit + .priceRow{margin-top:0}
+
 .split span{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:3px 8px;white-space:nowrap}
 .split.wait span{opacity:.55}
 .split small{flex-basis:100%;font-weight:500;font-size:11px;opacity:.8}
@@ -535,6 +535,61 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
 .miCard b{font-size:13px;padding:6px 8px 0;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .miCard span{font-size:12.5px;color:var(--primary);font-weight:800;padding:2px 8px 0}
 .miCard small{font-size:10.5px;color:var(--like);font-weight:700;padding:1px 8px}
+
+/* ===== trip preview panels (left: destination + flights + price, right: hotel photos + rooms + other hotels) ===== */
+.dinfo,.dmedia{margin-top:18px}
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.pcard .eyebrow{margin:4px 0 -2px}
+.pdest{position:relative;height:150px;border-radius:14px;overflow:hidden;flex:none}
+.pdest-t{position:absolute;left:12px;bottom:10px;color:#fff;z-index:2;text-shadow:0 1px 6px rgba(0,0,0,.35)}
+.pdest-t h3{font-size:22px;color:#fff}.pdest-t span{font-size:12.5px;opacity:.92}
+.pfacts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pfacts div{background:var(--bg);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:1px}
+.pfacts span{font-size:11.5px;color:var(--muted)}.pfacts b{font-size:15px}
+.pfl{display:grid;grid-template-columns:34px 1fr;column-gap:8px;align-items:baseline;font-size:13.5px}
+.pfl span{color:var(--muted);font-size:12px}.pfl small{grid-column:2;color:var(--muted);font-size:11.5px}
+.pnote{font-size:12px;color:var(--muted)}
+.pskel{height:34px;border-radius:10px;background:linear-gradient(90deg,var(--bg) 0%,var(--line) 50%,var(--bg) 100%);background-size:200% 100%;animation:pskel 1.2s linear infinite}
+@keyframes pskel{to{background-position:-200% 0}}
+.pprice{display:flex;flex-direction:column;gap:2px}
+.pprice>b{font-size:26px;letter-spacing:-.02em}
+.pupd{font-size:11.5px;color:var(--muted)}
+.pgal{height:210px;border-radius:14px;overflow:hidden;background:var(--bg);display:grid;place-items:center;flex:none}
+.pgal img{width:100%;height:100%;object-fit:cover;display:block}
+.pgal-ph{font-size:34px}
+.pthumbs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:none}
+.pthumbs::-webkit-scrollbar{display:none}
+.pthumbs button{flex:none;width:54px;height:42px;border-radius:8px;overflow:hidden;border:2px solid transparent;padding:0;cursor:pointer;background:var(--bg)}
+.pthumbs button.on{border-color:var(--primary)}
+.pthumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.phn{font-size:17px}
+.psub{font-size:12.5px;color:var(--muted)}
+.pdesc{font-size:13px;line-height:1.45}
+.proom{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:7px 0 0;border-top:1px solid var(--line)}
+.proom small{display:block;color:var(--muted);font-size:11.5px}
+.proom b{white-space:nowrap}
+.pother{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:6px 10px 6px 6px;cursor:pointer;font:inherit;color:inherit;width:100%}
+.pother:hover{border-color:color-mix(in srgb,var(--primary) 45%,var(--line))}
+.pother.on{border-color:var(--primary);box-shadow:0 0 0 2px color-mix(in srgb,var(--primary) 22%,transparent)}
+.po-img{width:48px;height:40px;border-radius:8px;overflow:hidden;background:var(--bg);display:grid;place-items:center}
+.po-img img{width:100%;height:100%;object-fit:cover;display:block}
+.po-t{min-width:0}.po-t b{display:block;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.po-t small{color:var(--muted);font-size:11.5px}
+.cardSplit{margin-top:4px!important;gap:4px}.cardSplit span{padding:2px 6px;font-size:11px}
+header.top .brand,#setupBrand{cursor:pointer}
+@media (min-width:960px) and (max-width:1199px){
+  .dleft{grid-column:1;grid-row:1}
+  .dinfo{grid-column:1;grid-row:2;margin-top:0}
+  .dmedia{grid-column:1;grid-row:3;margin-top:0}
+  .dright{grid-column:2;grid-row:1/span 3}
+}
+@media (min-width:1200px){
+  .app{max-width:1380px}
+  main[data-s="discover"]:not([hidden]){grid-template-columns:310px minmax(0,1fr) 330px;gap:28px}
+  .dleft{grid-column:1;grid-row:1;position:static}
+  .dinfo{grid-column:1;grid-row:2;margin-top:0;align-self:start;position:sticky;top:96px}
+  .dright{grid-column:2;grid-row:1/span 2}
+  .dmedia{grid-column:3;grid-row:1/span 2;margin-top:12px;align-self:start;position:sticky;top:96px;max-height:calc(100vh - 112px);overflow:auto;scrollbar-width:thin}
+}
 </style>
 </head>
 <body>
@@ -603,6 +658,8 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
     <div class="bin" id="bin" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g class="lid"><path d="M3 6h18"/><path d="M9 6V4h6v2"/></g><path d="M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"/><path d="M10 11v6M14 11v6"/></svg></div>
     <p class="hint">Right to save · left to skip · tap to book</p>
    </div>
+   <aside class="dinfo" id="dInfo" hidden aria-live="polite"></aside>
+   <aside class="dmedia" id="dMedia" hidden></aside>
   </main>
 
   <!-- SAVED -->
@@ -1006,8 +1063,8 @@ function liveBar(){loadUI();const b=$("liveBar"); if(!b) return;
   else if(LIVE.msg){b.hidden=false;b.innerHTML=`<span>${LIVE.msg}</span>`;}
   else b.hidden=true;}
 let rT=0; function renderSoon(){ if(rT) return; rT=setTimeout(()=>{rT=0; renderDeck();},350); }
-function setHotels(d,list){
-  d.hotels=(list||[]).map((x,j)=>({j,name:x.name,stars:x.stars||0,rating:x.rating||0,reviews:x.reviews||0,km:x.distance_km,fac:x.facilities||[],price:x.price_total,flex:!!x.cancellable,hid:x.internal_id_hotel}));
+function setHotels(d,list){d.at=Date.now();
+  d.hotels=(list||[]).map((x,j)=>({j,name:x.name,stars:x.stars||0,rating:x.rating||0,reviews:x.reviews||0,km:x.distance_km,fac:x.facilities||[],price:x.price_total,flex:!!x.cancellable,hid:x.internal_id_hotel,img:x.image||""}));
   if(list&&list[0]){d.direct=!!list[0].flight_direct;d.carrier=list[0].carrier||d.carrier;d.fly=d.direct?"Direct":"1 stop"}
 }
 async function liveOne(d,from,to,ad){
@@ -1015,7 +1072,7 @@ async function liveOne(d,from,to,ad){
   try{
     const r=await mcp.callTool(LM,"search_flight_and_hotel_package",{origin:ORI(),destination:d.code,date_from:from,date_to:to,adults:String(ad),max_results:6,lang:"it",sort:"recommended"});
     const list=((r.payload||{}).products_summary)||[];
-    d.hotels=list.map((x,j)=>({j,name:x.name,stars:x.stars||0,rating:x.rating||0,reviews:x.reviews||0,km:x.distance_km,fac:x.facilities||[],price:x.price_total,flex:!!x.cancellable,hid:x.internal_id_hotel}));
+    d.at=Date.now();d.hotels=list.map((x,j)=>({j,name:x.name,stars:x.stars||0,rating:x.rating||0,reviews:x.reviews||0,km:x.distance_km,fac:x.facilities||[],price:x.price_total,flex:!!x.cancellable,hid:x.internal_id_hotel,img:x.image||""}));
     if(list[0]){d.direct=!!list[0].flight_direct;d.carrier=list[0].carrier||d.carrier;d.fly=d.direct?"Direct":"1 stop"}
   }catch(e){ if(e&&CONN_ERR.includes(e.code)) throw e; d.hotels=[]; }
   d.hrs=d.more?null:d.hrs;
@@ -1189,7 +1246,7 @@ function cardHTML(o,pos){
       ${fcLegs(d.code)?fcBlock(d.code):FL[d.code]&&!S.trip.live&&!timeIssue(d.code)?`<div class="legs"><div class="leg"><span>${dayFrom()}</span><b>${FL[d.code].o[0]} ${FL[d.code].o[2]} → ${FL[d.code].o[1]} ${FL[d.code].o[3]}</b><span class="fn">${FL[d.code].o[4].split(" · ")[0]}</span></div><div class="leg"><span>${dayTo()}</span><b>${FL[d.code].i[0]} ${FL[d.code].i[2]} → ${FL[d.code].i[1]} ${FL[d.code].i[3]}</b><span class="fn">${FL[d.code].i[4].split(" · ")[0]}</span></div></div>`:""}
       ${fcLegs(d.code)?"":S.trip.live||!FL[d.code]?`<div class="leg" style="grid-template-columns:1fr"><span>Exact flights are shown when you open this weekend</span></div>`:timeIssue(d.code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights to match your times (${timeTxt()}) are picked when you book</span></div>`:FL[d.code]&&FL[d.code].note?`<div class="warnline">${FL[d.code].note}</div>`:earlyReturn(d.code)?`<div class="warnline">Early flight home on Sunday (${FL[d.code].i[2]})</div>`:""}
       ${up?`<div class="upg"><span><b>+${eur(up.price-h.price)}</b> for ${starStr(up.stars)} ${up.name.length>26?up.name.slice(0,25)+"…":up.name}${up.rating?` · ${(up.rating/10).toFixed(1)}`:""}</span><button data-up="${d.code}|${up.j}">Step up</button></div>`:""}
-      ${pos<2?splitHTML(d.code,h.price).replace('class="split','class="split cardSplit'):""}<div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}</div>${marginPill(h.price)}</div>
+      <div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}${pos<2?splitHTML(d.code,h.price).replace('class="split','class="split cardSplit'):""}</div>${marginPill(h.price)}</div>
     </div></article>`;
 }
 /* Budget margin: what is left of the budget once flight + hotel are paid, and what that is per day there. */
@@ -1213,7 +1270,7 @@ function renderMatches(){
   if(S.filterOn) $("showAll").onclick=()=>{S.filterOn=false;S.seen.clear();renderDeck()};
 }
 function renderDeck(){
-  buildDeck(); renderMatches();
+  buildDeck(); renderMatches(); panelsSoon();
   const w=$("deck");
   document.querySelector(".deckarea").classList.add("empty");
   if(fcOn()&&!fcReady()){
@@ -1495,6 +1552,92 @@ async function loadSplit(code){
   }catch(e){SPLIT[k]=null}
   refreshSplit(code);
 }
+
+
+/* ===== trip preview: real details for the card on top (desktop: side panels, phone: below the cards) ===== */
+const DET={}, PANEL={code:"",hid:null,photo:0};
+const detKey=(d,h)=>[ORI(),d.code,h.hid,S.trip.from,S.trip.to,S.trip.adults].join("|");
+const durTxt=m=>m?`${Math.floor(m/60)}h ${String(m%60).padStart(2,"0")}m`:"";
+const esc_=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+async function loadDetail(d,h){
+  const k=detKey(d,h); if(DET[k]!==undefined||!mcp||!h||!h.hid) return; DET[k]="busy";
+  try{
+    let r;
+    if(mcp.detail) r=await mcp.detail({o:ORI(),d:d.code,f:S.trip.from,t:S.trip.to,a:S.trip.adults,h:h.hid});
+    else{
+      const r1=await mcp.callTool(LM,"search_flight_and_hotel_package",{origin:ORI(),destination:d.code,date_from:S.trip.from,date_to:S.trip.to,adults:String(S.trip.adults),max_results:20,lang:"it",sort:"recommended"});
+      const p1=(r1&&r1.payload)||{}; if(!p1.search_id) throw {};
+      const hit=(p1.products_summary||[]).find(x=>x.internal_id_hotel===h.hid);
+      const r2=await mcp.callTool(LM,"select_hotel_options",{search_id:p1.search_id,hotel_internal_id:h.hid,date_from:S.trip.from,date_to:S.trip.to});
+      const p2=(r2&&r2.payload)||{}; if(!p2.success) throw {};
+      const H=p2.hotel||{}, lk=s=>{const m=/\((https:\/\/[^)\s]+)\)/.exec(String(s||""));return m?m[1]:""};
+      const F=x=>x?{from:x.from,to:x.to,dep:String(x.departure_time||"").slice(11,16),arr:String(x.arrival_time||"").slice(11,16),min:x.duration_minutes||0,carrier:x.carrier_code||"",num:x.flight_number||"",direct:!!x.direct}:null;
+      r={at:Date.now(),hotel:{name:H.name||h.name,address:H.address||"",checkIn:H.check_in_time||"",checkOut:H.check_out_time||"",description:String(H.description||"").slice(0,700),photos:(H.gallery_links||[]).map(lk).filter(Boolean).slice(0,8),image:(hit&&hit.image)||""},
+         flights:{out:F(p2.flight_details&&p2.flight_details.outbound),back:F(p2.flight_details&&p2.flight_details.inbound)},
+         rooms:(p2.room_options||[]).map(x=>({name:String(x.room_name||"").trim(),meal:x.meal_plan,price:x.price,cancellation:x.cancellation})).sort((a,b)=>a.price-b.price).slice(0,6)};
+    }
+    DET[k]=r&&r.hotel?r:null;
+  }catch(e){DET[k]=null}
+  if(PANEL.code===d.code) renderPanels();
+}
+let pnT=0; function panelsSoon(){clearTimeout(pnT);pnT=setTimeout(renderPanels,200)}
+function renderPanels(){
+  const I=$("dInfo"),M=$("dMedia"); if(!I||!M) return;
+  const shown=!document.querySelector(".deckarea.empty");
+  const o=shown&&deck[0]; if(!o){I.hidden=M.hidden=true;PANEL.code="";return}
+  I.hidden=M.hidden=false;
+  const d=o.d,h=hotelFor(d); if(!h){I.hidden=M.hidden=true;return}
+  if(PANEL.code!==d.code||PANEL.hid!==h.hid){PANEL.code=d.code;PANEL.hid=h.hid;PANEL.photo=0}
+  loadDetail(d,h); loadSplit(d.code);
+  const det=DET[detKey(d,h)], ok=det&&det!=="busy", wait=det==="busy"||det===undefined;
+  const legs=fcLegs(d.code);
+  const fl=(lab,x)=>x?`<div class="pfl"><span>${lab}</span><b>${x.from} ${x.dep} → ${x.to} ${x.arr}</b><small>${[durTxt(x.min),x.direct?"direct":"1 stop",(x.carrier+" "+x.num).trim()].filter(Boolean).join(" · ")}</small></div>`:"";
+  let flights;
+  if(legs&&legs.o&&legs.i) flights=`<div class="pfl"><span>${dayFrom()}</span><b>${legs.o.ap} ${legs.o.t} → ${legs.o.to}</b><small>${legs.o.air||""}</small></div><div class="pfl"><span>${dayTo()}</span><b>${legs.i.ap} ${legs.i.t} → ${legs.i.to}</b><small>${legs.i.air||""}</small></div><p class="pnote">Flights that match your times</p>`;
+  else if(ok&&det.flights&&det.flights.out) flights=fl(dayFrom(),det.flights.out)+fl(dayTo(),det.flights.back);
+  else flights=wait?`<div class="pskel"></div><div class="pskel"></div>`:`<p class="pnote">Exact flights are shown when you book.</p>`;
+  const at=ok?det.at:d.at; let hrs=hrsOf(d);
+  if(!(hrs>0)&&!legs&&ok&&det.flights&&det.flights.out&&det.flights.back){const fo=det.flights.out,a=hm(fo.arr)+(hm(fo.arr)<hm(fo.dep)?24:0);hrs=Math.round(nightsOf()*24-a+hm(det.flights.back.dep));}
+  I.innerHTML=`<div class="pcard" aria-label="${esc_(d.city)} trip details">
+    <div class="pdest">${art(d)}<div class="pdest-t"><h3>${esc_(d.city)}</h3><span>${esc_(d.country)}${d.carrier?" · "+esc_(d.carrier):""}</span></div></div>
+    <div class="pfacts">
+      <div><span>☀️ Typical high</span><b>${d.temp}°C</b></div>
+      <div><span>🕑 Time there</span><b>${hrs>0?hrs+" h":"—"}</b></div>
+      <div><span>📍 Hotel to centre</span><b>${h.km!=null?h.km+" km":"—"}</b></div>
+      <div><span>⭐ Guest rating</span><b>${h.rating?(h.rating/10).toFixed(1):"New"}</b></div>
+    </div>
+    <span class="eyebrow">Flights in this package</span>${flights}
+    <span class="eyebrow">Price for ${S.trip.adults} · flight + hotel</span>
+    <div class="pprice"><b>${eur(h.price)}</b>${splitHTML(d.code,h.price,true)}</div>
+    <p class="pupd">${at?`Prices checked at ${new Date(at).toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})}`:"Saved sample prices"} · final price confirmed by lastminute.com at checkout</p>
+  </div>`;
+  const photos=ok?(det.hotel.photos||[]).slice():[];
+  if(!photos.length){const one=(ok&&det.hotel.image)||h.img; if(one) photos.push(one);}
+  const main=photos[PANEL.photo]||photos[0];
+  const others=(d.hotels||[]).slice().sort((a,b)=>a.price-b.price);
+  M.innerHTML=`<div class="pcard" aria-label="${esc_(h.name)} photos and rooms">
+    <div class="pgal">${main?`<img src="${esc_(main)}" alt="${esc_(h.name)}" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=&quot;pgal-ph&quot;>🏨</div>'">`:`<div class="pgal-ph">${wait?'<span class="spin" style="width:22px;height:22px"></span>':"🏨"}</div>`}</div>
+    ${photos.length>1?`<div class="pthumbs">${photos.map((u,i)=>`<button data-ph="${i}" class="${i===PANEL.photo?"on":""}" aria-label="Photo ${i+1}"><img src="${esc_(u)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"></button>`).join("")}</div>`:""}
+    <h3 class="phn">${esc_(h.name)}</h3>
+    <div class="psub">${starStr(h.stars)}${h.rating?` · ${(h.rating/10).toFixed(1)} ${ratingWord(h.rating)}`:""}${h.km!=null?` · ${h.km} km from centre`:""}</div>
+    ${ok&&det.hotel.address?`<div class="psub">📍 ${esc_(det.hotel.address)}</div>`:""}
+    ${ok&&(det.hotel.checkIn||det.hotel.checkOut)?`<div class="psub">Check-in ${esc_(det.hotel.checkIn||"—")} · Check-out ${esc_(det.hotel.checkOut||"—")}</div>`:""}
+    ${ok&&det.hotel.description?`<p class="pdesc">${esc_(det.hotel.description.slice(0,280))}${det.hotel.description.length>280?"…":""}</p>`:""}
+    ${ok&&det.rooms&&det.rooms.length?`<span class="eyebrow">Rooms · flight + hotel total</span>${det.rooms.slice(0,4).map(x=>`<div class="proom"><span>${esc_(x.name)}<small>${esc_(MEAL[x.meal]||x.meal||"")}${x.cancellation?" · "+esc_(x.cancellation):""}</small></span><b>${eur(x.price,true)}</b></div>`).join("")}`:""}
+    ${others.length>1?`<span class="eyebrow">Hotels in ${esc_(d.city)} · tap to switch</span>${others.map(x=>`<button class="pother${x.hid===h.hid?" on":""}" data-j="${x.j}" aria-pressed="${x.hid===h.hid}"><span class="po-img">${x.img?`<img src="${esc_(x.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:"🏨"}</span><span class="po-t"><b>${esc_(x.name)}</b><small>${starStr(x.stars)}${x.km!=null?` · ${x.km} km`:""}</small></span><b>${eur(x.price)}</b></button>`).join("")}`:""}
+  </div>`;
+  M.querySelectorAll("[data-ph]").forEach(b=>b.onclick=()=>{PANEL.photo=+b.dataset.ph;renderPanels()});
+  M.querySelectorAll(".pother").forEach(b=>b.onclick=()=>{S.choice[d.code]=+b.dataset.j;renderDeck();renderSaved();});
+}
+/* logo → home */
+function goHome(){
+  try{bookCtl.n++}catch(e){}
+  const L=$("layer"); if(L) L.innerHTML="";
+  if(!$("setup").hidden) closeSetup();
+  showTab("discover"); window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("header.top .brand, #setupBrand").forEach(b=>{b.setAttribute("role","link");b.setAttribute("tabindex","0");b.setAttribute("aria-label","Fridayaway home");
+  b.addEventListener("click",goHome);b.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();goHome()}});});
 
 /* ===== saved ===== */
 function updateCount(){const c=$("savedCount");c.hidden=!S.saved.length;c.textContent=S.saved.length}
@@ -1846,6 +1989,7 @@ function restMcp(){
   const getJSON=async url=>{const r=await fetch(url);const j=await r.json().catch(()=>({}));if(!r.ok||j.error) throw {code:"server_unavailable",message:(j.error&&j.error.message)||("HTTP "+r.status)};return j.results||{};};
   return {
     callTool:async(server,tool,args)=>call(tool,args),
+    detail:(q)=>getJSON(`/api/detail?o=${q.o}&d=${q.d}&f=${q.f}&t=${q.t}&a=${q.a}&h=${q.h}`),
     batchSearch:(o,f,t,a,ds)=>getJSON(`/api/search?o=${o}&f=${f}&t=${t}&a=${a}&d=${ds.join(",")}`),
     verify:(q)=>getJSON(`/api/verify?v=2&o=${q.o}&f=${q.f}&t=${q.t}&a=${q.a}&tOut=${encodeURIComponent(q.tOut||"")}&tIn=${encodeURIComponent(q.tIn||"")}&b=${Math.round(q.b||0)}&d=${q.d.join(",")}`)
   };

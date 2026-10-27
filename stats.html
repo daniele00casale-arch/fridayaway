@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Fridayaway stats</title>
+<style>
+:root{--bg:#F6F5FB;--card:#fff;--ink:#26233A;--muted:#706C86;--line:#ECE9F4;--primary:#6D5DE6;--good:#2FA36B;--bad:#E3667E}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:24px;margin:0 0 4px}h2{font-size:15px;margin:0 0 10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.kpi b{display:block;font-size:26px;letter-spacing:-.02em}.kpi span{font-size:12.5px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px;overflow-x:auto}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.bar{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:13.5px}.bar i{height:12px;border-radius:6px;background:var(--primary);display:block;min-width:2px}.bar .l{width:150px;flex:none}.bar .v{font-variant-numeric:tabular-nums;color:var(--muted)}
+.err{background:#FFE4EA;color:#A43A55;padding:12px;border-radius:12px}
+.empty{color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Fridayaway · usage</h1>
+  <div class="sub" id="sub">Loading…</div>
+  <div id="root"></div>
+</main>
+<script>
+const key=new URLSearchParams(location.search).get("key")||"";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pct=(a,b)=>b?Math.round(a/b*100)+"%":"–";
+function bars(obj){const e=Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]);if(!e.length)return '<p class="empty">No data yet</p>';const m=e[0][1];return e.map(([k,v])=>`<div class="bar"><span class="l">${esc(k)}</span><i style="width:${Math.max(2,v/m*100)}%;max-width:60%"></i><span class="v">${v}</span></div>`).join("")}
+fetch("/api/stats?key="+encodeURIComponent(key)).then(r=>r.json().then(j=>({ok:r.ok,j}))).then(({ok,j})=>{
+  if(!ok){$("sub").textContent="";$("root").innerHTML=`<div class="err">${esc(j.error||"Error")}. Open this page with the link that includes your key.</div>`;return}
+  $("sub").textContent=`Anonymous data since tracking started · updated ${new Date(j.updated).toLocaleString()}`;
+  const f=j.funnel, cities=Object.entries(j.cities).map(([c,v])=>({c,...v,score:v.saved+v.details+v.book*2+v.checkout*3})).sort((a,b)=>b.score-a.score);
+  $("root").innerHTML=`
+  <div class="grid">
+    <div class="kpi"><b>${j.sessions}</b><span>sessions</span></div>
+    <div class="kpi"><b>${j.byType.swipe||0}</b><span>swipes · ${j.swipesPerSession} per session</span></div>
+    <div class="kpi"><b>${f.openedCheckout}</b><span>sessions that opened lastminute checkout</span></div>
+    <div class="kpi"><b>${j.together.games}</b><span>Together games · ${j.together.matches} matches</span></div>
+    <div class="kpi"><b>${j.installs}</b><span>app installs</span></div>
+  </div>
+  <div class="card"><h2>Funnel (sessions)</h2>
+    <table><tr><th>Step</th><th class="n">Sessions</th><th class="n">of opened</th></tr>
+    ${[["Opened the app",f.opened],["Ran a search",f.searched],["Swiped at least once",f.swiped],["Opened a destination",f.openedDetails],["Pressed Book",f.pressedBook],["Opened lastminute checkout",f.openedCheckout]].map(([l,v])=>`<tr><td>${l}</td><td class="n">${v}</td><td class="n">${pct(v,f.opened)}</td></tr>`).join("")}</table></div>
+  <div class="card"><h2>Destinations</h2>
+    ${cities.length?`<table><tr><th>City</th><th class="n">Saved</th><th class="n">Skipped</th><th class="n">Save rate</th><th class="n">Opened</th><th class="n">Book</th><th class="n">Checkout</th></tr>
+    ${cities.slice(0,40).map(x=>`<tr><td>${esc(x.c)}</td><td class="n">${x.saved}</td><td class="n">${x.skipped}</td><td class="n">${pct(x.saved,x.saved+x.skipped)}</td><td class="n">${x.details}</td><td class="n">${x.book}</td><td class="n">${x.checkout}</td></tr>`).join("")}</table>`:'<p class="empty">No swipes yet</p>'}</div>
+  <div class="two">
+    <div class="card"><h2>Sessions per day</h2>${bars(j.byDay)}</div>
+    <div class="card"><h2>Devices</h2>${bars(j.devices)}<h2 style="margin-top:12px">Systems</h2>${bars(j.os)}</div>
+    <div class="card"><h2>Departure airports</h2>${bars(j.origins)}</div>
+    <div class="card"><h2>Budgets searched</h2>${bars(j.budgets)}</div>
+    <div class="card"><h2>Max flight time used</h2>${bars(j.flyFilter)}</div>
+    <div class="card"><h2>Countries</h2>${bars(j.countries)}</div>
+  </div>
+  <div class="card"><h2>All events</h2>${bars(j.byType)}</div>`;
+}).catch(e=>{$("sub").textContent="";$("root").innerHTML=`<div class="err">Could not load stats.</div>`});
+</script>
+</body>
+</html>

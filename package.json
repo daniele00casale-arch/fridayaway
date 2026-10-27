@@ -1,1 +1,1 @@
-{ "name": "fridayaway", "version": "1.0.0", "private": true, "engines": { "node": ">=18" } }
+{ "name": "fridayaway", "version": "1.0.0", "private": true, "engines": { "node": ">=18" }, "dependencies": { "@vercel/blob": "2.8.1" } }

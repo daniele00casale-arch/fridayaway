@@ -1422,6 +1422,7 @@ function fling(card,dir){
 }
 const HIST=[];
 function decide(code,liked){
+  trk("swipe",{c:cityOf(code),like:!!liked,tg:!!S.together.on});
   S.swipes=(S.swipes||0)+1; if(S.swipes>=3){const da=document.querySelector(".deckarea");da&&da.classList.add("calm");}
   const o=deck.find(x=>x.d.code===code); if(!o) return;
   const hist={code,liked,taste:JSON.parse(JSON.stringify(S.taste)),saved:false,tg:null};
@@ -1458,7 +1459,7 @@ function undo(){
 function topCard(){return $("deck").querySelector(deck.length?`.card[data-code="${deck[0].d.code}"]`:"nope")}
 $("bLike").onclick=()=>fling(topCard(),1);
 $("bNope").onclick=()=>fling(topCard(),-1);
-$("bUndo").onclick=undo;
+$("bUndo").onclick=()=>{trk("undo");undo()};
 $("swL").onclick=()=>fling(topCard(),-1);
 $("swR").onclick=()=>fling(topCard(),1);
 document.addEventListener("keydown",e=>{if(document.querySelector('[data-s="discover"]').hidden||e.target.closest("textarea,input"))return;
@@ -1468,6 +1469,7 @@ $("deck").addEventListener("click",e=>{const b=e.target.closest("[data-up]");if(
 /* ===== detail sheet ===== */
 function legHTML(day,l){return `<div class="leg"><span>${day}</span><b>${l[0]} ${l[2]} → ${l[1]} ${l[3]}</b><span class="fn">${l[4]}</span></div>`}
 function openSheet(code){
+  TRK.sheet=code; trk("sheet",{c:cityOf(code)});
   const d=DATA.find(x=>x.code===code), cur=hotelFor(d), f=FL[code];
   const rows=d.hotels.slice().sort((a,b)=>a.price-b.price).map(h=>`<div class="hrow" role="button" tabindex="0" data-j="${h.j}" aria-pressed="${h===cur}"><div><div class="n">${h.name}</div><div class="d">${starStr(h.stars)} · ${h.rating?(h.rating/10).toFixed(1)+" "+ratingWord(h.rating):"New"} · ${h.km} km · ${h.flex?"Free cancellation":"Non-refundable"}</div></div><div class="pr">${eur(h.price)}</div></div>`).join("");
   $("layer").innerHTML=`<div class="scrim" id="scrim"></div><div class="sheet" role="dialog" aria-label="${d.city} options"><div style="display:flex;justify-content:space-between;align-items:center"><div class="grab" style="margin:0"></div><button class="linkbtn" id="sheetClose" style="font-size:14px">Close ✕</button></div>
@@ -1485,7 +1487,7 @@ function openSheet(code){
   $("scrim").onclick=close; $("sheetClose").onclick=close;
   $("layer").querySelectorAll(".hrow").forEach(r=>{const pick=()=>{S.choice[code]=+r.dataset.j;if(deck[0]&&deck[0].d.code===code)S.pin=code;$("layer").querySelectorAll(".hrow").forEach(x=>x.setAttribute("aria-pressed",String(x===r)));$("bookArea").innerHTML="";$("sheetBook").hidden=false;renderDeck();renderSaved()};r.onclick=()=>{pick();const m=$("sheetMargin");if(m)m.innerHTML=marginHTML(hotelFor(d).price);const sp=$("sheetSplit");if(sp)sp.innerHTML=splitHTML(code,hotelFor(d).price,true)};r.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}}});
   $("sheetSave").onclick=()=>{const j=hotelFor(d).j;const ex=S.saved.find(s=>s.code===code);if(ex)ex.j=j;else S.saved.push({code,j});S.seen.add(code);updateCount();close();renderDeck();toast(`Saved ${d.city}`)};
-  $("sheetBook").onclick=()=>startBooking(d,hotelFor(d));
+  $("sheetBook").onclick=()=>{trk("book",{c:d.city,p:Math.round(hotelFor(d).price)});startBooking(d,hotelFor(d))};
   loadSplit(code);
 }
 
@@ -1694,6 +1696,7 @@ function renderMSights(d){
   box.querySelectorAll("[data-ms]").forEach(b=>b.onclick=()=>openSight(d,+b.dataset.ms));
 }
 function openSight(d,i){
+  trk("sight_open",{c:d.city});
   const sg=SIGHTS[d.code]; if(!Array.isArray(sg)||!sg.length) return;
   i=(i+sg.length)%sg.length; const s=sg[i];
   let el=$("sightBox"); if(!el){el=document.createElement("div");el.id="sightBox";el.className="sightBox";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");document.body.appendChild(el);}
@@ -1770,7 +1773,7 @@ function renderPanels(){
   </div>`;
   I.querySelectorAll("[data-sg]").forEach(b=>b.onclick=()=>{PANEL.sight=+b.dataset.sg;renderPanels()});
   M.querySelectorAll("[data-ph]").forEach(b=>b.onclick=()=>{PANEL.photo=+b.dataset.ph;renderPanels()});
-  M.querySelectorAll(".pother").forEach(b=>b.onclick=()=>{S.choice[d.code]=+b.dataset.j;S.pin=d.code;renderDeck();renderSaved();});
+  M.querySelectorAll(".pother").forEach(b=>b.onclick=()=>{trk("hotel_switch",{c:d.city});S.choice[d.code]=+b.dataset.j;S.pin=d.code;renderDeck();renderSaved();});
 }
 /* logo → home */
 function goHome(){
@@ -1781,6 +1784,26 @@ function goHome(){
 }
 document.querySelectorAll("header.top .brand, #setupBrand").forEach(b=>{b.setAttribute("role","link");b.setAttribute("tabindex","0");b.setAttribute("aria-label","Fridayaway home");
   b.addEventListener("click",goHome);b.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();goHome()}});});
+
+
+/* ===== anonymous usage tracking (standalone site only): batched, sent when the page is hidden ===== */
+const TRK={sid:"",q:[],sheet:""};
+const cityOf=code=>{const d=DATA.find(x=>x.code===code);return d?d.city:code};
+function trk(t,d){
+  let on=false; try{on=STANDALONE}catch(e){} if(!on) return;
+  if(!TRK.sid){try{TRK.sid=sessionStorage.getItem("fa_sid")||"";}catch(e){} if(!TRK.sid){TRK.sid=Math.random().toString(36).slice(2,10)+Date.now().toString(36);try{sessionStorage.setItem("fa_sid",TRK.sid)}catch(e){}}}
+  TRK.q.push({t,ts:Date.now(),d}); if(TRK.q.length>=60) trkFlush();
+}
+function trkFlush(){
+  if(!TRK.q.length) return; const body=JSON.stringify({sid:TRK.sid,ev:TRK.q.splice(0)});
+  try{ if(!(navigator.sendBeacon&&navigator.sendBeacon("/api/track",body))) fetch("/api/track",{method:"POST",body,keepalive:true}).catch(()=>{}); }catch(e){}
+}
+addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")trkFlush()});
+addEventListener("pagehide",trkFlush);
+setInterval(trkFlush,180000);
+addEventListener("appinstalled",()=>{trk("install");trkFlush()});
+document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a.checkout");if(a&&/lastminute/.test(a.href)){const d=DATA.find(x=>x.code===TRK.sheet);trk("checkout",{c:cityOf(TRK.sheet),p:d&&hotelFor(d)?Math.round(hotelFor(d).price):0});trkFlush();}},true);
+setTimeout(()=>trk("open",{app:!!(window.matchMedia&&matchMedia("(display-mode: standalone)").matches),ref:(document.referrer?(()=>{try{return new URL(document.referrer).hostname}catch(e){return ""}})():"")}),0);
 
 /* ===== saved ===== */
 function updateCount(){const c=$("savedCount");c.hidden=!S.saved.length;c.textContent=S.saved.length}
@@ -1902,11 +1925,11 @@ function renderTogether(){
   const item=(c,tag)=>{const d=DATA.find(x=>x.code===c),h=hotelFor(d);return `<div class="item open" role="button" tabindex="0" data-open="${c}"><div class="thumb">${art(d,true)}</div><div><h3>${d.city}</h3><div class="sub">${starStr(h.stars)} ${h.name}</div>${tag?`<div class="almost">${tag}</div>`:""}</div><div class="p">${eur(h.price)}</div></div>`};
   renderMatchList(all,almost,N,item);
 }
-$("tgStart").onclick=()=>{const T=S.together;T.fresh=false;T.on=!T.on;T.who=0;S.seen.clear();renderTogether();if(T.on){showTab("discover");toast(`${T.names[0]} swipes first. Then pass the phone.`)}renderDeck()};
+$("tgStart").onclick=()=>{const T=S.together;T.fresh=false;T.on=!T.on;if(T.on)trk("together_start",{n:T.names.length});T.who=0;S.seen.clear();renderTogether();if(T.on){showTab("discover");toast(`${T.names[0]} swipes first. Then pass the phone.`)}renderDeck()};
 $("tgReset").onclick=()=>{S.together.fresh=false;S.together.likes=S.together.names.map(()=>new Set());S.together.on=false;S.together.who=0;S.seen.clear();renderTogether();renderDeck();toast("New game: swipes cleared.")};
 $("whoSwitch").onclick=()=>{const T=S.together, last=T.who>=T.names.length-1, me=T.who;
   handoff(me,last,()=>{
-    if(last){T.on=false;T.who=0;T.fresh=true;S.seen.clear();showTab("together");renderTogether();renderDeck();window.scrollTo(0,0);setTimeout(()=>{const h=$("matchList").previousElementSibling;h&&h.scrollIntoView({behavior:"smooth",block:"start"})},400);return}
+    if(last){T.on=false;T.who=0;T.fresh=true;{const all=[...(T.likes[0]||[])].filter(c=>T.likes.every(x=>x.has(c)));trk("together_end",{n:T.names.length,m:all.length});}S.seen.clear();showTab("together");renderTogether();renderDeck();window.scrollTo(0,0);setTimeout(()=>{const h=$("matchList").previousElementSibling;h&&h.scrollIntoView({behavior:"smooth",block:"start"})},400);return}
     T.who++;S.seen.clear();renderTogether();renderDeck();toast(`${T.names[T.who]}: your turn. Same deck, fresh start.`)});};
 
 /* ===== hand-off vault + scratch reveal ===== */
@@ -2029,7 +2052,7 @@ $("dropSave").onclick=()=>toast("Saved. Top 3 every Tuesday.");
 
 /* ===== ask / filters ===== */
 function syncChips(){ setTimeout(renderSum,0);document.querySelectorAll(".fchip").forEach(c=>c.setAttribute("aria-pressed",String(+c.dataset.fly===(S.maxFly||0))));document.querySelectorAll(".chip:not(.fchip)").forEach(c=>{const on=c.dataset.v?S.vibes.has(c.dataset.v):c.dataset.f==="flex"?S.flex:S.direct;c.setAttribute("aria-pressed",String(on))});$("b").value=S.budget;$("bv").textContent=S.budgetOn?eur(S.budget):"No limit";$("b").style.opacity=S.budgetOn?1:.4;$("bClear").textContent=S.budgetOn?"✕":"Set";}
-document.querySelectorAll(".fchip").forEach(c=>c.onclick=()=>{S.maxFly=+c.dataset.fly||0;S.seen.clear();syncChips();renderDeck();renderDrop&&renderDrop()});
+document.querySelectorAll(".fchip").forEach(c=>c.onclick=()=>{S.maxFly=+c.dataset.fly||0;trk("fly_filter",{m:S.maxFly});S.seen.clear();syncChips();renderDeck();renderDrop&&renderDrop()});
 document.querySelectorAll(".chip:not(.fchip)").forEach(c=>c.onclick=()=>{if(c.dataset.v){S.vibes.has(c.dataset.v)?S.vibes.delete(c.dataset.v):S.vibes.add(c.dataset.v)}else if(c.dataset.f==="flex")S.flex=!S.flex;else S.direct=!S.direct;S.seen.clear();syncChips();renderDeck()});
 $("b").oninput=e=>{S.budget=+e.target.value;S.budgetOn=true;syncChips();renderDeck()};
 $("bClear").onclick=()=>{S.budgetOn=!S.budgetOn;syncChips();S.seen.clear();renderDeck()};
@@ -2115,7 +2138,7 @@ applyIntent(parseRules($("q").value),"boot");
 S.lastQ=$("q").value.trim();
 (function(){ const ask=document.querySelector(".ask"); $("setupSlot").appendChild(ask); $("more").open=true;
   const br=document.querySelector(".top .brand"); if(br) $("setupBrand").innerHTML=br.innerHTML;
-  $("setupGo").onclick=applySetup; $("setupX").onclick=()=>{closeSetup();loadUI();}; $("sumBar").onclick=openSetup;
+  $("setupGo").onclick=()=>{trk("search",{o:$("orig").value,from:$("dFrom").value,to:$("dTo").value,a:+$("adults").value,b:S.budgetOn?S.budget:0,v:[...S.vibes],fly:S.maxFly||0,tOut:$("tOut").value,tIn:$("tIn").value});applySetup()}; $("setupX").onclick=()=>{closeSetup();loadUI();}; $("sumBar").onclick=openSetup;
   document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("setup").hidden){closeSetup();loadUI();} });
   renderSum(); openSetup(); })();
 (async()=>{try{sample=window.claude?await window.claude.use("sample"):null}catch(e){sample=null}})();

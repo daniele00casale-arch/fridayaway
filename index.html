@@ -315,7 +315,9 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
 /* ===== setup popup (search panel) ===== */
 .setup{position:fixed;inset:0;z-index:60;background:var(--app);overflow:auto;display:flex;justify-content:center;animation:fadeIn .18s ease}
 .setup[hidden]{display:none}
-.setupIn{width:100%;max-width:520px;padding:max(18px,env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+.setupIn{width:100%;max-width:520px;padding:max(18px,env(safe-area-inset-top,0px)) 16px calc(40px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px;align-self:flex-start;min-height:100%;height:auto;box-sizing:border-box}
+.setupIn>*{flex-shrink:0}
+.setup{height:100dvh}
 .setupHead{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .setupHead .brand{font-size:17px}
 .setupIn h2{font-size:26px;letter-spacing:-.02em;margin-top:6px}

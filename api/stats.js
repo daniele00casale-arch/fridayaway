@@ -37,6 +37,6 @@ module.exports = async (req, res) => {
     });
   });
   out.swipesPerSession = sessions.length ? Math.round((swipeTotal / sessions.length) * 10) / 10 : 0;
-  out.updated = Date.now();
+  out.updated = Date.now(); out.files = blobs.length;
   return res.status(200).json(out);
 };

@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
     recs.push(...part.filter(Boolean));
   }
   const S = {};
-  recs.forEach((r) => { const s = S[r.sid] || (S[r.sid] = { dev: r.dev, os: r.os, country: r.country, first: r.at, ev: [] }); s.first = Math.min(s.first, r.at); s.ev.push(...r.ev); });
+  recs.filter((r) => !String(r.sid).startsWith("selftest")).forEach((r) => { const s = S[r.sid] || (S[r.sid] = { dev: r.dev, os: r.os, country: r.country, first: r.at, ev: [] }); s.first = Math.min(s.first, r.at); s.ev.push(...r.ev); });
   const sessions = Object.values(S);
   const inc = (o, k, n = 1) => { if (k === undefined || k === null || k === "") k = "?"; o[k] = (o[k] || 0) + n; };
   const out = { sessions: sessions.length, events: 0, byType: {}, byDay: {}, devices: {}, os: {}, countries: {}, origins: {}, budgets: {}, flyFilter: {},

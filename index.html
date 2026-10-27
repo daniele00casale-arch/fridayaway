@@ -634,6 +634,13 @@ header.top .brand,#setupBrand{cursor:pointer}
 .sbX{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.92);font-size:16px;cursor:pointer}
 .sbNav{position:absolute;top:calc(min(52vh,320px)/2 - 18px);width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.85);font-size:18px;cursor:pointer}
 .sbNav.l{left:10px}.sbNav.r{right:10px}
+
+/* ===== max flight time ===== */
+.flyrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px}
+.flyrow>span{font-size:13px;font-weight:700;color:var(--muted);flex-basis:100%}
+.chip.fchip{padding:6px 12px}
+.setupIn .chip.fchip{padding:8px 14px}
+.chip.fchip[aria-pressed="true"]{background:var(--ink);color:var(--app);border-color:var(--ink)}
 </style>
 </head>
 <body>
@@ -665,6 +672,7 @@ header.top .brand,#setupBrand{cursor:pointer}
         <button class="chip" data-f="flex">Free cancel</button>
         <button class="chip" data-f="direct">Direct</button>
       </div>
+      <div class="flyrow" role="group" aria-label="Maximum flight time"><span>✈️ Max flight time</span><button class="chip fchip" data-fly="0">Any</button><button class="chip fchip" data-fly="120">2h</button><button class="chip fchip" data-fly="180">3h</button><button class="chip fchip" data-fly="240">4h</button></div>
       <details class="more" id="more"><summary id="moreSum">From, dates &amp; travellers</summary>
       <div class="when" role="group" aria-label="Dates and times">
         <label>From<select id="orig"><option value="MIL" selected>Milan</option><option value="TRN">Turin</option><option value="GOA">Genoa</option><option value="VRN">Verona</option><option value="VCE">Venice</option><option value="BLQ">Bologna</option><option value="PSA">Pisa</option><option value="FLR">Florence</option><option value="ROM">Rome</option><option value="NAP">Naples</option><option value="BRI">Bari</option><option value="CTA">Catania</option><option value="PMO">Palermo</option><option value="CAG">Cagliari</option><option value="ZRH">Zurich</option><option value="GVA">Geneva</option></select></label>
@@ -1222,15 +1230,29 @@ function scoreDest(d){
 }
 /* After a request (Go) the deck only shows destinations that fit it: every chosen mood
    (falls back to any mood if none has them all), at least one hotel in budget, and the flight/cancel filters. */
+
+/* ===== max flight time: estimated direct-flight time from the departure airport (great-circle distance at ~750 km/h + 35 min for taxi, climb and descent) ===== */
+const GEO={MIL:[45.46,9.19],TRN:[45.07,7.69],GOA:[44.41,8.93],VRN:[45.44,10.99],VCE:[45.44,12.32],BLQ:[44.49,11.34],PSA:[43.72,10.4],FLR:[43.77,11.25],ROM:[41.9,12.5],NAP:[40.85,14.27],BRI:[41.12,16.87],CTA:[37.5,15.09],PMO:[38.12,13.36],CAG:[39.22,9.12],ZRH:[47.37,8.54],GVA:[46.2,6.14],
+ BCN:[41.39,2.17],LIS:[38.72,-9.14],VLC:[39.47,-0.38],AGP:[36.72,-4.42],ATH:[37.98,23.73],OPO:[41.15,-8.61],TFS:[28.29,-16.63],PRG:[50.08,14.44],BUD:[47.5,19.04],VIE:[48.21,16.37],PAR:[48.86,2.35],SPU:[43.51,16.44],AMS:[52.37,4.9],CPH:[55.68,12.57],MAD:[40.42,-3.7],SVQ:[37.39,-5.98],PMI:[39.57,2.65],IBZ:[38.91,1.43],MAH:[39.89,4.26],ALC:[38.35,-0.48],BIO:[43.26,-2.93],GRX:[37.18,-3.6],LPA:[28.12,-15.43],ACE:[29.05,-13.59],FUE:[28.45,-13.86],FAO:[37.02,-7.93],FNC:[32.65,-16.91],LYS:[45.76,4.84],MRS:[43.3,5.37],NCE:[43.7,7.27],BOD:[44.84,-0.58],LON:[51.51,-0.13],EDI:[55.95,-3.19],DUB:[53.35,-6.26],BRU:[50.85,4.35],BER:[52.52,13.4],MUC:[48.14,11.58],HAM:[53.55,9.99],STO:[59.33,18.07],OSL:[59.91,10.75],HEL:[60.17,24.94],REK:[64.15,-21.94],RIX:[56.95,24.11],TLL:[59.44,24.75],WAW:[52.23,21.01],KRK:[50.06,19.94],GDN:[54.35,18.65],DBV:[42.65,18.09],ZAD:[44.12,15.23],ZAG:[45.81,15.98],TIA:[41.33,19.82],BEG:[44.79,20.45],SOF:[42.7,23.32],OTP:[44.43,26.1],JTR:[36.39,25.46],JMK:[37.45,25.33],HER:[35.34,25.14],RHO:[36.43,28.22],CFU:[39.62,19.92],SKG:[40.64,22.94],MLA:[35.9,14.51],LCA:[34.92,33.62],IST:[41.01,28.98],RAK:[31.63,-8.01],BDS:[40.63,17.94],OLB:[40.92,9.5],AHO:[40.56,8.32],SUF:[38.91,16.24]};
+function flyMin(code){
+  const a=GEO[ORI()], b=GEO[code]; if(!a||!b) return null;
+  const R=6371, r=x=>x*Math.PI/180, dLa=r(b[0]-a[0]), dLo=r(b[1]-a[1]);
+  const h=Math.sin(dLa/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(dLo/2)**2;
+  const km=2*R*Math.asin(Math.sqrt(h));
+  return Math.round(km/750*60+35);
+}
+const flyOK=d=>{if(!S.maxFly) return true; const m=flyMin(d.code); return m==null||m<=S.maxFly;};
+
 function fits(d){
   if(!d.hotels.length) return false;
+  if(!flyOK(d)) return false;
   if(S.budgetOn&&!d.hotels.some(h=>h.price<=S.budget)) return false;
   if(S.direct&&!d.direct) return false;
   if(S.flex&&!d.hotels.some(h=>h.flex)) return false;
   return true;
 }
 function pool(){
-  if(!S.filterOn) return DATA.filter(d=>d.hotels.length&&fcOK(d.code));
+  if(!S.filterOn) return DATA.filter(d=>d.hotels.length&&flyOK(d)&&fcOK(d.code));
   const base=DATA.filter(d=>fits(d)&&fcOK(d.code)), v=[...S.vibes];
   if(!v.length) return base;
   const all=base.filter(d=>v.every(x=>d.tags.includes(x)));
@@ -1785,7 +1807,7 @@ function renderSum(){
   const a=$("sumA"), b=$("sumB"); if(!a) return;
   const v=[...S.vibes].map(x=>VLABEL[x]); const t=S.trip;
   a.textContent=`${oriName()} · ${dfmt(t.from)} → ${dfmt(t.to)}`;
-  b.textContent=[`${t.adults} adult${t.adults>1?"s":""}`, S.budgetOn?`max ${eur(S.budget)}`:"no budget limit", v.length?v.join(", "):"", t.tOut?`leave after ${t.tOut}`:"", t.tIn?`home after ${t.tIn}`:""].filter(Boolean).join(" · ");
+  b.textContent=[`${t.adults} adult${t.adults>1?"s":""}`, S.budgetOn?`max ${eur(S.budget)}`:"no budget limit", S.maxFly?`flights ≤ ${S.maxFly/60}h`:"", v.length?v.join(", "):"", t.tOut?`leave after ${t.tOut}`:"", t.tIn?`home after ${t.tIn}`:""].filter(Boolean).join(" · ");
 }
 function openSetup(){
   $("dFrom").value=S.trip.from; $("dTo").value=S.trip.to; $("adults").value=String(S.trip.adults);
@@ -2002,8 +2024,9 @@ function renderDrop(){
 $("dropSave").onclick=()=>toast("Saved. Top 3 every Tuesday.");
 
 /* ===== ask / filters ===== */
-function syncChips(){ setTimeout(renderSum,0);document.querySelectorAll(".chip").forEach(c=>{const on=c.dataset.v?S.vibes.has(c.dataset.v):c.dataset.f==="flex"?S.flex:S.direct;c.setAttribute("aria-pressed",String(on))});$("b").value=S.budget;$("bv").textContent=S.budgetOn?eur(S.budget):"No limit";$("b").style.opacity=S.budgetOn?1:.4;$("bClear").textContent=S.budgetOn?"✕":"Set";}
-document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{if(c.dataset.v){S.vibes.has(c.dataset.v)?S.vibes.delete(c.dataset.v):S.vibes.add(c.dataset.v)}else if(c.dataset.f==="flex")S.flex=!S.flex;else S.direct=!S.direct;S.seen.clear();syncChips();renderDeck()});
+function syncChips(){ setTimeout(renderSum,0);document.querySelectorAll(".fchip").forEach(c=>c.setAttribute("aria-pressed",String(+c.dataset.fly===(S.maxFly||0))));document.querySelectorAll(".chip:not(.fchip)").forEach(c=>{const on=c.dataset.v?S.vibes.has(c.dataset.v):c.dataset.f==="flex"?S.flex:S.direct;c.setAttribute("aria-pressed",String(on))});$("b").value=S.budget;$("bv").textContent=S.budgetOn?eur(S.budget):"No limit";$("b").style.opacity=S.budgetOn?1:.4;$("bClear").textContent=S.budgetOn?"✕":"Set";}
+document.querySelectorAll(".fchip").forEach(c=>c.onclick=()=>{S.maxFly=+c.dataset.fly||0;S.seen.clear();syncChips();renderDeck();renderDrop&&renderDrop()});
+document.querySelectorAll(".chip:not(.fchip)").forEach(c=>c.onclick=()=>{if(c.dataset.v){S.vibes.has(c.dataset.v)?S.vibes.delete(c.dataset.v):S.vibes.add(c.dataset.v)}else if(c.dataset.f==="flex")S.flex=!S.flex;else S.direct=!S.direct;S.seen.clear();syncChips();renderDeck()});
 $("b").oninput=e=>{S.budget=+e.target.value;S.budgetOn=true;syncChips();renderDeck()};
 $("bClear").onclick=()=>{S.budgetOn=!S.budgetOn;syncChips();S.seen.clear();renderDeck()};
 /* ===== budget mood tooltip ===== */

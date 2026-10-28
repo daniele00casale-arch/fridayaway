@@ -35,8 +35,14 @@ module.exports = async (req, res) => {
         url: e.url || "",
         img: (imgs[0] && imgs[0].url) || "",
       });
-      if (out.length >= 8) break;
+      if (out.length >= 20) break;
     }
+    /* only events that really happen during the trip; concerts, sport and shows before museums and attractions */
+    const rank = { Music: 0, Sports: 1, "Arts & Theatre": 2, Film: 3 };
+    const keep = out.filter((e) => !e.date || (e.date >= from && e.date <= to))
+      .map((e, i) => ({ e, i, r: rank[e.seg] !== undefined ? rank[e.seg] : 5 }))
+      .sort((a, b) => (a.r >= 5) - (b.r >= 5) || a.i - b.i).map((x) => x.e).slice(0, 8);
+    out.length = 0; out.push(...keep);
     res.setHeader("cache-control", "s-maxage=21600, stale-while-revalidate=86400");
     return res.status(200).json({ results: { events: out } });
   } catch (e) {

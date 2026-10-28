@@ -57,6 +57,17 @@ module.exports = async (req, res) => {
   out.swipesPerSession = sessions.length ? Math.round((swipeTotal / sessions.length) * 10) / 10 : 0;
   if (req.query && req.query.detail === "1") out.list = sessions.map((s, i) => ({ sid: s.sid, uid: s.uid, dev: s.dev, os: s.os, country: s.country, first: new Date(s.first).toISOString(), n: s.ev.length, types: [...new Set(s.ev.map((e) => e.t))].join(","), span: Math.round((Math.max(...s.ev.map((e) => e.ts)) - Math.min(...s.ev.map((e) => e.ts))) / 1000) }));
   Object.values(out.sourceFunnel).forEach((x) => { x.avgTime = x.visits ? Math.round(x.time / x.visits) : 0; delete x.time; });
+  /* return rate: a visitor (same browser) who comes back at least 30 minutes after the previous visit; "another day" = visits on 2+ days */
+  const byUser = {};
+  sessions.forEach((s) => { if (!s.uid) return; const ts = s.ev.map((e) => e.ts).filter(Boolean); if (!ts.length) return; (byUser[s.uid] = byUser[s.uid] || []).push({ a: Math.min(...ts), b: Math.max(...ts) }); });
+  let tracked = 0, back = 0, backDay = 0, visits = 0;
+  Object.values(byUser).forEach((list) => {
+    list.sort((x, y) => x.a - y.a); tracked++;
+    const v = [list[0]]; list.slice(1).forEach((x) => { const last = v[v.length - 1]; if (x.a - last.b >= 30 * 60 * 1000) v.push(x); else last.b = Math.max(last.b, x.b); });
+    visits += v.length; if (v.length > 1) back++;
+    if (new Set(v.map((x) => new Date(x.a + 3600e3).toISOString().slice(0, 10))).size > 1) backDay++;
+  });
+  out.returning = { users: tracked, returned: back, returnedOtherDay: backDay, rate: tracked ? Math.round((back / tracked) * 100) : 0, rateOtherDay: tracked ? Math.round((backDay / tracked) * 100) : 0, visitsPerUser: tracked ? Math.round((visits / tracked) * 10) / 10 : 0 };
   out.updated = Date.now(); out.files = blobs.length;
   return res.status(200).json(out);
 };

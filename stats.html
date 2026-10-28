@@ -44,6 +44,8 @@ fetch("/api/stats?key="+encodeURIComponent(key)).then(r=>r.json().then(j=>({ok:r
   <div class="grid">
     <div class="kpi"><b>${j.sessions}</b><span>sessions · ${j.time.users} users</span></div>
     <div class="kpi"><b>${dur(j.time.avgPerUser)}</b><span>average time per user</span></div>
+    <div class="kpi"><b>${j.returning?j.returning.rate+"%":"–"}</b><span>came back (30+ min later) · ${j.returning?j.returning.returned:0} of ${j.returning?j.returning.users:0}</span></div>
+    <div class="kpi"><b>${j.returning?j.returning.rateOtherDay+"%":"–"}</b><span>came back on another day · ${j.returning?j.returning.visitsPerUser:0} visits per person</span></div>
     <div class="kpi"><b>${dur(j.time.avgPerSession)}</b><span>average per session · median ${dur(j.time.medianPerSession)}</span></div>
     <div class="kpi"><b>${j.byType.swipe||0}</b><span>swipes · ${j.swipesPerSession} per session</span></div>
     <div class="kpi"><b>${f.openedCheckout}</b><span>sessions that opened lastminute checkout</span></div>

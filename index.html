@@ -721,6 +721,10 @@ header.top .brand,#setupBrand{cursor:pointer}
 }
 @media (min-width:1200px){.dinfo{position:static!important}main[data-s="discover"]:not([hidden]){grid-template-rows:auto 1fr}}
 @media (min-width:960px) and (max-width:1199px){main[data-s="discover"]:not([hidden]){grid-template-rows:auto auto 1fr}}
+
+/* first-visit hint on the search bar */
+.sumbar.pulse{animation:sbPulse 1.4s ease-in-out 3;border-color:var(--primary)}
+@keyframes sbPulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--primary) 40%,transparent)}50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--primary) 0%,transparent)}}
 </style>
 </head>
 <body>
@@ -981,7 +985,7 @@ const I18N=(()=>{
   "Free WiFi":"WiFi gratis","Pool":"Piscina","Parking":"Parcheggio","Restaurant":"Ristorante","Fitness Center":"Palestra","Adults Only":"Solo adulti","Excellent":"Eccellente","Superb":"Eccezionale","Very good":"Molto buono","Good":"Buono","Fair":"Discreto",
   "← Back":"← Indietro","Photo: hotel via lastminute.com":"Foto: hotel via lastminute.com","Wikimedia Commons · tap a photo for author and licence":"Wikimedia Commons · tocca una foto per autore e licenza",
   "Rooms and photos for this hotel are not available right now. Pick another hotel below.":"Camere e foto di questo hotel non sono disponibili ora. Scegline un altro qui sotto.","Saved sample prices":"Prezzi di esempio salvati",
-  "Language":"Lingua","Install":"Installa","📲 Install":"📲 Installa","Install the app":"Installa l'app","Not now":"Non ora","Got it":"Ho capito",
+  "Tap Edit at the top to change budget, dates and departure.":"Tocca Modifica in alto per cambiare budget, date e partenza.","Language":"Lingua","Install":"Installa","📲 Install":"📲 Installa","Install the app":"Installa l'app","Not now":"Non ora","Got it":"Ho capito",
   "Get Fridayaway on your phone":"Porta Fridayaway sul telefono","Get Fridayaway on your computer":"Porta Fridayaway sul computer",
   "Add it to your home screen: it opens full screen, like a real app.":"Aggiungila alla schermata Home: si apre a tutto schermo, come una vera app.",
   "One tap from your home screen":"A un tocco dalla schermata Home","Full screen":"A tutto schermo","Free, no app store":"Gratis, senza app store",
@@ -1498,6 +1502,7 @@ function scoreDest(d){
   S.vibes.forEach(v=>{if(d.tags.includes(v)){s+=3;m.push(v)}});
   for(const [v,w] of Object.entries(S.taste.v)) if(d.tags.includes(v)) s+=w*1.5;
   if(S.vibes.has("sea")) s+=(d.temp-18)/2;
+  s+=Math.max(-3,Math.min(3,(d.temp-16)/3));
   if(S.direct&&!d.direct) s-=6;
   if(!d.direct) s-=1;
   s+=(h.rating||70)/40;
@@ -1696,7 +1701,8 @@ function fling(card,dir){
 const HIST=[];
 function decide(code,liked){
   trk("swipe",{c:cityOf(code),like:!!liked,tg:!!S.together.on});
-  S.swipes=(S.swipes||0)+1; if(S.swipes>=3){const da=document.querySelector(".deckarea");da&&da.classList.add("calm");}
+  S.swipes=(S.swipes||0)+1; if((liked||S.swipes>=5)&&!S.together.on) try{instMaybe(liked?"first_save":"swipes")}catch(e){}
+  if(S.swipes>=3){const da=document.querySelector(".deckarea");da&&da.classList.add("calm");}
   const o=deck.find(x=>x.d.code===code); if(!o) return;
   const hist={code,liked,taste:JSON.parse(JSON.stringify(S.taste)),saved:false,tg:null};
   S.seen.add(code);
@@ -2438,7 +2444,9 @@ S.lastQ=$("q").value.trim();
   const br=document.querySelector(".top .brand"); if(br) $("setupBrand").innerHTML=br.innerHTML;
   $("setupGo").onclick=()=>{trk("search",{o:$("orig").value,from:$("dFrom").value,to:$("dTo").value,a:+$("adults").value,b:S.budgetOn?S.budget:0,v:[...S.vibes],fly:S.maxFly||0,tOut:$("tOut").value,tIn:$("tIn").value});applySetup()}; $("setupX").onclick=()=>{closeSetup();loadUI();}; $("sumBar").onclick=openSetup;
   document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("setup").hidden){closeSetup();loadUI();} });
-  renderSum(); openSetup(); })();
+  renderSum(); openSetup(); try{trk("search",{auto:true,o:$("orig").value,from:$("dFrom").value,to:$("dTo").value,a:+$("adults").value,b:S.budgetOn?S.budget:0})}catch(e){} applySetup();
+  const sb=$("sumBar"); if(sb){ setTimeout(()=>{sb.classList.add("pulse");toast("Tap Edit at the top to change budget, dates and departure.")},2600); setTimeout(()=>sb.classList.remove("pulse"),7000); }
+})();
 (async()=>{try{sample=window.claude?await window.claude.use("sample"):null}catch(e){sample=null}})();
 
 /* ===== Standalone mode (outside Claude): lastminute.com through this site's own /api/lm proxy ===== */
@@ -2526,12 +2534,14 @@ async function doInstall(src){
 }
 document.addEventListener("click",e=>{const b=e.target.closest&&(e.target.closest(".setupInst")||e.target.closest(".instBtn")); if(b){e.preventDefault();e.stopPropagation();doInstall(b.dataset.src||"button");}},true);
 syncInstall();
-(function firstOpen(){
+/* shown once, after the visitor has seen what the app does (first saved weekend or 5 swipes) */
+function instMaybe(why){
   if(!canInstallHere()) return;
   let seen=false; try{seen=!!localStorage.getItem("fa_inst_seen")}catch(e){}
   if(seen) return;
-  setTimeout(()=>{ if(!canInstallHere()) return; try{localStorage.setItem("fa_inst_seen","1")}catch(e){} instOpen("first_open"); },1600);
-})();
+  try{localStorage.setItem("fa_inst_seen","1")}catch(e){}
+  setTimeout(()=>{ if(canInstallHere()&&document.getElementById("setup").hidden) instOpen(why); },900);
+}
 
 I18N.start();
 </script>

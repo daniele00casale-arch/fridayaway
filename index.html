@@ -765,6 +765,18 @@ header.top .brand,#setupBrand{cursor:pointer}
   .setupIn .when input{font-weight:600;letter-spacing:-.02em}
 }
 @media (max-width:359px){#setup .setupIn .when input{background-image:none!important;padding-left:10px}}
+
+/* ===== search bar: looks like a search field (type what you want), summary underneath ===== */
+.sumbar.sbx{border-radius:20px;padding:9px 12px 9px 14px;gap:10px;border:1.5px solid color-mix(in srgb,var(--primary) 22%,var(--line));box-shadow:0 4px 18px rgba(38,35,58,.08)}
+.sumbar.sbx:hover{border-color:color-mix(in srgb,var(--primary) 45%,var(--line))}
+.sumbar.sbx .sb-ic{width:auto;height:auto;background:none;color:var(--primary)}
+.sumbar.sbx .sb-t{display:flex;flex-direction:column;gap:1px}
+.sumbar.sbx .sb-t .sb-q{display:block;font-size:14.5px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .3s}
+.sumbar.sbx .sb-t .sb-q.own{color:var(--ink)}
+.sumbar.sbx .sb-t .sb-q.fade{opacity:0}
+.sumbar.sbx .sb-t .sb-s{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sumbar.sbx .sb-t .sb-s b,.sumbar.sbx .sb-t .sb-s span{display:inline;font-size:inherit;font-weight:600;color:inherit}
+.sumbar.sbx .sb-e{border-left:1px solid var(--line);padding-left:10px;align-self:stretch;display:flex;align-items:center}
 </style>
 </head>
 <body>
@@ -778,7 +790,7 @@ header.top .brand,#setupBrand{cursor:pointer}
   <!-- DISCOVER -->
   <main class="screen gut" data-s="discover">
    <div class="dleft">
-    <button class="sumbar" id="sumBar" aria-label="Edit your search"><span class="sb-ic">⌕</span><span class="sb-t"><b id="sumA"></b><span id="sumB"></span></span><span class="sb-e">Edit ✎</span></button>
+    <button class="sumbar sbx" id="sumBar" aria-label="Search: describe your weekend"><span class="sb-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span><span class="sb-t"><span class="sb-q" id="sbQ">Describe your weekend…</span><span class="sb-s"><b id="sumA"></b> · <span id="sumB"></span></span></span><span class="sb-e" id="sbEdit">Edit ✎</span></button>
     <div class="ask">
       <div class="askrow">
         <label for="q" class="eyebrow" style="position:absolute;left:-9999px">Describe your weekend</label>
@@ -1025,7 +1037,7 @@ const I18N=(()=>{
   "Free WiFi":"WiFi gratis","Pool":"Piscina","Parking":"Parcheggio","Restaurant":"Ristorante","Fitness Center":"Palestra","Adults Only":"Solo adulti","Excellent":"Eccellente","Superb":"Eccezionale","Very good":"Molto buono","Good":"Buono","Fair":"Discreto",
   "← Back":"← Indietro","Photo: hotel via lastminute.com":"Foto: hotel via lastminute.com","Wikimedia Commons · tap a photo for author and licence":"Wikimedia Commons · tocca una foto per autore e licenza",
   "Rooms and photos for this hotel are not available right now. Pick another hotel below.":"Camere e foto di questo hotel non sono disponibili ora. Scegline un altro qui sotto.","Saved sample prices":"Prezzi di esempio salvati",
-  "Tap Edit at the top to change budget, dates and departure.":"Tocca Modifica in alto per cambiare budget, date e partenza.","Language":"Lingua","Install":"Installa","📲 Install":"📲 Installa","Install the app":"Installa l'app","Not now":"Non ora","Got it":"Ho capito",
+  "Tap Edit at the top to change budget, dates and departure.":"Tocca Modifica in alto per cambiare budget, date e partenza.","Sea & food, max €600":"Mare e cibo, max 600 €","Art city, 2 nights":"Città d'arte, 2 notti","Party with friends":"Festa con gli amici","Spa for two":"Spa in due","Tap the search bar to describe your weekend, or Edit to change dates and budget.":"Tocca la barra di ricerca per descrivere il tuo weekend, o Modifica per cambiare date e budget.","Search: describe your weekend":"Cerca: descrivi il tuo weekend","Language":"Lingua","Install":"Installa","📲 Install":"📲 Installa","Install the app":"Installa l'app","Not now":"Non ora","Got it":"Ho capito",
   "Get Fridayaway on your phone":"Porta Fridayaway sul telefono","Get Fridayaway on your computer":"Porta Fridayaway sul computer",
   "Add it to your home screen: it opens full screen, like a real app.":"Aggiungila alla schermata Home: si apre a tutto schermo, come una vera app.",
   "One tap from your home screen":"A un tocco dalla schermata Home","Full screen":"A tutto schermo","Free, no app store":"Gratis, senza app store",
@@ -1075,7 +1087,7 @@ const I18N=(()=>{
   "Flight + hotel":"Volo + hotel","flight + hotel":"volo + hotel","Left in budget":"Resta nel budget","/day to spend":"/giorno da spendere","per person":"a persona","from centre":"dal centro","photos and rooms":"foto e camere","trip details":"· dettagli",
   "Top sights in":"Da vedere a","tap to enlarge":"tocca per ingrandire","Tap a card to flip it":"Tocca una carta per girarla","Flip card":"Gira la carta","Photo":"Foto",
   "Pass the phone to":"Passa il telefono a","Pass to":"Passa a","swipes first. Then pass the phone.":"scorre per primo. Poi passa il telefono.","is swiping":"sta scegliendo",
-  "add friends, then start":"aggiungi gli amici, poi inizia","Start:":"Inizia:","swipes first":"scorre per primo","no budget limit":"nessun limite di budget","flights":"voli","sea":"mare","food":"cibo","culture":"cultura","nightlife":"vita notturna","relax & spa":"relax e spa","players":"giocatori","Player":"Giocatore",
+  "add friends, then start":"aggiungi gli amici, poi inizia","Start:":"Inizia:","swipes first":"scorre per primo","no budget limit":"nessun limite di budget","city":"città","flights":"voli","sea":"mare","food":"cibo","culture":"cultura","nightlife":"vita notturna","relax & spa":"relax e spa","players":"giocatori","Player":"Giocatore",
   "Budget for":"Budget per","Price for":"Prezzo per","Total for":"Totale per","total for":"totale per","Rooms":"Camere","Breakfast":"Colazione","Room only":"Solo pernottamento","Half board":"Mezza pensione","Full board":"Pensione completa",
   "Free cancellation":"Cancellazione gratuita","Non-refundable":"Non rimborsabile","Flights":"Voli","destinations":"destinazioni","cities":"città","adults":"adulti","adult":"adulto","nights":"notti","night":"notte","direct":"diretto","matches!":"match!","match!":"match!",
   "Excellent":"Eccellente","Superb":"Eccezionale","Very good":"Molto buono","Good":"Buono","Fair":"Discreto","New":"Nuovo",
@@ -2208,10 +2220,26 @@ $("split").onchange=e=>{S.split=e.target.checked;renderSaved();renderDeck()};
 
 
 /* ===== setup popup ===== */
+
+/* search bar: rotating examples of what you can type; your own request once you have written one */
+const SBQ_EN="Somewhere warm by the sea, great food, nice hotel near the centre, max €750 for the two of us", SBQ_IT="Un posto caldo sul mare, buon cibo, bel hotel in centro, max €750 in due";
+const SBQ_EX=["Describe your weekend…","Sea & food, max €600","Art city, 2 nights","Party with friends","Spa for two"];
+let sbqI=0;
+function sbqRender(){
+  const el=$("sbQ"); if(!el) return;
+  const q=(S.lastQ||"").trim(), own=q&&q!==SBQ_EN&&q!==SBQ_IT;
+  el.classList.toggle("own",!!own);
+  if(own){el.textContent=q;return}
+  el.classList.add("fade");
+  setTimeout(()=>{el.textContent=SBQ_EX[sbqI%SBQ_EX.length];el.classList.remove("fade")},300);
+}
+setInterval(()=>{if(document.visibilityState==="visible"&&$("setup").hidden){sbqI++;sbqRender()}},3500);
+
 function renderSum(){
   const a=$("sumA"), b=$("sumB"); if(!a) return;
   const v=[...S.vibes].map(x=>VLABEL[x]); const t=S.trip;
   a.textContent=`${oriName()} · ${dfmt(t.from)} → ${dfmt(t.to)}`;
+  sbqRender();
   b.textContent=[`${t.adults} adult${t.adults>1?"s":""}`, S.budgetOn?`max ${eur(S.budget)}`:"no budget limit", S.maxFly?`flights ≤ ${S.maxFly/60}h`:"", v.length?v.join(", "):"", t.tOut?`leave after ${t.tOut}`:"", t.tIn?`home after ${t.tIn}`:""].filter(Boolean).join(" · ");
 }
 function openSetup(){
@@ -2516,10 +2544,10 @@ applyIntent(parseRules($("q").value),"boot");
 S.lastQ=$("q").value.trim();
 (function(){ const ask=document.querySelector(".ask"); $("setupSlot").appendChild(ask); $("more").open=true;
   const br=document.querySelector(".top .brand"); if(br) $("setupBrand").innerHTML=br.innerHTML;
-  $("setupGo").onclick=()=>{trk("search",{o:$("orig").value,from:$("dFrom").value,to:$("dTo").value,a:+$("adults").value,b:S.budgetOn?S.budget:0,v:[...S.vibes],fly:S.maxFly||0,tOut:$("tOut").value,tIn:$("tIn").value});applySetup()}; $("setupX").onclick=()=>{closeSetup();loadUI();}; $("sumBar").onclick=openSetup;
+  $("setupGo").onclick=()=>{trk("search",{o:$("orig").value,from:$("dFrom").value,to:$("dTo").value,a:+$("adults").value,b:S.budgetOn?S.budget:0,v:[...S.vibes],fly:S.maxFly||0,tOut:$("tOut").value,tIn:$("tIn").value});applySetup()}; $("setupX").onclick=()=>{closeSetup();loadUI();}; $("sumBar").onclick=e=>{openSetup(); if(!e.target.closest("#sbEdit")) setTimeout(()=>{const q=$("q"); if(q){q.focus(); q.select();}},120);};
   document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("setup").hidden){closeSetup();loadUI();} });
   renderSum(); openSetup(); try{trk("search",{auto:true,o:$("orig").value,from:$("dFrom").value,to:$("dTo").value,a:+$("adults").value,b:S.budgetOn?S.budget:0})}catch(e){} applySetup();
-  const sb=$("sumBar"); if(sb){ setTimeout(()=>{sb.classList.add("pulse");toast("Tap Edit at the top to change budget, dates and departure.")},2600); setTimeout(()=>sb.classList.remove("pulse"),7000); }
+  const sb=$("sumBar"); if(sb){ setTimeout(()=>{sb.classList.add("pulse");toast("Tap the search bar to describe your weekend, or Edit to change dates and budget.")},2600); setTimeout(()=>sb.classList.remove("pulse"),7000); }
 })();
 (async()=>{try{sample=window.claude?await window.claude.use("sample"):null}catch(e){sample=null}})();
 

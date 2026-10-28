@@ -645,6 +645,40 @@ header.top .brand,#setupBrand{cursor:pointer}
 .chip.fchip{padding:6px 12px}
 .setupIn .chip.fchip{padding:8px 14px}
 .chip.fchip[aria-pressed="true"]{background:var(--ink);color:var(--app);border-color:var(--ink)}
+
+/* ===== language switch + install ===== */
+.topR{display:flex;align-items:center;gap:8px;min-width:0}
+.topR .trip{min-width:0}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--surface);flex:none}
+.lang button{border:0;background:none;font:inherit;font-size:12px;font-weight:800;letter-spacing:.03em;color:var(--muted);padding:5px 9px;border-radius:999px;cursor:pointer;line-height:1}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--app)}
+.instBtn{flex:none;display:inline-flex;align-items:center;gap:5px;border:0;border-radius:999px;background:var(--primary);color:var(--primary-ink);font:inherit;font-size:12.5px;font-weight:800;padding:7px 12px;cursor:pointer;box-shadow:0 3px 0 color-mix(in srgb,var(--primary) 70%,#000);white-space:nowrap}
+.instBtn:active{transform:translateY(2px);box-shadow:0 1px 0 color-mix(in srgb,var(--primary) 70%,#000)}
+.instBtn[hidden]{display:none}
+.shR{display:flex;align-items:center;gap:8px}
+.setupInst{display:flex;align-items:center;gap:12px;border:1.5px dashed color-mix(in srgb,var(--primary) 55%,transparent);background:var(--primary-soft);border-radius:16px;padding:10px 12px;cursor:pointer;text-align:left;font:inherit;color:var(--ink);width:100%}
+.setupInst[hidden]{display:none}
+.setupInst .si{font-size:24px;flex:none}
+.setupInst b{display:block;font-size:14.5px}.setupInst small{display:block;font-size:12px;color:var(--muted);line-height:1.3}
+.setupInst .instBtn{margin-left:auto}
+@media (max-width:600px),(min-width:960px) and (max-width:1560px){.top .trip{display:none}}
+@media (max-width:380px){.setupHead .brand span{display:none}.top .instBtn .ibT{display:none}}
+.instOv{position:fixed;inset:0;z-index:80;background:rgba(10,16,32,.62);display:flex;align-items:flex-end;justify-content:center;padding:12px;animation:fadeIn .2s ease}
+.instOv[hidden]{display:none}
+.instCard{position:relative;width:100%;max-width:420px;background:var(--surface);color:var(--ink);border-radius:22px;padding:22px 18px calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35);animation:instUp .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes instUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@media (min-width:700px){.instOv{align-items:center}}
+.instCard h3{margin:2px 0 0;font-size:19px;letter-spacing:-.01em}
+.instCard p{margin:0;font-size:14px;color:var(--muted)}
+.instIc{width:64px;height:64px;border-radius:16px;align-self:center;box-shadow:0 6px 18px rgba(5,19,76,.25)}
+.instX{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:0;background:var(--bg);color:var(--ink);font-size:14px;cursor:pointer}
+.instSteps{list-style:none;margin:4px 0 2px;padding:0;display:flex;flex-direction:column;gap:8px;text-align:left}
+.instSteps li{display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:12px;padding:9px 12px;font-size:14px}
+.instSteps li>i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--primary);color:var(--primary-ink);font-style:normal;font-weight:800;font-size:12.5px;display:grid;place-items:center}
+.instSteps svg{width:18px;height:18px;vertical-align:-3px;color:var(--primary)}
+.instCard .btn.big{width:100%}
+.instPerks{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.instPerks span{background:var(--bg);border-radius:999px;padding:4px 9px}
 </style>
 </head>
 <body>
@@ -652,7 +686,7 @@ header.top .brand,#setupBrand{cursor:pointer}
 <div class="app">
   <header class="top gut">
     <div class="brand"><img class="logo" alt="" src="data:image/png;base64,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"><span>Friday<b>away</b></span></div>
-    <div class="trip" id="tripTxt"></div>
+    <div class="topR"><div class="trip" id="tripTxt"></div><button class="instBtn" data-src="header" hidden><span aria-hidden="true">📲</span><span class="ibT">Install</span></button><div class="lang" role="group" aria-label="Language"><button data-lang="it" aria-pressed="false">IT</button><button data-lang="en" aria-pressed="false">EN</button></div></div>
   </header>
 
   <!-- DISCOVER -->
@@ -838,7 +872,8 @@ header.top .brand,#setupBrand{cursor:pointer}
 </div>
 <div class="setup" id="setup" hidden role="dialog" aria-modal="true" aria-label="Plan your weekend">
   <div class="setupIn">
-    <div class="setupHead"><div class="brand" id="setupBrand"></div><button class="linkbtn" id="setupX">Close ✕</button></div>
+    <div class="setupHead"><div class="brand" id="setupBrand"></div><div class="shR"><div class="lang" role="group" aria-label="Language"><button data-lang="it" aria-pressed="false">IT</button><button data-lang="en" aria-pressed="false">EN</button></div><button class="linkbtn" id="setupX">Close ✕</button></div></div>
+    <button class="setupInst" data-src="setup" hidden><span class="si" aria-hidden="true">📲</span><span><b>Install the app</b><small>Add it to your home screen in two taps</small></span><span class="instBtn" aria-hidden="true">Install</span></button>
     <h2>Plan your weekend</h2>
     <p class="muted">Budget, mood, departure and dates. We find the flight + hotel weekends that fit.</p>
     <div id="setupSlot"></div>
@@ -851,6 +886,199 @@ header.top .brand,#setupBrand{cursor:pointer}
 <div class="toast" id="toast" hidden></div>
 
 <script>
+
+/* ===== IT / EN switch: translates every visible string in place, including text the app adds later ===== */
+const I18N=(()=>{
+  const EX={
+  "Edit your search":"Modifica la ricerca","Edit ✎":"Modifica ✎","Top sights":"Da vedere","Describe your weekend":"Descrivi il tuo weekend","Describe your weekend…":"Descrivi il tuo weekend…","Go":"Vai","Moods":"Mood",
+  "Sea":"Mare","Food":"Cibo","Culture":"Cultura","City":"Città","Nightlife":"Vita notturna","Relax":"Relax","Free cancel":"Cancellazione gratis","Direct":"Diretti","Any":"Tutti","Maximum flight time":"Durata massima del volo",
+  "From":"Da","Depart":"Andata","Return":"Ritorno","Leave after":"Parti dopo le","Fly home after":"Rientra dopo le","Adults":"Adulti","Update":"Aggiorna","Budget":"Budget","No budget":"Nessun budget","Set":"Imposta","No limit":"Nessun limite",
+  "Pass the phone":"Passa il telefono","Skip":"Scarta","Back":"Indietro","Save":"Salva","SAVE":"SALVA","SKIP":"SCARTA","Bring back the last card":"Riporta l'ultima carta",
+  "Right to save · left to skip · tap to book":"Destra per salvare · sinistra per scartare · tocca per prenotare",
+  "Saved weekends":"Weekend salvati","Show price per person":"Mostra il prezzo a persona","Decide together":"Decidete insieme",
+  "Everyone swipes the same deck. Only weekends you all like show up.":"Tutti scorrono le stesse carte. Compaiono solo i weekend che piacciono a tutti.",
+  "Game lobby":"Sala giocatori","↻ Start over":"↻ Ricomincia","Start over":"Ricomincia","Your matches":"I vostri match","Send me the Top 3 every Tuesday":"Mandami la Top 3 ogni martedì",
+  "Discover":"Scopri","Saved":"Salvati","Together":"Insieme","App":"App","Plan your weekend":"Pianifica il tuo weekend",
+  "Budget, mood, departure and dates. We find the flight + hotel weekends that fit.":"Budget, mood, partenza e date. Troviamo noi i weekend volo + hotel che fanno per te.",
+  "Close ✕":"Chiudi ✕","Close":"Chiudi","Show my destination!":"Mostrami la meta!","Finding your perfect weekends":"Cerchiamo i tuoi weekend perfetti","It only takes a few seconds.":"Ci vuole solo qualche secondo.",
+  "Add player":"Aggiungi giocatore","All ✓":"Tutti ✓","Book":"Prenota","Continue":"Continua","Direct flights":"Voli diretti","Done ✓":"Fatto ✓","Double room":"Camera doppia","Twin room":"Camera doppia con due letti","Single room":"Camera singola",
+  "Estimated split. You pay the package total, flight + hotel together.":"Ripartizione stimata. Paghi il totale del pacchetto, volo + hotel insieme.",
+  "Everyone's locked in":"Tutti hanno scelto","Exact flights are shown when you open this weekend":"I voli esatti compaiono quando apri questo weekend","Exact flights are shown when you book.":"I voli esatti compaiono quando prenoti.",
+  "Flights in this package":"Voli di questo pacchetto","Flip all":"Gira tutte","Fridayaway home":"Home di Fridayaway","Gather round 👀":"Tutti qui 👀",
+  "Hold to reveal the matches":"Tieni premuto per svelare i match","Hold to unlock your turn":"Tieni premuto per sbloccare il tuo turno","Hold your thumb here to reveal your matches":"Tieni il pollice qui per svelare i vostri match",
+  "Ready":"Pronto","Remove":"Rimuovi","Reset":"Azzera","See results ▸":"Vedi i risultati ▸","Stop the game":"Termina la partita","Swiping now":"Sta scegliendo","Top match":"Match migliore",
+  "View & book ›":"Vedi e prenota ›","You like":"Ti piace","Your exact flights · live":"I tuoi voli esatti · live",
+  "Your shared picks will appear here. Are you on the same wavelength? 👀✈️":"Qui compariranno le scelte in comune. Siete sulla stessa lunghezza d'onda? 👀✈️",
+  "central":"in centro","food":"cibo","sea":"mare","city":"città","culture":"cultura","nightlife":"vita notturna","relax":"relax","relax & spa":"relax e spa","value for money":"qualità/prezzo","4★ and up":"4★ e più",
+  "Backpack mode":"Modalità zaino","Smart & cheap":"Furbo e low cost","Sweet spot":"Il giusto mezzo","Treat yourselves":"Concedetevi un lusso","Imperial suite":"Suite imperiale",
+  "★ YOUR #1 OF TOP 3":"★ IL TUO #1 DELLA TOP 3","⭐ Guest rating":"⭐ Voto degli ospiti","Guest rating":"Voto degli ospiti","📍 Hotel to centre":"📍 Distanza dal centro","To centre":"Dal centro",
+  "🔒 Waiting":"🔒 In attesa","🕑 Time there":"🕑 Tempo sul posto","☀️ Typical high":"☀️ Massima tipica","Typical high":"Massima tipica",
+  "A strong all-round weekend":"Un weekend forte su tutto","Almost there…":"Quasi fatto…","Arrives at Tenerife North, leaves from Tenerife South":"Arrivo a Tenerife Nord, ripartenza da Tenerife Sud",
+  "Cancellation":"Cancellazione","Checking flights":"Controllo i voli","Checking flights from your city…":"Controllo i voli dalla tua città…","Checking real flight times":"Controllo gli orari reali dei voli",
+  "Checking today's price for this weekend…":"Controllo il prezzo di oggi per questo weekend…","Clear times":"Cancella orari","Comparing hotels for your dates…":"Confronto gli hotel per le tue date…",
+  "Flight":"Volo","Flight change failed":"Cambio volo non riuscito","Flights in your package after your times · live":"Voli del pacchetto dopo i tuoi orari · live","Flights that match your times":"Voli in linea con i tuoi orari",
+  "Free":"Gratis","Fridayaway is built for short breaks: up to 7 nights.":"Fridayaway è pensata per brevi fughe: massimo 7 notti.","Getting the exact flights and rooms…":"Recupero voli e camere esatti…",
+  "Here they are! Tap one to book":"Eccoli! Toccane uno per prenotare","Keep swiping":"Continua a scorrere","Liked by all":"Piace a tutti",
+  "Live booking needs the lastminute.com connector. Add it in claude.ai Settings → Connectors, then try again.":"La prenotazione live richiede il connettore lastminute.com. Aggiungilo in claude.ai Impostazioni → Connettori e riprova.",
+  "Live prices are not available right now. Try again in a minute.":"I prezzi live non sono disponibili ora. Riprova tra un minuto.","Loading flight options…":"Carico le opzioni di volo…",
+  "Locked. Nobody can peek 🤫":"Bloccato. Nessuno può sbirciare 🤫","Matching your budget and mood…":"Abbino budget e mood…","More cities need the lastminute.com connector:":"Per altre città serve il connettore lastminute.com:",
+  "New":"Nuovo","New game: swipes cleared.":"Nuova partita: scelte azzerate.","Next":"Successiva","Previous":"Precedente","No booking link":"Nessun link di prenotazione","No flights at those times":"Nessun volo a quegli orari",
+  "No match":"Nessun match","No match this time":"Nessun match stavolta","Nothing fits. Raise the budget.":"Niente rientra. Alza il budget.","Nothing saved yet. Swipe right on a weekend you like.":"Ancora niente di salvato. Scorri a destra su un weekend che ti piace.",
+  "Open lastminute.com ↗":"Apri lastminute.com ↗","Opens this exact flight + hotel + room. lastminute.com confirms the final price before you pay.":"Apre esattamente questo volo + hotel + camera. lastminute.com conferma il prezzo finale prima del pagamento.",
+  "Other departure cities and new dates need live prices from the lastminute.com connector. Try again in a minute.":"Altre città di partenza e nuove date richiedono i prezzi live di lastminute.com. Riprova tra un minuto.",
+  "Over budget":"Fuori budget","Pick a return date after the departure date.":"Scegli un ritorno dopo la data di partenza.","Picked from what you saved so far":"Scelto in base a ciò che hai salvato finora",
+  "Play again":"Gioca ancora","Preparing…":"Preparo…","Raise the budget or drop a filter.":"Alza il budget o togli un filtro.","Read by Claude":"Letto da Claude","Reading your request":"Leggo la tua richiesta","Reading…":"Leggo…",
+  "Reconnect lastminute.com in claude.ai Settings → Connectors, then try again.":"Ricollega lastminute.com in claude.ai Impostazioni → Connettori e riprova.",
+  "Saved. Top 3 every Tuesday.":"Salvato. Top 3 ogni martedì.","See matches":"Vedi i match","See other flight times":"Vedi altri orari di volo","Show all":"Mostra tutto","Similar hotels available now":"Hotel simili disponibili ora",
+  "Tap a card to flip it":"Tocca una carta per girarla","Taste reset.":"Preferenze azzerate.","The departure date must be today or later.":"La partenza deve essere oggi o più avanti.","These flights match your times.":"Questi voli rispettano i tuoi orari.",
+  "This page needs your permission to use lastminute.com. Tap Book again and choose Allow.":"Questa pagina ha bisogno del permesso per usare lastminute.com. Tocca di nuovo Prenota e scegli Consenti.",
+  "Top sights · photos from Wikimedia Commons, tap a photo for author and licence":"Da vedere · foto da Wikimedia Commons, tocca una foto per autore e licenza",
+  "Updating your package…":"Aggiorno il pacchetto…","Upgraded. Price updated.":"Upgrade fatto. Prezzo aggiornato.","Use this flight":"Usa questo volo","Your #1 weekend is hiding underneath":"Il tuo weekend #1 è nascosto qui sotto",
+  "Your organisation blocks this connector.":"La tua organizzazione blocca questo connettore.","lastminute.com is not responding right now. Try again in a minute.":"lastminute.com non risponde al momento. Riprova tra un minuto.",
+  "✨ Scratch here ✨":"✨ Gratta qui ✨","Photo: Wikimedia Commons (author & licence)":"Foto: Wikimedia Commons (autore e licenza)","Nobody saved a weekend. Try a bigger budget?":"Nessuno ha salvato un weekend. Proviamo un budget più alto?",
+  "Free WiFi":"WiFi gratis","Pool":"Piscina","Parking":"Parcheggio","Restaurant":"Ristorante","Fitness Center":"Palestra","Adults Only":"Solo adulti","Excellent":"Eccellente","Superb":"Eccezionale","Very good":"Molto buono","Good":"Buono","Fair":"Discreto",
+  "← Back":"← Indietro","Language":"Lingua","Install":"Installa","📲 Install":"📲 Installa","Install the app":"Installa l'app","Not now":"Non ora","Got it":"Ho capito",
+  "Get Fridayaway on your phone":"Porta Fridayaway sul telefono","Get Fridayaway on your computer":"Porta Fridayaway sul computer",
+  "Add it to your home screen: it opens full screen, like a real app.":"Aggiungila alla schermata Home: si apre a tutto schermo, come una vera app.",
+  "One tap from your home screen":"A un tocco dalla schermata Home","Full screen":"A tutto schermo","Free, no app store":"Gratis, senza app store",
+  "Install Fridayaway":"Installa Fridayaway","Add it to your home screen in two taps":"Aggiungila alla schermata Home in due tocchi","Already installed? Open it from your home screen.":"Già installata? Aprila dalla schermata Home.",
+  "Open this page in Safari (menu ••• → Open in browser)":"Apri questa pagina in Safari (menu ••• → Apri nel browser)",
+  "Open this page in Chrome (menu ⋮ → Open in browser)":"Apri questa pagina in Chrome (menu ⋮ → Apri nel browser)",
+  "Tap Share":"Tocca Condividi","Tap Share in the bottom bar":"Tocca Condividi nella barra in basso","Tap Share at the top right":"Tocca Condividi in alto a destra",
+  "Choose “Add to Home Screen”":"Scegli “Aggiungi alla schermata Home”","Tap “Add” at the top right":"Tocca “Aggiungi” in alto a destra",
+  "Tap the ⋮ menu":"Tocca il menu ⋮","Tap the ⋮ menu at the top right":"Tocca il menu ⋮ in alto a destra","Choose “Install app”":"Scegli “Installa app”",
+  "Choose “Install app” or “Add to Home screen”":"Scegli “Installa app” o “Aggiungi a schermata Home”","In Safari: File → Add to Dock":"In Safari: File → Aggiungi al Dock",
+  "Click the install icon in the address bar (Chrome or Edge)":"Clicca l'icona di installazione nella barra degli indirizzi (Chrome o Edge)",
+  "Installing…":"Installazione…","Installed! Find Fridayaway on your home screen.":"Installata! Trovi Fridayaway nella schermata Home.",
+  /* product case */
+  "Product case":"Product case","Product case · October 2026":"Product case · ottobre 2026","Everyone added AI search. Nobody starts from the wallet.":"Tutti hanno aggiunto la ricerca con l'AI. Nessuno parte dal portafoglio.",
+  "Fridayaway is a budget-first, swipe-to-decide weekend planner for an OTA with dynamic packaging. The demo runs on real indicative package prices from lastminute.com's MCP server, fetched on 17 Oct 2026.":"Fridayaway è un planner di weekend che parte dal budget e si decide con uno swipe, pensato per un'OTA con dynamic packaging. La demo usa prezzi indicativi reali dei pacchetti dal server MCP di lastminute.com, raccolti il 17 ott 2026.",
+  "used AI to plan a holiday last year (Italy 51%)":"ha usato l'AI per pianificare una vacanza l'anno scorso (Italia 51%)","lastminute.com Travel Horizons, Sep 2026":"lastminute.com Travel Horizons, set 2026",
+  "would let AI book for them":"lascerebbe prenotare all'AI","same report":"stesso report","of bookings: low-cost flight + 4★+ hotel":"delle prenotazioni: volo low cost + hotel 4★+",
+  "Friday departures YoY, top short-break day":"partenze di venerdì anno su anno, il giorno top per i weekend","package revenue in Q2 2026; shift to flexible single products":"ricavi da pacchetti nel Q2 2026; spostamento verso prodotti singoli flessibili",
+  "Q2 2026 earnings call":"call sui risultati Q2 2026","of revenue and gross profit from dynamic packaging":"di ricavi e margine lordo dal dynamic packaging","same call":"stessa call",
+  "Player":"Concorrente","Plain words":"Linguaggio naturale","Total budget":"Budget totale","Priced F+H package":"Pacchetto volo+hotel con prezzo","Learns taste":"Impara i gusti","Group decision":"Decisione di gruppo",
+  "Not shown":"Non mostrato","Flights only":"Solo voli","Per night":"A notte","Limited":"Limitato","Bundle discount":"Sconto bundle","From swipes":"Dagli swipe","Match mode":"Modalità match","Yes":"Sì","No":"No",
+  "\"Not shown\" = no public evidence found, not proof of absence.":"\"Non mostrato\" = nessuna evidenza pubblica trovata, non prova di assenza.","What makes it different":"Cosa la rende diversa",
+  "Budget in, weekend out:":"Metti il budget, ricevi il weekend:","one total for two, every card shows what is left.":"un unico totale per due, ogni carta mostra quanto resta.",
+  "Swipe to decide:":"Decidi con uno swipe:","fast, low-effort choice for people who are \"just looking\".":"scelta rapida e senza sforzo per chi sta \"solo guardando\".",
+  "Taste learning you can see:":"Gusti appresi e visibili:","each swipe updates visible preferences; one tap to reset.":"ogni swipe aggiorna preferenze visibili; un tocco per azzerarle.",
+  "Decide together:":"Decidete insieme:","couples and friends get only mutual matches, which removes the \"send me the link\" back-and-forth.":"coppie e amici vedono solo i match in comune, senza il solito \"mandami il link\".",
+  "Step up, not just cheaper:":"Salire di livello, non solo risparmiare:","each card offers the next better hotel in the same city, matching how people already book.":"ogni carta propone l'hotel di livello superiore nella stessa città, come le persone già prenotano.",
+  "turns browsers into a weekly owned channel instead of paid retargeting.":"trasforma chi curiosa in un canale proprietario settimanale invece del retargeting a pagamento.",
+  "Value model · illustrative inputs":"Modello di valore · input illustrativi","Weekend searches / month":"Ricerche weekend / mese","Baseline conversion %":"Conversione di base %","Relative uplift %":"Uplift relativo %",
+  "Gross profit / package €":"Margine lordo / pacchetto €","Visitors saving Top 3 %":"Visitatori che salvano la Top 3 %","Bookings / 100 Top 3 subs / month":"Prenotazioni / 100 iscritti Top 3 / mese","Extra gross profit per month":"Margine lordo extra al mese",
+  "KPIs and 6-week test":"KPI e test di 6 settimane","package bookings per 1,000 weekend searches":"prenotazioni di pacchetti ogni 1.000 ricerche weekend",
+  "Save rate per swipe session · step-up take rate · match-to-book rate":"Tasso di salvataggio per sessione · tasso di upgrade · tasso match-prenotazione","Guardrails:":"Guardrail:","margin per booking, cancellations":"margine per prenotazione, cancellazioni",
+  "Weeks 1–2: 8 interviews + fake-door entry · Weeks 3–4: manual Top 3 to 500 opt-ins · Weeks 5–6: A/B on Italian traffic":"Settimane 1–2: 8 interviste + fake door · Settimane 3–4: Top 3 manuale a 500 iscritti · Settimane 5–6: A/B sul traffico italiano",
+  "Sources":"Fonti","Concept by Daniele Casale · Product Manager, AI & Data ·":"Concept di Daniele Casale · Product Manager, AI & Data ·",
+  ". Independent concept, not affiliated with any travel company. Prices are indicative totals for 2 adults returned by lastminute.com's public MCP server on 17 Oct 2026 and will change. With the lastminute.com connector, Book re-prices live and opens the exact flight + hotel + room at checkout.":". Concept indipendente, non affiliato ad alcuna azienda di viaggi. I prezzi sono totali indicativi per 2 adulti restituiti dal server MCP pubblico di lastminute.com il 17 ott 2026 e cambieranno. Con il connettore lastminute.com, Prenota ricalcola il prezzo live e apre esattamente volo + hotel + camera al checkout."
+  };
+  /* phrases and names replaced inside longer, generated strings (longest first, whole words only) */
+  const PH={
+  "From, dates & travellers":"Partenza, date e viaggiatori","Dates and times":"Date e orari","✈️ Max flight time":"✈️ Volo max",
+  "Choose a room, then pick flights that":"Scegli una camera, poi i voli che","Finding flights that":"Cerco voli che","leave after":"partono dopo le","fly home after":"rientrano dopo le",
+  "Fits your mood:":"In linea con il tuo mood:","Closest to a deal:":"Quasi un match:","like it":"lo vogliono",
+  "Finding weekends in more cities":"Cerco weekend in altre città","Searching live prices from":"Cerco prezzi live da","Live prices for":"Prezzi live per",
+  "Prices checked at":"Prezzi verificati alle","final price confirmed by lastminute.com at checkout":"prezzo finale confermato da lastminute.com al checkout",
+  "lastminute.com answered with an error:":"lastminute.com ha risposto con un errore:","No booking link returned":"nessun link di prenotazione ricevuto","is no longer available for these dates.":"non è più disponibile per queste date.",
+  "choose a room":"scegli una camera","prices are flight + hotel total":"i prezzi sono il totale volo + hotel","flight + hotel total":"totale volo + hotel","total with hotel":"totale con hotel",
+  "Flight + hotel":"Volo + hotel","flight + hotel":"volo + hotel","Left in budget":"Resta nel budget","/day to spend":"/giorno da spendere","per person":"a persona","from centre":"dal centro","photos and rooms":"foto e camere","trip details":"· dettagli",
+  "Top sights in":"Da vedere a","tap to enlarge":"tocca per ingrandire","Tap a card to flip it":"Tocca una carta per girarla","Flip card":"Gira la carta","Photo":"Foto",
+  "Pass the phone to":"Passa il telefono a","Pass to":"Passa a","swipes first. Then pass the phone.":"scorre per primo. Poi passa il telefono.","is swiping":"sta scegliendo",
+  "add friends, then start":"aggiungi gli amici, poi inizia","Start:":"Inizia:","swipes first":"scorre per primo","no budget limit":"nessun limite di budget","flights":"voli","sea":"mare","food":"cibo","culture":"cultura","nightlife":"vita notturna","relax & spa":"relax e spa","players":"giocatori","Player":"Giocatore",
+  "Budget for":"Budget per","Price for":"Prezzo per","Total for":"Totale per","total for":"totale per","Rooms":"Camere","Breakfast":"Colazione","Room only":"Solo pernottamento","Half board":"Mezza pensione","Full board":"Pensione completa",
+  "Free cancellation":"Cancellazione gratuita","Non-refundable":"Non rimborsabile","Flights":"Voli","destinations":"destinazioni","cities":"città","adults":"adulti","adult":"adulto","nights":"notti","night":"notte","direct":"diretto","matches!":"match!","match!":"match!",
+  "Excellent":"Eccellente","Superb":"Eccezionale","Very good":"Molto buono","Good":"Buono","Fair":"Discreto","New":"Nuovo",
+  "extra bookings from conversion":"prenotazioni in più dalla conversione","from Top 3. About":"dalla Top 3. Circa","a year. Placeholder inputs, not company data.":"all'anno. Dati di esempio, non dati aziendali.",
+  "Open":"Apri","options":"opzioni","from":"da","From":"Da","left":"rimasti","pp":"a pers.",
+  "Spain":"Spagna","Portugal":"Portogallo","Italy":"Italia","Greece":"Grecia","Czechia":"Rep. Ceca","Hungary":"Ungheria","France":"Francia","Croatia":"Croazia","Netherlands":"Paesi Bassi","Denmark":"Danimarca","Belgium":"Belgio",
+  "Cyprus":"Cipro","Finland":"Finlandia","Germany":"Germania","Iceland":"Islanda","Ireland":"Irlanda","Latvia":"Lettonia","Lithuania":"Lituania","Morocco":"Marocco","Norway":"Norvegia","Poland":"Polonia","Sweden":"Svezia","United Kingdom":"Regno Unito","Switzerland":"Svizzera","Turkey":"Turchia",
+  "Milan":"Milano","Turin":"Torino","Genoa":"Genova","Venice":"Venezia","Florence":"Firenze","Rome":"Roma","Naples":"Napoli","Geneva":"Ginevra","Zurich":"Zurigo","Lisbon":"Lisbona","Seville":"Siviglia","Athens":"Atene","Prague":"Praga","Paris":"Parigi",
+  "Copenhagen":"Copenaghen","London":"Londra","Edinburgh":"Edimburgo","Dublin":"Dublino","Brussels":"Bruxelles","Berlin":"Berlino","Munich":"Monaco di Baviera","Hamburg":"Amburgo","Stockholm":"Stoccolma","Warsaw":"Varsavia","Krakow":"Cracovia",
+  "Gdansk":"Danzica","Belgrade":"Belgrado","Bucharest":"Bucarest","Marseille":"Marsiglia","Lyon":"Lione","Nice":"Nizza","Crete":"Creta","Rhodes":"Rodi","Corfu":"Corfù","Thessaloniki":"Salonicco","Zagreb":"Zagabria","Zadar":"Zara","Canary Islands":"Canarie"
+  };
+  /* fragments that start with punctuation (no word boundary) */
+  const NB=[["No flight for this hotel matches your times (","Nessun volo per questo hotel rispetta i tuoi orari ("],["). Try another city or change the times.","). Prova un'altra città o cambia gli orari."],
+    [", flights and hotel. Final price is confirmed by lastminute.com at checkout.",", voli e hotel. Il prezzo finale è confermato da lastminute.com al checkout."],
+    [", hold your thumb here to unlock your turn",", tieni il pollice qui per sbloccare il tuo turno"],[": your turn. Same deck, fresh start.",": tocca a te. Stesse carte, si riparte da zero."]];
+  const RX=[
+    [/^Locking (.+?)'s choices…$/,"Blocco le scelte di $1…"],[/^(.+?)'s picks$/,"Le scelte di $1"],[/^(Player \d+) name$/,"Nome $1"],[/^Saved (.+)$/,"Salvato: $1"],[/^Open (?!lastminute|in browser|this page)(.+)$/,"Apri $1"],[/^(.+) options$/,"Opzioni $1"],
+    [/Lands in (.+?), about (\d+) km from (.+)/,"Atterra a $1, a circa $2 km da $3"],[/(\d+) of (\d+) like it/,"piace a $1 su $2"],[/\b1 adults\b/,"1 adulto"],[/\b1 nights\b/,"1 notte"]
+  ];
+  const RX2=[
+    [/\bfor (\d)/g,"per $1"],[/\b(\d+) of (\d+)\b/g,"$1 di $2"],
+    [/\b(\d{1,2}) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/g,(a,d,m)=>d+" "+({Jan:"gen",Feb:"feb",Mar:"mar",Apr:"apr",May:"mag",Jun:"giu",Jul:"lug",Aug:"ago",Sep:"set",Oct:"ott",Nov:"nov",Dec:"dic"})[m]],
+    [/\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\b(?=,|\s*·|\s*$|\s+\d)/g,(a,w)=>({Mon:"lun",Tue:"mar",Wed:"mer",Thu:"gio",Fri:"ven",Sat:"sab",Sun:"dom"})[w]]
+  ];
+  const escR=s=>s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  const keys=Object.keys(PH).sort((a,b)=>b.length-a.length);
+  const phRe=new RegExp("(^|[^A-Za-z\\u00C0-\\u00FF])("+keys.map(escR).join("|")+")(?=$|[^A-Za-z\\u00C0-\\u00FF])","g");
+  const cache=new Map();
+  function core(s){
+    let r=EX[s]; if(r!=null) return r;
+    r=s; for(const [a,b] of NB) r=r.split(a).join(b); for(const [re,rep] of RX) r=r.replace(re,rep);
+    r=r.replace(phRe,(a,p,w)=>p+PH[w]);
+    for(const [re,rep] of RX2) r=r.replace(re,rep);
+    return r;
+  }
+  function tr(s){
+    if(!s||!/[A-Za-z]/.test(s)) return s;
+    const m=s.match(/^(\s*)([\s\S]*?)(\s*)$/); let r=cache.get(m[2]);
+    if(r==null){r=core(m[2]);cache.set(m[2],r)} return m[1]+r+m[3];
+  }
+  let lang=""; try{lang=localStorage.getItem("fa_lang")||""}catch(e){}
+  if(lang!=="it"&&lang!=="en") lang=/^it\b/i.test(navigator.language||"")?"it":"en";
+  const ATTR=["placeholder","aria-label","title"];
+  const skip=el=>!el||el.closest("script,style,textarea,.notr,[translate=no]");
+  const skipA=el=>!el||el.closest("script,style,.notr,[translate=no]");
+  function doText(n){
+    if(skip(n.parentElement)) return;
+    const v=n.nodeValue; if(n.__it!=null&&v===n.__it) return;
+    n.__en=v; const t=tr(v); n.__it=t; if(t!==v) n.nodeValue=t;
+  }
+  function doAttr(el,a){
+    const v=el.getAttribute(a); if(v==null) return; el.__ia=el.__ia||{}; el.__ea=el.__ea||{};
+    if(el.__ia[a]!=null&&v===el.__ia[a]) return;
+    el.__ea[a]=v; const t=tr(v); el.__ia[a]=t; if(t!==v) el.setAttribute(a,t);
+  }
+  function walk(root){
+    if(root.nodeType===3){doText(root);return}
+    if(root.nodeType!==1||skipA(root)) return;
+    ATTR.forEach(a=>root.hasAttribute(a)&&doAttr(root,a));
+    root.querySelectorAll("[placeholder],[aria-label],[title]").forEach(el=>{if(!skipA(el))ATTR.forEach(a=>el.hasAttribute(a)&&doAttr(el,a))});
+    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT); let n; while(n=w.nextNode()) doText(n);
+  }
+  function restore(){
+    const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT); let n;
+    while(n=w.nextNode()){ if(n.__en!=null&&n.nodeValue===n.__it) n.nodeValue=n.__en; n.__it=null; }
+    document.querySelectorAll("[placeholder],[aria-label],[title]").forEach(el=>{ if(!el.__ea) return; ATTR.forEach(a=>{ if(el.__ea[a]!=null&&el.getAttribute(a)===el.__ia[a]) el.setAttribute(a,el.__ea[a]); }); el.__ia={}; });
+  }
+  const mo=new MutationObserver(list=>{
+    if(lang!=="it") return;
+    for(const m of list){
+      if(m.type==="characterData") doText(m.target);
+      else if(m.type==="attributes") {if(!skipA(m.target)) doAttr(m.target,m.attributeName);}
+      else m.addedNodes.forEach(walk);
+    }
+  });
+  const Q_EN="Somewhere warm by the sea, great food, nice hotel near the centre, max €750 for the two of us", Q_IT="Un posto caldo sul mare, buon cibo, bel hotel in centro, max €750 in due";
+  function swapQ(){ const q=document.getElementById("q"); if(!q) return; const from=lang==="it"?Q_EN:Q_IT, to=lang==="it"?Q_IT:Q_EN; if(q.value.trim()===from){q.value=to; try{if(S.lastQ===from)S.lastQ=to}catch(e){}} }
+  function sync(){ document.documentElement.lang=lang; document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===lang))); }
+  function set(l,user){
+    if(l===lang&&!user) return; lang=l; try{localStorage.setItem("fa_lang",l)}catch(e){}
+    if(l==="it") walk(document.body); else restore();
+    swapQ(); sync(); if(user) try{trk("lang",{l})}catch(e){}
+  }
+  function start(){
+    mo.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:ATTR});
+    document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".lang button"); if(b){e.preventDefault(); if(b.dataset.lang!==lang) set(b.dataset.lang,true);}});
+    if(lang==="it"){walk(document.body);swapQ();} sync();
+  }
+  return {tr,set,start,get lang(){return lang}};
+})();
+const TX=s=>I18N.lang==="it"?I18N.tr(s):s;
+
 /* ===== Real indicative package prices: lastminute.com MCP, MIL → X, 23–25 Oct 2026, 2 adults (fetched 17 Oct 2026) =====
    hotel tuple: [name, stars, rating(0-100), reviews, km from centre, facilities, total EUR for 2, free cancellation] */
 const DATA=[
@@ -1307,7 +1535,7 @@ const ratingWord=r=>r>=90?"Superb":r>=85?"Excellent":r>=80?"Very good":r>=70?"Go
 function cardHTML(o,pos){
   const {d,h,m}=o, left=S.budget-h.price, up=upgradeFor(d,h);
   const pp=S.split?`<div class="pp">${eur(h.price/S.trip.adults)} per person</div>`:`<div class="pp">flight + hotel for ${S.trip.adults} · ${eur(h.price/S.trip.adults)} pp</div>`;
-  const why=m.length?`Fits your <b>${m.map(v=>VLABEL[v]).join(" + ")}</b> mood`:Object.keys(S.taste.v).length?`Picked from what you saved so far`:`A strong all-round weekend`;
+  const why=m.length?`Fits your mood: <b>${m.map(v=>VLABEL[v]).join(" + ")}</b>`:Object.keys(S.taste.v).length?`Picked from what you saved so far`:`A strong all-round weekend`;
   return `<article class="card" data-code="${d.code}" style="z-index:${10-pos};transform:translateY(${pos*10}px) scale(${1-pos*0.04});${pos>2?"opacity:0;":""}" aria-label="${d.city}, ${eur(h.price)}">
     <div class="stamp like">SAVE</div><div class="stamp nope">SKIP</div>
     <div class="art">${art(d)}<span class="temp">☀ ${d.temp}°C</span>${pos===0&&o.s>8?`<span class="match">Top match</span>`:""}<div class="city"><h2>${d.city}</h2><span>${d.country}${d.carrier?" · "+d.carrier:""}</span></div></div>
@@ -2021,8 +2249,8 @@ function scratch(cv,onDone){
   const g=x.createLinearGradient(0,0,W,H); g.addColorStop(0,"#F6D365"); g.addColorStop(.45,"#B07CFF"); g.addColorStop(1,"#6D5DE6");
   x.fillStyle=g; x.fillRect(0,0,W,H);
   for(let i=0;i<70;i++){x.fillStyle=`rgba(255,255,255,${(Math.random()*.55+.15).toFixed(2)})`;x.beginPath();x.arc(Math.random()*W,Math.random()*H,Math.random()*1.8+.5,0,7);x.fill()}
-  x.fillStyle="#fff"; x.textAlign="center"; x.font="800 24px Inter, system-ui, sans-serif"; x.fillText("✨ Scratch here ✨",W/2,H/2-6);
-  x.font="600 13.5px Inter, system-ui, sans-serif"; x.globalAlpha=.9; x.fillText("Your #1 weekend is hiding underneath",W/2,H/2+20,W-28); x.globalAlpha=1;
+  x.fillStyle="#fff"; x.textAlign="center"; x.font="800 24px Inter, system-ui, sans-serif"; x.fillText(TX("✨ Scratch here ✨"),W/2,H/2-6);
+  x.font="600 13.5px Inter, system-ui, sans-serif"; x.globalAlpha=.9; x.fillText(TX("Your #1 weekend is hiding underneath"),W/2,H/2+20,W-28); x.globalAlpha=1;
   x.globalCompositeOperation="destination-out"; x.lineCap="round"; x.lineJoin="round"; x.lineWidth=40; x.fillStyle="#000";
   let down=false,last=null,moves=0,done=false;
   const pos=e=>{const b=cv.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top]};
@@ -2169,6 +2397,73 @@ const STANDALONE=!window.claude&&/^https?:$/.test(location.protocol);
     const d=new Date(); d.setDate(d.getDate()+((5-d.getDay()+7)%7||7)); const f=d.toISOString().slice(0,10); d.setDate(d.getDate()+2);
     $("dFrom").value=f; $("dTo").value=d.toISOString().slice(0,10); applyTrip();
   } else discoverMore();})();
+
+
+/* ===== install to home screen: first-open popup + always-visible Install buttons ===== */
+const INST={ev:null};
+const instUA=navigator.userAgent||"";
+const instIOS=/iPhone|iPad|iPod/.test(instUA)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const instInApp=/FBAN|FBAV|FB_IAB|Instagram|Line\/|TikTok|musical_ly|Twitter|LinkedInApp|Snapchat/i.test(instUA);
+const instAndroid=/Android/i.test(instUA);
+const instMobile=instIOS||instAndroid||/Mobi/i.test(instUA);
+const instSafariMac=!instIOS&&/Macintosh/.test(instUA)&&/Safari/.test(instUA)&&!/Chrome|Chromium|Edg|Firefox/.test(instUA);
+const isInstalled=()=>{try{return matchMedia("(display-mode: standalone)").matches||matchMedia("(display-mode: fullscreen)").matches||navigator.standalone===true}catch(e){return false}};
+const canInstallHere=()=>!!document.querySelector('link[rel="manifest"]')&&!isInstalled();
+function syncInstall(){ const on=canInstallHere(); document.querySelectorAll(".instBtn,.setupInst").forEach(b=>b.hidden=!on); }
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();INST.ev=e;syncInstall(); const o=document.getElementById("instOv"); if(o&&!o.hidden) instRender();});
+addEventListener("appinstalled",()=>{INST.ev=null;instClose();syncInstall();toast("Installed! Find Fridayaway on your home screen.")});
+const SHARE_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
+const PLUS_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>';
+const DOTS_SVG='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>';
+function instSteps(){
+  const li=(n,t,ic)=>`<li><i>${n}</i><span>${t}</span>${ic||""}</li>`;
+  if(instInApp) return instIOS?[li(1,"Open this page in Safari (menu ••• → Open in browser)"),li(2,"Tap Share",SHARE_SVG),li(3,"Choose “Add to Home Screen”",PLUS_SVG)]
+                              :[li(1,"Open this page in Chrome (menu ⋮ → Open in browser)"),li(2,"Tap the ⋮ menu"),li(3,"Choose “Install app”")];
+  if(instIOS) return [li(1,/CriOS|FxiOS|EdgiOS/.test(instUA)?"Tap Share at the top right":"Tap Share in the bottom bar",SHARE_SVG),li(2,"Choose “Add to Home Screen”",PLUS_SVG),li(3,"Tap “Add” at the top right")];
+  if(instAndroid) return [li(1,"Tap the ⋮ menu at the top right"),li(2,"Choose “Install app” or “Add to Home screen”")];
+  if(instSafariMac) return [li(1,"In Safari: File → Add to Dock")];
+  return [li(1,"Click the install icon in the address bar (Chrome or Edge)",PLUS_SVG)];
+}
+function instRender(){
+  const o=document.getElementById("instOv"); if(!o) return;
+  const logo=document.querySelector("header.top .logo");
+  const direct=!!INST.ev&&!instInApp;
+  o.innerHTML=`<div class="instCard"><button class="instX" aria-label="Close">✕</button>
+    ${logo?`<img class="instIc" alt="" src="${logo.src}">`:""}
+    <h3 id="instT">${instMobile?"Get Fridayaway on your phone":"Get Fridayaway on your computer"}</h3>
+    <p>Add it to your home screen: it opens full screen, like a real app.</p>
+    <div class="instPerks"><span>One tap from your home screen</span><span>Full screen</span><span>Free, no app store</span></div>
+    ${direct?"":`<ol class="instSteps">${instSteps().join("")}</ol>`}
+    ${direct?`<button class="btn big" id="instGo">📲 Install</button>`:`<button class="btn big" id="instOk">Got it</button>`}
+    <button class="linkbtn" id="instLater">Not now</button></div>`;
+  o.querySelector(".instX").onclick=()=>instClose("x"); o.querySelector("#instLater").onclick=()=>instClose("later");
+  const g=o.querySelector("#instGo"); if(g) g.onclick=()=>doInstall("popup");
+  const k=o.querySelector("#instOk"); if(k) k.onclick=()=>instClose("ok");
+}
+function instOpen(src){
+  let o=document.getElementById("instOv");
+  if(!o){o=document.createElement("div");o.id="instOv";o.className="instOv";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.setAttribute("aria-labelledby","instT");
+    o.addEventListener("click",e=>{if(e.target===o)instClose("backdrop")});document.body.appendChild(o);}
+  instRender(); o.hidden=false; trk("install_popup",{src,ios:instIOS,app:instInApp,p:!!INST.ev});
+}
+function instClose(how){ const o=document.getElementById("instOv"); if(!o||o.hidden) return; o.hidden=true; if(how) trk("install_close",{how}); }
+async function doInstall(src){
+  trk("install_click",{src,p:!!INST.ev});
+  if(INST.ev&&!instInApp){ const e=INST.ev; INST.ev=null;
+    try{ await e.prompt(); const r=await e.userChoice; trk("install_choice",{o:r&&r.outcome}); if(r&&r.outcome==="accepted"){instClose();} else instRender(); }catch(x){ instOpen(src); }
+    syncInstall(); return; }
+  instOpen(src);
+}
+document.addEventListener("click",e=>{const b=e.target.closest&&(e.target.closest(".setupInst")||e.target.closest(".instBtn")); if(b){e.preventDefault();e.stopPropagation();doInstall(b.dataset.src||"button");}},true);
+syncInstall();
+(function firstOpen(){
+  if(!canInstallHere()) return;
+  let seen=false; try{seen=!!localStorage.getItem("fa_inst_seen")}catch(e){}
+  if(seen) return;
+  setTimeout(()=>{ if(!canInstallHere()) return; try{localStorage.setItem("fa_inst_seen","1")}catch(e){} instOpen("first_open"); },1600);
+})();
+
+I18N.start();
 </script>
 
 <script>if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));</script>

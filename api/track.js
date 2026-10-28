@@ -2,7 +2,7 @@
 // Anonymous product analytics: what people do inside Fridayaway (no names, emails or IP addresses are stored).
 // Each flush from a browser becomes one small JSON file in the project's Vercel Blob store.
 const { put } = require("@vercel/blob");
-const TYPES = new Set(["open", "search", "swipe", "undo", "sheet", "book", "checkout", "hotel_switch", "fly_filter", "together_start", "together_end", "install", "sight_open"]);
+const TYPES = new Set(["open", "search", "swipe", "undo", "sheet", "book", "checkout", "hotel_switch", "fly_filter", "together_start", "together_end", "install", "sight_open", "install_popup", "install_click", "install_choice", "install_close", "lang"]);
 const clean = (d) => {
   if (!d || typeof d !== "object") return undefined;
   const o = {};

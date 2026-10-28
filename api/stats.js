@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
     recs.push(...part.filter(Boolean));
   }
   const S = {};
-  recs.filter((r) => !String(r.sid).startsWith("selftest")).forEach((r) => { const s = S[r.sid] || (S[r.sid] = { dev: r.dev, os: r.os, country: r.country, first: r.at, ev: [] }); s.first = Math.min(s.first, r.at); s.ev.push(...r.ev); });
+  recs.filter((r) => !String(r.sid).startsWith("selftest")).forEach((r) => { const s = S[r.sid] || (S[r.sid] = { uid: r.uid || "", dev: r.dev, os: r.os, country: r.country, first: r.at, ev: [] }); s.first = Math.min(s.first, r.at); if (r.uid) s.uid = r.uid; s.ev.push(...r.ev); });
   const sessions = Object.values(S);
   const inc = (o, k, n = 1) => { if (k === undefined || k === null || k === "") k = "?"; o[k] = (o[k] || 0) + n; };
   const out = { sessions: sessions.length, events: 0, byType: {}, byDay: {}, devices: {}, os: {}, countries: {}, origins: {}, budgets: {}, flyFilter: {},
@@ -36,6 +36,18 @@ module.exports = async (req, res) => {
       if (e.t === "install") out.installs++;
     });
   });
+  /* time spent: active seconds reported by the app ("time" events); older sessions fall back to first→last event */
+  const durs = sessions.map((s) => {
+    const t = s.ev.filter((e) => e.t === "time").map((e) => (e.d && e.d.s) || 0);
+    let sec = t.length ? Math.max(...t) : (s.ev.length > 1 ? (Math.max(...s.ev.map((e) => e.ts)) - Math.min(...s.ev.map((e) => e.ts))) / 1000 : 0);
+    return { key: s.uid || s.sid, sec: Math.min(Math.round(sec), 3 * 3600), measured: t.length > 0 };
+  });
+  const users = {}; durs.forEach((d) => { users[d.key] = (users[d.key] || 0) + d.sec; });
+  const uv = Object.values(users), sv = durs.map((d) => d.sec).sort((a, b) => a - b);
+  const avg = (a) => (a.length ? Math.round(a.reduce((x, y) => x + y, 0) / a.length) : 0);
+  const buckets = { "< 30 s": 0, "30 s – 2 min": 0, "2 – 5 min": 0, "5 – 15 min": 0, "> 15 min": 0 };
+  sv.forEach((x) => buckets[x < 30 ? "< 30 s" : x < 120 ? "30 s – 2 min" : x < 300 ? "2 – 5 min" : x < 900 ? "5 – 15 min" : "> 15 min"]++);
+  out.time = { avgPerSession: avg(sv), medianPerSession: sv.length ? sv[Math.floor(sv.length / 2)] : 0, avgPerUser: avg(uv), users: uv.length, measured: durs.filter((d) => d.measured).length, buckets };
   out.swipesPerSession = sessions.length ? Math.round((swipeTotal / sessions.length) * 10) / 10 : 0;
   out.updated = Date.now(); out.files = blobs.length;
   return res.status(200).json(out);

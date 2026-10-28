@@ -2,7 +2,7 @@
 // Anonymous product analytics: what people do inside Fridayaway (no names, emails or IP addresses are stored).
 // Each flush from a browser becomes one small JSON file in the project's Vercel Blob store.
 const { put } = require("@vercel/blob");
-const TYPES = new Set(["open", "search", "swipe", "undo", "sheet", "book", "checkout", "hotel_switch", "fly_filter", "together_start", "together_end", "install", "sight_open", "install_popup", "install_click", "install_choice", "install_close", "lang"]);
+const TYPES = new Set(["open", "search", "swipe", "undo", "sheet", "book", "checkout", "hotel_switch", "fly_filter", "together_start", "together_end", "install", "sight_open", "install_popup", "install_click", "install_choice", "install_close", "lang", "time"]);
 const clean = (d) => {
   if (!d || typeof d !== "object") return undefined;
   const o = {};
@@ -27,7 +27,8 @@ module.exports = async (req, res) => {
     .map((e) => ({ t: e.t, ts: Number(e.ts) || Date.now(), d: clean(e.d) }));
   if (!ev.length) return res.status(204).end();
   const ua = String(req.headers["user-agent"] || "");
-  const rec = { sid, at: Date.now(), dev: /Mobi|Android|iPhone|iPad/i.test(ua) ? "mobile" : "desktop", os: /iPhone|iPad|Mac OS/i.test(ua) ? "Apple" : /Android/i.test(ua) ? "Android" : /Windows/i.test(ua) ? "Windows" : "other", country: String(req.headers["x-vercel-ip-country"] || ""), ev };
+  const uid = String(b.uid || "").replace(/[^a-z0-9]/gi, "").slice(0, 32);
+  const rec = { sid, uid, at: Date.now(), dev: /Mobi|Android|iPhone|iPad/i.test(ua) ? "mobile" : "desktop", os: /iPhone|iPad|Mac OS/i.test(ua) ? "Apple" : /Android/i.test(ua) ? "Android" : /Windows/i.test(ua) ? "Windows" : "other", country: String(req.headers["x-vercel-ip-country"] || ""), ev };
   try {
     await put(`ev/${new Date().toISOString().slice(0, 10)}/${sid}.json`, JSON.stringify(rec), { access: "public", addRandomSuffix: true, contentType: "application/json" });
     return res.status(204).end();

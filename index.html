@@ -2015,7 +2015,10 @@ document.querySelectorAll("header.top .brand, #setupBrand").forEach(b=>{b.setAtt
 
 
 /* ===== anonymous usage tracking (standalone site only): batched, sent when the page is hidden ===== */
-const TRK={sid:"",q:[],sheet:""};
+const TRK={sid:"",q:[],sheet:"",act:0,vis:document.visibilityState==="visible"?Date.now():0,sent:-1};
+/* active time: counts only while the app is on screen */
+function trkTime(){ if(TRK.vis){TRK.act+=Date.now()-TRK.vis; TRK.vis=document.visibilityState==="visible"?Date.now():0;} return Math.round(TRK.act/1000); }
+addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"&&!TRK.vis) TRK.vis=Date.now(); });
 const cityOf=code=>{const d=DATA.find(x=>x.code===code);return d?d.city:code};
 function trk(t,d){
   let on=false; try{on=STANDALONE}catch(e){} if(!on) return;
@@ -2023,12 +2026,15 @@ function trk(t,d){
   TRK.q.push({t,ts:Date.now(),d}); if(TRK.q.length>=60) trkFlush();
 }
 function trkFlush(){
-  if(!TRK.q.length) return; const body=JSON.stringify({sid:TRK.sid,ev:TRK.q.splice(0)});
+  const sec=trkTime(); if(TRK.sid&&sec>0&&sec!==TRK.sent){TRK.sent=sec;TRK.q.push({t:"time",ts:Date.now(),d:{s:sec}});}
+  if(!TRK.q.length) return;
+  let uid=""; try{uid=localStorage.getItem("fa_uid")||"";if(!uid){uid=Math.random().toString(36).slice(2,10)+Date.now().toString(36);localStorage.setItem("fa_uid",uid)}}catch(e){}
+  const body=JSON.stringify({sid:TRK.sid,uid,ev:TRK.q.splice(0)});
   try{ if(!(navigator.sendBeacon&&navigator.sendBeacon("/api/track",body))) fetch("/api/track",{method:"POST",body,keepalive:true}).catch(()=>{}); }catch(e){}
 }
 addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")trkFlush()});
 addEventListener("pagehide",trkFlush);
-setInterval(trkFlush,180000);
+setInterval(trkFlush,60000);
 addEventListener("appinstalled",()=>{trk("install");trkFlush()});
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a.checkout");if(a&&/lastminute/.test(a.href)){const d=DATA.find(x=>x.code===TRK.sheet);trk("checkout",{c:cityOf(TRK.sheet),p:d&&hotelFor(d)?Math.round(hotelFor(d).price):0});trkFlush();}},true);
 setTimeout(()=>trk("open",{app:!!(window.matchMedia&&matchMedia("(display-mode: standalone)").matches),ref:(document.referrer?(()=>{try{return new URL(document.referrer).hostname}catch(e){return ""}})():"")}),0);

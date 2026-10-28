@@ -33,6 +33,7 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
 const key=new URLSearchParams(location.search).get("key")||"";
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const dur=s=>s<60?s+" s":Math.floor(s/60)+" min "+String(s%60).padStart(2,"0")+" s";
 const pct=(a,b)=>b?Math.round(a/b*100)+"%":"–";
 function bars(obj){const e=Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]);if(!e.length)return '<p class="empty">No data yet</p>';const m=e[0][1];return e.map(([k,v])=>`<div class="bar"><span class="l">${esc(k)}</span><i style="width:${Math.max(2,v/m*100)}%;max-width:60%"></i><span class="v">${v}</span></div>`).join("")}
 fetch("/api/stats?key="+encodeURIComponent(key)).then(r=>r.json().then(j=>({ok:r.ok,j}))).then(({ok,j})=>{
@@ -41,7 +42,9 @@ fetch("/api/stats?key="+encodeURIComponent(key)).then(r=>r.json().then(j=>({ok:r
   const f=j.funnel, cities=Object.entries(j.cities).map(([c,v])=>({c,...v,score:v.saved+v.details+v.book*2+v.checkout*3})).sort((a,b)=>b.score-a.score);
   $("root").innerHTML=`
   <div class="grid">
-    <div class="kpi"><b>${j.sessions}</b><span>sessions</span></div>
+    <div class="kpi"><b>${j.sessions}</b><span>sessions · ${j.time.users} users</span></div>
+    <div class="kpi"><b>${dur(j.time.avgPerUser)}</b><span>average time per user</span></div>
+    <div class="kpi"><b>${dur(j.time.avgPerSession)}</b><span>average per session · median ${dur(j.time.medianPerSession)}</span></div>
     <div class="kpi"><b>${j.byType.swipe||0}</b><span>swipes · ${j.swipesPerSession} per session</span></div>
     <div class="kpi"><b>${f.openedCheckout}</b><span>sessions that opened lastminute checkout</span></div>
     <div class="kpi"><b>${j.together.games}</b><span>Together games · ${j.together.matches} matches</span></div>
@@ -54,6 +57,7 @@ fetch("/api/stats?key="+encodeURIComponent(key)).then(r=>r.json().then(j=>({ok:r
     ${cities.length?`<table><tr><th>City</th><th class="n">Saved</th><th class="n">Skipped</th><th class="n">Save rate</th><th class="n">Opened</th><th class="n">Book</th><th class="n">Checkout</th></tr>
     ${cities.slice(0,40).map(x=>`<tr><td>${esc(x.c)}</td><td class="n">${x.saved}</td><td class="n">${x.skipped}</td><td class="n">${pct(x.saved,x.saved+x.skipped)}</td><td class="n">${x.details}</td><td class="n">${x.book}</td><td class="n">${x.checkout}</td></tr>`).join("")}</table>`:'<p class="empty">No swipes yet</p>'}</div>
   <div class="two">
+    <div class="card"><h2>Time spent per session</h2>${bars(j.time.buckets)}<p class="empty" style="font-size:12px;margin:8px 0 0">Active time on screen, measured precisely in ${j.time.measured} of ${j.sessions} sessions. Older sessions are estimated from first to last action.</p></div>
     <div class="card"><h2>Sessions per day</h2>${bars(j.byDay)}</div>
     <div class="card"><h2>Devices</h2>${bars(j.devices)}<h2 style="margin-top:12px">Systems</h2>${bars(j.os)}</div>
     <div class="card"><h2>Departure airports</h2>${bars(j.origins)}</div>

@@ -949,7 +949,8 @@ const I18N=(()=>{
   "Tap the ⋮ menu":"Tocca il menu ⋮","Tap the ⋮ menu at the top right":"Tocca il menu ⋮ in alto a destra","Choose “Install app”":"Scegli “Installa app”",
   "Choose “Install app” or “Add to Home screen”":"Scegli “Installa app” o “Aggiungi a schermata Home”","In Safari: File → Add to Dock":"In Safari: File → Aggiungi al Dock",
   "Click the install icon in the address bar (Chrome or Edge)":"Clicca l'icona di installazione nella barra degli indirizzi (Chrome o Edge)",
-  "Installing…":"Installazione…","Installed! Find Fridayaway on your home screen.":"Installata! Trovi Fridayaway nella schermata Home.",
+  "Installing…":"Installazione…","This device is no longer counted in the stats.":"Questo dispositivo non viene più contato nelle statistiche.","This device is counted in the stats again.":"Questo dispositivo viene di nuovo contato nelle statistiche.",
+  "Installed! Find Fridayaway on your home screen.":"Installata! Trovi Fridayaway nella schermata Home.",
   /* product case */
   "Product case":"Product case","Product case · October 2026":"Product case · ottobre 2026","Everyone added AI search. Nobody starts from the wallet.":"Tutti hanno aggiunto la ricerca con l'AI. Nessuno parte dal portafoglio.",
   "Fridayaway is a budget-first, swipe-to-decide weekend planner for an OTA with dynamic packaging. The demo runs on real indicative package prices from lastminute.com's MCP server, fetched on 17 Oct 2026.":"Fridayaway è un planner di weekend che parte dal budget e si decide con uno swipe, pensato per un'OTA con dynamic packaging. La demo usa prezzi indicativi reali dei pacchetti dal server MCP di lastminute.com, raccolti il 17 ott 2026.",
@@ -2020,12 +2021,20 @@ const TRK={sid:"",q:[],sheet:"",act:0,vis:document.visibilityState==="visible"?D
 function trkTime(){ if(TRK.vis){TRK.act+=Date.now()-TRK.vis; TRK.vis=document.visibilityState==="visible"?Date.now():0;} return Math.round(TRK.act/1000); }
 addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"&&!TRK.vis) TRK.vis=Date.now(); });
 const cityOf=code=>{const d=DATA.find(x=>x.code===code);return d?d.city:code};
+/* owner and test devices are never counted: open the site once with ?me=1 (?me=0 to count again); automated browsers are skipped too */
+const TRK_OFF=(()=>{ let off=false; try{ const m=new URLSearchParams(location.search).get("me");
+  if(m==="1"){localStorage.setItem("fa_notrack","1");setTimeout(()=>toast("This device is no longer counted in the stats."),800)}
+  if(m==="0"){localStorage.removeItem("fa_notrack");setTimeout(()=>toast("This device is counted in the stats again."),800)}
+  if(m!=null) history.replaceState(null,"",location.pathname+location.hash);
+  off=localStorage.getItem("fa_notrack")==="1"; }catch(e){}
+  return off||navigator.webdriver===true||/HeadlessChrome|Playwright|Puppeteer/i.test(navigator.userAgent||""); })();
 function trk(t,d){
-  let on=false; try{on=STANDALONE}catch(e){} if(!on) return;
+  let on=false; try{on=STANDALONE}catch(e){} if(!on||TRK_OFF) return;
   if(!TRK.sid){try{TRK.sid=sessionStorage.getItem("fa_sid")||"";}catch(e){} if(!TRK.sid){TRK.sid=Math.random().toString(36).slice(2,10)+Date.now().toString(36);try{sessionStorage.setItem("fa_sid",TRK.sid)}catch(e){}}}
   TRK.q.push({t,ts:Date.now(),d}); if(TRK.q.length>=60) trkFlush();
 }
 function trkFlush(){
+  if(TRK_OFF) return;
   const sec=trkTime(); if(TRK.sid&&sec>0&&sec!==TRK.sent){TRK.sent=sec;TRK.q.push({t:"time",ts:Date.now(),d:{s:sec}});}
   if(!TRK.q.length) return;
   let uid=""; try{uid=localStorage.getItem("fa_uid")||"";if(!uid){uid=Math.random().toString(36).slice(2,10)+Date.now().toString(36);localStorage.setItem("fa_uid",uid)}}catch(e){}

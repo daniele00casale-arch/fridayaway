@@ -27,6 +27,7 @@ module.exports = async (req, res) => {
     .map((e) => ({ t: e.t, ts: Number(e.ts) || Date.now(), d: clean(e.d) }));
   if (!ev.length) return res.status(204).end();
   const ua = String(req.headers["user-agent"] || "");
+  if (/HeadlessChrome|Playwright|Puppeteer|bot|crawler|spider/i.test(ua)) return res.status(204).end();
   const uid = String(b.uid || "").replace(/[^a-z0-9]/gi, "").slice(0, 32);
   const rec = { sid, uid, at: Date.now(), dev: /Mobi|Android|iPhone|iPad/i.test(ua) ? "mobile" : "desktop", os: /iPhone|iPad|Mac OS/i.test(ua) ? "Apple" : /Android/i.test(ua) ? "Android" : /Windows/i.test(ua) ? "Windows" : "other", country: String(req.headers["x-vercel-ip-country"] || ""), ev };
   try {

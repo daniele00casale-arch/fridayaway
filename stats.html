@@ -57,7 +57,7 @@ fetch("/api/stats?key="+encodeURIComponent(key)).then(r=>r.json().then(j=>({ok:r
     ${cities.length?`<table><tr><th>City</th><th class="n">Saved</th><th class="n">Skipped</th><th class="n">Save rate</th><th class="n">Opened</th><th class="n">Book</th><th class="n">Checkout</th></tr>
     ${cities.slice(0,40).map(x=>`<tr><td>${esc(x.c)}</td><td class="n">${x.saved}</td><td class="n">${x.skipped}</td><td class="n">${pct(x.saved,x.saved+x.skipped)}</td><td class="n">${x.details}</td><td class="n">${x.book}</td><td class="n">${x.checkout}</td></tr>`).join("")}</table>`:'<p class="empty">No swipes yet</p>'}</div>
   <div class="two">
-    <div class="card"><h2>Time spent per session</h2>${bars(j.time.buckets)}<p class="empty" style="font-size:12px;margin:8px 0 0">Active time on screen, measured precisely in ${j.time.measured} of ${j.sessions} sessions. Older sessions are estimated from first to last action.</p></div>
+    <div class="card"><h2>Time spent per session</h2>${bars(j.time.buckets)}<p class="empty" style="font-size:12px;margin:8px 0 0">Active time on screen, measured precisely in ${j.time.measured} of ${j.sessions} sessions. Older sessions are estimated from first to last action. Each session counts at most 30 min; your own devices and test browsers are excluded.</p></div>
     <div class="card"><h2>Sessions per day</h2>${bars(j.byDay)}</div>
     <div class="card"><h2>Devices</h2>${bars(j.devices)}<h2 style="margin-top:12px">Systems</h2>${bars(j.os)}</div>
     <div class="card"><h2>Departure airports</h2>${bars(j.origins)}</div>

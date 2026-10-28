@@ -2262,6 +2262,8 @@ async function applySetup(){
   const timesChanged=tO!==(S.trip.tOut||"")||tI!==(S.trip.tIn||"");
   const q=$("q").value.trim(), qChanged=q&&q!==S.lastQ;
   closeSetup(); showTab("discover");
+  /* an explicit search applies budget, moods and flight time as filters (not just as sort order) */
+  S.filterOn=true; S.pin=null; S.seen.clear();
   if(qChanged){ S.lastQ=q; await run(); }
   if(tripChanged){ await applyTrip(); }
   else if(timesChanged){ S.trip.tOut=tO; S.trip.tIn=tI; S.seen.clear(); renderSum(); checkTimes(); }

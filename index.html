@@ -725,6 +725,28 @@ header.top .brand,#setupBrand{cursor:pointer}
 /* first-visit hint on the search bar */
 .sumbar.pulse{animation:sbPulse 1.4s ease-in-out 3;border-color:var(--primary)}
 @keyframes sbPulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--primary) 40%,transparent)}50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--primary) 0%,transparent)}}
+
+/* ===== desktop card: same four destination tiles as on the phone ===== */
+@media (min-width:960px){.cfD .cf4{display:grid}.cfD .cf4 div{padding:6px 10px}}
+/* ===== what's on: events during the trip ===== */
+.evPill{display:flex;align-items:center;gap:7px;width:100%;text-align:left;border:1px solid color-mix(in srgb,var(--primary) 30%,var(--line));background:color-mix(in srgb,var(--primary) 8%,var(--surface));color:var(--ink);border-radius:12px;padding:6px 10px;font:inherit;font-size:12.5px;cursor:pointer;min-width:0}
+.evPill:empty{display:none}
+.evPill .evT{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.evPill .evT b{font-weight:800}
+.evPill small{flex:none;color:var(--primary);font-weight:800;font-size:11.5px}
+.evOv{position:fixed;inset:0;z-index:70;background:rgba(10,16,32,.55);display:flex;align-items:flex-end;justify-content:center;padding:12px;animation:fadeIn .2s ease}
+.evOv[hidden]{display:none}
+@media (min-width:700px){.evOv{align-items:center}}
+.evCard{position:relative;width:100%;max-width:440px;max-height:80vh;overflow:auto;background:var(--surface);border-radius:20px;padding:18px 16px calc(14px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.evCard h3{margin:0;font-size:18px}.evCard>p{margin:0;font-size:12.5px;color:var(--muted)}
+.evRow{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;align-items:center;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:12px;padding:6px;background:var(--surface)}
+.evRow:hover{border-color:color-mix(in srgb,var(--primary) 45%,var(--line))}
+.evRow .evImg{width:72px;height:48px;border-radius:8px;overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:20px}
+.evRow .evImg img{width:100%;height:100%;object-fit:cover;display:block}
+.evRow b{display:block;font-size:13.5px;line-height:1.25;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.evRow small{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+.evX{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:0;background:var(--bg);font-size:14px;cursor:pointer}
+.spEv{display:flex;flex-direction:column;gap:6px}
 </style>
 </head>
 <body>
@@ -1026,7 +1048,7 @@ const I18N=(()=>{
   /* phrases and names replaced inside longer, generated strings (longest first, whole words only) */
   const PH={
   "From, dates & travellers":"Partenza, date e viaggiatori","Dates and times":"Date e orari","✈️ Max flight time":"✈️ Volo max",
-  "Other hotels in":"Altri hotel a","tap to switch":"tocca per cambiare","h there":"h sul posto","typical high":"massima tipica","1 stop":"1 scalo","check-out":"check-out","Choose a room, then pick flights that":"Scegli una camera, poi i voli che","Finding flights that":"Cerco voli che","leave after":"partono dopo le","fly home after":"rientrano dopo le",
+  "What's on in":"Cosa succede a","During your trip · tap an event for tickets and details":"Durante il tuo viaggio · tocca un evento per biglietti e dettagli","Events from Ticketmaster":"Eventi da Ticketmaster","What's on ›":"Eventi ›","What's on":"Eventi","events":"eventi","See all":"Vedi tutti","Other hotels in":"Altri hotel a","tap to switch":"tocca per cambiare","h there":"h sul posto","typical high":"massima tipica","1 stop":"1 scalo","check-out":"check-out","Choose a room, then pick flights that":"Scegli una camera, poi i voli che","Finding flights that":"Cerco voli che","leave after":"partono dopo le","fly home after":"rientrano dopo le",
   "Fits your mood:":"In linea con il tuo mood:","Closest to a deal:":"Quasi un match:","like it":"lo vogliono",
   "Finding weekends in more cities":"Cerco weekend in altre città","Searching live prices from":"Cerco prezzi live da","Live prices for":"Prezzi live per",
   "Prices checked at":"Prezzi verificati alle","final price confirmed by lastminute.com at checkout":"prezzo finale confermato da lastminute.com al checkout",
@@ -1595,6 +1617,7 @@ function cardHTML(o,pos){
       <div class="badges">${h.flex?`<span class="badge mint">Free cancellation</span>`:`<span class="badge rose">Non-refundable</span>`}${d.direct?`<span class="badge sky">Direct flights</span>`:`<span class="badge butter">1 stop</span>`}${hrsOf(d)>0?`<span class="badge lilac">${hrsOf(d)} h there</span>`:""}${h.fac.filter(f=>/Pool|Spa/.test(f)).slice(0,1).map(f=>`<span class="badge">${f}</span>`).join("")}</div>
       ${fcLegs(d.code)?fcBlock(d.code):FL[d.code]&&!S.trip.live&&!timeIssue(d.code)?`<div class="legs"><div class="leg"><span>${dayFrom()}</span><b>${FL[d.code].o[0]} ${FL[d.code].o[2]} → ${FL[d.code].o[1]} ${FL[d.code].o[3]}</b><span class="fn">${FL[d.code].o[4].split(" · ")[0]}</span></div><div class="leg"><span>${dayTo()}</span><b>${FL[d.code].i[0]} ${FL[d.code].i[2]} → ${FL[d.code].i[1]} ${FL[d.code].i[3]}</b><span class="fn">${FL[d.code].i[4].split(" · ")[0]}</span></div></div>`:""}
       ${fcLegs(d.code)?"":S.trip.live||!FL[d.code]?`<div class="leg exactNote" style="grid-template-columns:1fr"><span>Exact flights are shown when you open this weekend</span></div>`:timeIssue(d.code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights to match your times (${timeTxt()}) are picked when you book</span></div>`:FL[d.code]&&FL[d.code].note?`<div class="warnline">${FL[d.code].note}</div>`:earlyReturn(d.code)?`<div class="warnline">Early flight home on Sunday (${FL[d.code].i[2]})</div>`:""}
+      ${pos<2?`<button class="evPill" data-ev="${d.code}" aria-label="Events in ${d.city}">${evPillInner(d)}</button>`:""}
       ${pos<2?`<div class="cardFacts" data-cf="${d.code}">${cardFactsInner(d,h)}</div>`:""}
       ${up?`<div class="upg"><span><b>+${eur(up.price-h.price)}</b> for ${starStr(up.stars)} ${up.name.length>26?up.name.slice(0,25)+"…":up.name}${up.rating?` · ${(up.rating/10).toFixed(1)}`:""}</span><button data-up="${d.code}|${up.j}">Step up</button></div>`:""}
       <div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}${pos<2?splitHTML(d.code,h.price).replace('class="split','class="split cardSplit'):""}</div>${marginPill(h.price)}</div>
@@ -1913,6 +1936,38 @@ async function loadSplit(code){
 function hoursWith(d,det){let hrs=hrsOf(d);
   if(!(hrs>0)&&!fcLegs(d.code)&&det&&det!=="busy"&&det.flights&&det.flights.out&&det.flights.back){const fo=det.flights.out,a=hm(fo.arr)+(hm(fo.arr)<hm(fo.dep)?24:0);hrs=Math.round(nightsOf()*24-a+hm(det.flights.back.dep));}
   return hrs;}
+
+/* ===== what's on during the trip (Ticketmaster, through /api/events) ===== */
+const EVT={};
+const evKey=d=>d.code+"|"+S.trip.from+"|"+S.trip.to;
+const EV_ICON={Music:"🎵",Sports:"🏟️","Arts & Theatre":"🎭",Film:"🎬",Miscellaneous:"🎫"};
+const evDay=e=>{try{return new Date(e.date+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric"})}catch(x){return ""}};
+async function loadEvents(d){
+  const k=evKey(d); if(EVT[k]!==undefined) return;
+  if(!mcp||!mcp.events){EVT[k]=[];return}
+  EVT[k]="busy";
+  try{const g=(typeof GEO!=="undefined"&&GEO[d.code])||null; const r=await mcp.events({lat:g?g[0]:"",lon:g?g[1]:"",city:d.city,from:S.trip.from,to:S.trip.to}); EVT[k]=((r&&r.events)||[]).filter(e=>e&&e.name);}
+  catch(e){EVT[k]=[]}
+  document.querySelectorAll(`[data-ev="${d.code}"]`).forEach(el=>{el.innerHTML=evPillInner(d)});
+  if(PANEL.code===d.code) renderPanels();
+}
+function evPillInner(d){
+  const ev=EVT[evKey(d)]; if(!Array.isArray(ev)||!ev.length) return "";
+  const e=ev[0];
+  return `<span aria-hidden="true">${EV_ICON[e.seg]||"🎫"}</span><span class="evT"><b>${esc_(evDay(e))}</b> · ${esc_(e.name)}</span>${ev.length>1?`<small>+${ev.length-1} events</small>`:`<small>What's on ›</small>`}`;
+}
+function evRows(ev,n){
+  return ev.slice(0,n).map(e=>`<a class="evRow" href="${esc_(e.url)}" target="_blank" rel="noopener"><span class="evImg">${e.img?`<img src="${esc_(e.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:(EV_ICON[e.seg]||"🎫")}</span><span><b>${esc_(e.name)}</b><small>${esc_(evDay(e))}${e.time?" · "+esc_(e.time):""}${e.venue?" · "+esc_(e.venue):""}</small></span></a>`).join("");
+}
+function openEvents(code){
+  const d=DATA.find(x=>x.code===code); if(!d) return; const ev=EVT[evKey(d)]; if(!Array.isArray(ev)||!ev.length) return;
+  try{trk("events_open",{c:d.city,n:ev.length})}catch(e){}
+  let o=$("evOv"); if(!o){o=document.createElement("div");o.id="evOv";o.className="evOv";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.addEventListener("click",e=>{if(e.target===o)o.hidden=true});document.body.appendChild(o);}
+  o.innerHTML=`<div class="evCard"><button class="evX" aria-label="Close">✕</button><h3>🎫 What's on in ${esc_(d.city)}</h3><p>During your trip · tap an event for tickets and details</p>${evRows(ev,8)}<p>Events from Ticketmaster</p></div>`;
+  o.querySelector(".evX").onclick=()=>{o.hidden=true}; o.hidden=false;
+}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".evPill"); if(b){e.stopPropagation();openEvents(b.dataset.ev);}});
+
 function cardFactsInner(d,h){
   const det=DET[detKey(d,h)], ok=det&&det!=="busy", hrs=hoursWith(d,det), wait=det==="busy"||(det===undefined&&!!mcp);
   const tiles=`<div class="cf4"><div><span>☀️ Typical high</span><b>${d.temp}°C</b></div><div><span>🕑 Time there</span><b>${hrs>0?hrs+" h":"—"}</b></div><div><span>📍 Hotel to centre</span><b>${h.km!=null?h.km+" km":"—"}</b></div><div><span>⭐ Guest rating</span><b>${h.rating?(h.rating/10).toFixed(1):"New"}</b></div></div>`;
@@ -1929,7 +1984,7 @@ function cardFactsInner(d,h){
   const ci=ok&&det.hotel&&(det.hotel.checkIn||det.hotel.checkOut);
   const dho=ci?`<div class="cdRow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg><div><span class="cdH">Hotel</span><div class="cdL">Check-in ${esc_(det.hotel.checkIn||"—")} · check-out ${esc_(det.hotel.checkOut||"—")}</div></div></div>`:"";
   const chips=`<div class="cdChips">${hrs>0?`<span>🕑 ${hrs} h there</span>`:""}<span>🌡️ ${d.temp}°C typical high</span></div>`;
-  return `<div class="cfM">${tiles+fl}</div><div class="cfD">${dfl}${dho}${chips}</div>`;
+  return `<div class="cfM">${tiles+fl}</div><div class="cfD">${tiles}${dfl}</div>`;
 }
 function refreshCardFacts(code){const d=DATA.find(x=>x.code===code); if(!d) return; const h=hotelFor(d); if(!h) return;
   document.querySelectorAll(`[data-cf="${code}"]`).forEach(el=>{el.innerHTML=cardFactsInner(d,h)});}
@@ -2029,8 +2084,8 @@ function renderPanels(){
   I.hidden=M.hidden=false;
   const d=o.d,h=hotelFor(d); if(!h){I.hidden=M.hidden=true;return}
   if(PANEL.code!==d.code||PANEL.hid!==h.hid){PANEL.code=d.code;PANEL.hid=h.hid;PANEL.photo=0}
-  loadDetail(d,h); loadSplit(d.code); loadSights(d); renderMSights(d);
-  if(deck[1]){const n=deck[1].d,nh=hotelFor(n); if(nh) loadDetail(n,nh);}
+  loadDetail(d,h); loadSplit(d.code); loadSights(d); renderMSights(d); loadEvents(d);
+  if(deck[1]){const n=deck[1].d,nh=hotelFor(n); if(nh) loadDetail(n,nh); loadEvents(n);}
   const det=DET[detKey(d,h)], ok=det&&det!=="busy", wait=det==="busy"||det===undefined;
   /* left: what the place looks like */
   const sg=SIGHTS[d.code];
@@ -2038,7 +2093,8 @@ function renderPanels(){
   if(Array.isArray(sg)&&sg.length) left=`<div class="spHead"><b>📸 Top sights in ${esc_(d.city)}</b><small>Wikimedia Commons · tap a photo for author and licence</small></div>${bentoHTML(sg.slice(0,8),"data-sg")}`;
   else if(sg==="busy") left=`<div class="spHead"><b>📸 Top sights in ${esc_(d.city)}</b></div>${bentoSkel(6)}`;
   else left=`<div class="pdest">${art(d)}<div class="pdest-t"><h3>${esc_(d.city)}</h3><span>${esc_(d.country)}</span></div></div>`;
-  I.innerHTML=`<div class="sidePane" aria-label="${esc_(d.city)} trip details">${left}</div>`;
+  const evs=EVT[evKey(d)], evHTML=Array.isArray(evs)&&evs.length?`<div class="spEv"><div class="spHead"><b>🎫 What's on in ${esc_(d.city)}</b></div>${evRows(evs,3)}${evs.length>3?`<button class="linkbtn" style="align-self:flex-start" onclick="openEvents('${d.code}')">See all ${evs.length} events</button>`:""}</div>`:"";
+  I.innerHTML=`<div class="sidePane" aria-label="${esc_(d.city)} trip details">${evHTML}${left}</div>`;
   /* right: where you sleep */
   const photos=ok?(det.hotel.photos||[]).slice(0,8):[];
   if(!photos.length){const one=(ok&&det.hotel.image)||h.img; if(one) photos.push(one);}
@@ -2463,6 +2519,7 @@ function restMcp(){
   return {
     callTool:async(server,tool,args)=>call(tool,args),
     sights:(city)=>getJSON(`/api/sights?v=3&city=${encodeURIComponent(city)}`),
+    events:(o)=>getJSON(`/api/events?lat=${o.lat}&lon=${o.lon}&city=${encodeURIComponent(o.city)}&from=${o.from}&to=${o.to}`),
     detail:(q)=>getJSON(`/api/detail?o=${q.o}&d=${q.d}&f=${q.f}&t=${q.t}&a=${q.a}&h=${q.h}`),
     batchSearch:(o,f,t,a,ds)=>getJSON(`/api/search?o=${o}&f=${f}&t=${t}&a=${a}&d=${ds.join(",")}`),
     verify:(q)=>getJSON(`/api/verify?v=2&o=${q.o}&f=${q.f}&t=${q.t}&a=${q.a}&tOut=${encodeURIComponent(q.tOut||"")}&tIn=${encodeURIComponent(q.tIn||"")}&b=${Math.round(q.b||0)}&d=${q.d.join(",")}`)

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="description" content="Fridayaway – swipe to pick your weekend: flight + hotel within your budget.">
 <meta name="theme-color" content="#05134C">
 <title>Fridayaway</title>
@@ -749,6 +749,22 @@ header.top .brand,#setupBrand{cursor:pointer}
 .spEv{display:flex;flex-direction:column;gap:6px}
 
 .dright .msights{margin-top:14px}
+
+/* ===== phone: slimmer bottom bar; iOS: no zoom/shift on the edit screen ===== */
+@media (max-width:959px){
+  .tabbar button{padding:7px 4px 5px;gap:2px;font-size:10.5px}
+  .tabbar button svg{width:19px;height:19px}
+  /* iOS zooms into any field under 16px and the screen looks shifted sideways */
+  input,select,textarea,#setup .setupIn .when input{font-size:16px!important}
+  .setup,.setupIn{overflow-x:hidden;max-width:100vw}
+  .setupIn .when input[type="date"],.setupIn .when input[type="time"]{-webkit-appearance:none;appearance:none;display:block;min-width:0;width:100%;text-align:left}
+  .setupIn .when input::-webkit-date-and-time-value{text-align:left}
+  #setup .setupIn .when input{padding-left:30px;padding-right:4px;background-position:8px center}
+  .setupIn .when input::-webkit-calendar-picker-indicator{display:none}
+  html,body{overflow-x:clip}
+  .setupIn .when input{font-weight:600;letter-spacing:-.02em}
+}
+@media (max-width:359px){#setup .setupIn .when input{background-image:none!important;padding-left:10px}}
 </style>
 </head>
 <body>

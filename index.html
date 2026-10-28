@@ -2046,7 +2046,10 @@ addEventListener("pagehide",trkFlush);
 setInterval(trkFlush,60000);
 addEventListener("appinstalled",()=>{trk("install");trkFlush()});
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a.checkout");if(a&&/lastminute/.test(a.href)){const d=DATA.find(x=>x.code===TRK.sheet);trk("checkout",{c:cityOf(TRK.sheet),p:d&&hotelFor(d)?Math.round(hotelFor(d).price):0});trkFlush();}},true);
-setTimeout(()=>trk("open",{app:!!(window.matchMedia&&matchMedia("(display-mode: standalone)").matches),ref:(document.referrer?(()=>{try{return new URL(document.referrer).hostname}catch(e){return ""}})():"")}),0);
+/* campaign link: ?g=<name> (or utm_campaign / utm_source) tells which post or group the visit came from */
+const CAMP=(()=>{let g="";try{const q=new URLSearchParams(location.search);g=(q.get("g")||q.get("utm_campaign")||q.get("utm_source")||"").toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,40);
+  if(g)sessionStorage.setItem("fa_g",g);else g=sessionStorage.getItem("fa_g")||"";}catch(e){}return g})();
+setTimeout(()=>trk("open",{g:CAMP,app:!!(window.matchMedia&&matchMedia("(display-mode: standalone)").matches),ref:(document.referrer?(()=>{try{return new URL(document.referrer).hostname}catch(e){return ""}})():"")}),0);
 
 /* ===== saved ===== */
 function updateCount(){const c=$("savedCount");c.hidden=!S.saved.length;c.textContent=S.saved.length}

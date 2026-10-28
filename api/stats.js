@@ -16,13 +16,17 @@ module.exports = async (req, res) => {
   recs.filter((r) => !String(r.sid).startsWith("selftest") && !EXCL.has(r.sid) && !(r.uid && EXCL.has(r.uid))).forEach((r) => { const s = S[r.sid] || (S[r.sid] = { sid: r.sid, uid: r.uid || "", dev: r.dev, os: r.os, country: r.country, first: r.at, ev: [] }); s.first = Math.min(s.first, r.at); if (r.uid) s.uid = r.uid; s.ev.push(...r.ev); });
   const sessions = Object.values(S);
   const inc = (o, k, n = 1) => { if (k === undefined || k === null || k === "") k = "?"; o[k] = (o[k] || 0) + n; };
-  const out = { sessions: sessions.length, events: 0, byType: {}, byDay: {}, devices: {}, os: {}, countries: {}, origins: {}, budgets: {}, flyFilter: {},
+  const out = { sessions: sessions.length, events: 0, sources: {}, sourceFunnel: {}, byType: {}, byDay: {}, devices: {}, os: {}, countries: {}, origins: {}, budgets: {}, flyFilter: {},
     funnel: { opened: 0, searched: 0, swiped: 0, openedDetails: 0, pressedBook: 0, openedCheckout: 0 },
     cities: {}, checkouts: [], together: { games: 0, finished: 0, matches: 0 }, swipesPerSession: 0, installs: 0 };
   let swipeTotal = 0;
   sessions.forEach((s) => {
     inc(out.devices, s.dev); inc(out.os, s.os); inc(out.countries, s.country); inc(out.byDay, new Date(s.first).toISOString().slice(0, 10));
     const has = (t) => s.ev.some((e) => e.t === t);
+    const op = s.ev.find((e) => e.t === "open"), d0 = (op && op.d) || {};
+    const src = d0.g ? d0.g : d0.ref ? (/facebook|fb\.|m\.facebook/.test(d0.ref) ? "facebook (no tag)" : /instagram/.test(d0.ref) ? "instagram (no tag)" : /linkedin|lnkd/.test(d0.ref) ? "linkedin (no tag)" : d0.ref) : "direct / WhatsApp / unknown";
+    inc(out.sources, src); const sf = out.sourceFunnel[src] || (out.sourceFunnel[src] = { visits: 0, swiped: 0, time: 0 }); sf.visits++; if (has("swipe")) sf.swiped++;
+    const tt = s.ev.filter((e) => e.t === "time").map((e) => (e.d && e.d.s) || 0); sf.time += Math.min(tt.length ? Math.max(...tt) : 0, 1800);
     if (has("open")) out.funnel.opened++; if (has("search")) out.funnel.searched++; if (has("swipe")) out.funnel.swiped++;
     if (has("sheet")) out.funnel.openedDetails++; if (has("book")) out.funnel.pressedBook++; if (has("checkout")) out.funnel.openedCheckout++;
     s.ev.forEach((e) => {
@@ -52,6 +56,7 @@ module.exports = async (req, res) => {
   out.time = { avgPerSession: avg(sv), medianPerSession: sv.length ? sv[Math.floor(sv.length / 2)] : 0, avgPerUser: avg(uv), users: uv.length, measured: durs.filter((d) => d.measured).length, buckets };
   out.swipesPerSession = sessions.length ? Math.round((swipeTotal / sessions.length) * 10) / 10 : 0;
   if (req.query && req.query.detail === "1") out.list = sessions.map((s, i) => ({ sid: s.sid, uid: s.uid, dev: s.dev, os: s.os, country: s.country, first: new Date(s.first).toISOString(), n: s.ev.length, types: [...new Set(s.ev.map((e) => e.t))].join(","), span: Math.round((Math.max(...s.ev.map((e) => e.ts)) - Math.min(...s.ev.map((e) => e.ts))) / 1000) }));
+  Object.values(out.sourceFunnel).forEach((x) => { x.avgTime = x.visits ? Math.round(x.time / x.visits) : 0; delete x.time; });
   out.updated = Date.now(); out.files = blobs.length;
   return res.status(200).json(out);
 };

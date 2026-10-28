@@ -53,6 +53,9 @@ fetch("/api/stats?key="+encodeURIComponent(key)).then(r=>r.json().then(j=>({ok:r
   <div class="card"><h2>Funnel (sessions)</h2>
     <table><tr><th>Step</th><th class="n">Sessions</th><th class="n">of opened</th></tr>
     ${[["Opened the app",f.opened],["Ran a search",f.searched],["Swiped at least once",f.swiped],["Opened a destination",f.openedDetails],["Pressed Book",f.pressedBook],["Opened lastminute checkout",f.openedCheckout]].map(([l,v])=>`<tr><td>${l}</td><td class="n">${v}</td><td class="n">${pct(v,f.opened)}</td></tr>`).join("")}</table></div>
+  <div class="card"><h2>Where visitors come from</h2>
+    <table><tr><th>Source (link ?g=…)</th><th class="n">Visits</th><th class="n">Swiped</th><th class="n">Avg time</th></tr>
+    ${Object.entries(j.sourceFunnel||{}).sort((a,b)=>b[1].visits-a[1].visits).map(([k,v])=>`<tr><td>${esc(k)}</td><td class="n">${v.visits}</td><td class="n">${v.swiped}</td><td class="n">${v.avgTime?dur(v.avgTime):"–"}</td></tr>`).join("")}</table></div>
   <div class="card"><h2>Destinations</h2>
     ${cities.length?`<table><tr><th>City</th><th class="n">Saved</th><th class="n">Skipped</th><th class="n">Save rate</th><th class="n">Opened</th><th class="n">Book</th><th class="n">Checkout</th></tr>
     ${cities.slice(0,40).map(x=>`<tr><td>${esc(x.c)}</td><td class="n">${x.saved}</td><td class="n">${x.skipped}</td><td class="n">${pct(x.saved,x.saved+x.skipped)}</td><td class="n">${x.details}</td><td class="n">${x.book}</td><td class="n">${x.checkout}</td></tr>`).join("")}</table>`:'<p class="empty">No swipes yet</p>'}</div>

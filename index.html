@@ -722,6 +722,14 @@ header.top .brand,#setupBrand{cursor:pointer}
 @media (min-width:1200px){.dinfo{position:static!important}main[data-s="discover"]:not([hidden]){grid-template-rows:auto 1fr}}
 @media (min-width:960px) and (max-width:1199px){main[data-s="discover"]:not([hidden]){grid-template-rows:auto auto 1fr}}
 
+
+/* desktop: side panels scroll inside themselves, so the page never grows and the card stays put in the middle */
+@media (min-width:960px){
+  .dinfo,.dmedia{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--line) transparent;padding-right:6px}
+  .dinfo::-webkit-scrollbar,.dmedia::-webkit-scrollbar{width:6px}
+  .dinfo::-webkit-scrollbar-thumb,.dmedia::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+}
+@media (min-width:1200px){.dinfo{align-self:start}.dmedia{max-height:none}}
 /* first-visit hint on the search bar */
 .sumbar.pulse{animation:sbPulse 1.4s ease-in-out 3;border-color:var(--primary)}
 @keyframes sbPulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--primary) 40%,transparent)}50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--primary) 0%,transparent)}}
@@ -837,6 +845,8 @@ html.neg .card{box-shadow:0 0 0 1px #8F8AA8,0 0 0 4px rgba(38,35,58,.07),0 18px 
 html.neg .card .body{border-top:1px solid #C9C5DA}
 html.neg :is(div,button,a):has(> .shade){filter:invert(1) hue-rotate(180deg)}
 html.neg :is(div,button,a):has(> .shade) img{filter:none}
+html.neg :is(.bt,.msRow button){filter:invert(1) hue-rotate(180deg)}
+html.neg :is(.bt,.msRow button) img{filter:none}
 .darkBtn{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0}
 .darkBtn svg{width:16px;height:16px}
 .darkBtn[aria-pressed="true"]{background:var(--ink);color:var(--app);border-color:var(--ink)}
@@ -2372,6 +2382,17 @@ function bentoHTML(items,attr){
   return `<div class="bento">${items.map((x,k)=>`<button class="bt" ${attr}="${k}" style="grid-row:span ${BSPAN[k%BSPAN.length]}" aria-label="${esc_(x.name||"Photo "+(k+1))}"><img src="${esc_(x.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()">${x.name?`<span class="btCap">${esc_(x.name)}</span>`:""}</button>`).join("")}</div>`;
 }
 const bentoSkel=n=>`<div class="bento">${Array.from({length:n},(_,k)=>`<div class="bt sk" style="grid-row:span ${BSPAN[k]}"></div>`).join("")}</div>`;
+
+/* desktop: each side panel gets exactly the height left below its top edge, and scrolls inside */
+function fitPanes(){
+  const wide=matchMedia("(min-width:960px)").matches;
+  ["dInfo","dMedia"].forEach(id=>{const el=$(id); if(!el) return;
+    if(!wide||el.hidden){el.style.maxHeight="";return}
+    const top=el.getBoundingClientRect().top; const room=Math.max(220,Math.round(innerHeight-Math.max(top,0)-16));
+    el.style.maxHeight=room+"px";});
+}
+addEventListener("resize",()=>requestAnimationFrame(fitPanes));
+addEventListener("scroll",()=>requestAnimationFrame(fitPanes),{passive:true});
 function renderPanels(){
   const I=$("dInfo"),M=$("dMedia"); if(!I||!M) return;
   const shown=!document.querySelector(".deckarea.empty");
@@ -2848,6 +2869,7 @@ const STANDALONE=!window.claude&&/^https?:$/.test(location.protocol);
 
 
 
+{const rp=renderPanels; renderPanels=function(){const r=rp.apply(this,arguments); requestAnimationFrame(fitPanes); return r;};}
 /* ===== black mode (negative colours), remembered on this device ===== */
 (function(){
   const set=(on,user)=>{document.documentElement.classList.toggle("neg",on);document.querySelectorAll(".darkBtn").forEach(b=>b.setAttribute("aria-pressed",String(on)));try{localStorage.setItem("fa_neg",on?"1":"0")}catch(e){} if(user) try{trk("theme",{neg:on})}catch(e){}};

@@ -825,6 +825,8 @@ header.top .brand,#setupBrand{cursor:pointer}
 .wzRow{display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:start}
 .wzRow b{display:block}
 .wzRow small{font-size:12.5px;color:var(--muted)}
+.wzp{text-align:right;line-height:1.15}
+.wzp small{display:block;font-family:var(--body);font-weight:500;font-size:11px;color:var(--muted);white-space:nowrap}
 /* discreet Book button on the card */
 .prR{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .goTrip{border:1px solid var(--primary);background:transparent;color:var(--primary);font:inherit;font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 12px;cursor:pointer;line-height:1.2}
@@ -1046,6 +1048,7 @@ html.neg img,html.neg video,html.neg svg[preserveAspectRatio="xMidYMid slice"]{f
 /* ===== IT / EN switch: translates every visible string in place, including text the app adds later ===== */
 const I18N=(()=>{
   const EX={
+  "Choose your hotel · price of the hotel for 2 nights":"Scegli l'hotel · prezzo dell'hotel per 2 notti","Choose your room · price of the room for 2 nights":"Scegli la camera · prezzo della camera per 2 notti","incl. flights":"voli inclusi",
   "‹ Back":"‹ Indietro","Hotel":"Hotel","Room":"Camera","Black mode":"Modalità nera","Book ›":"Prenota ›","per person":"a persona",
   "Continue · choose room":"Continua · scegli la camera","Continue · choose flights":"Continua · scegli i voli","Continue · review":"Continua · riepilogo",
   "Choose your hotel · price includes flights":"Scegli l'hotel · il prezzo include i voli","Choose your room · price includes flights":"Scegli la camera · il prezzo include i voli",
@@ -1170,7 +1173,7 @@ const I18N=(()=>{
     [", hold your thumb here to unlock your turn",", tieni il pollice qui per sbloccare il tuo turno"],[": your turn. Same deck, fresh start.",": tocca a te. Stesse carte, si riparte da zero."]];
   const RX=[
     [/^Locking (.+?)'s choices…$/,"Blocco le scelte di $1…"],[/^(.+?)'s picks$/,"Le scelte di $1"],[/^(Player \d+) name$/,"Nome $1"],[/^Saved (.+)$/,"Salvato: $1"],[/^Open (?!lastminute|in browser|this page)(.+)$/,"Apri $1"],[/^(.+) options$/,"Opzioni $1"],
-    [/Lands in (.+?), about (\d+) km from (.+)/,"Atterra a $1, a circa $2 km da $3"],[/(\d+) of (\d+) like it/,"piace a $1 su $2"],[/Free cancellation until (.+)/,"Cancellazione gratuita fino a $1"],[/\b1 adults\b/,"1 adulto"],[/\b1 nights\b/,"1 notte"]
+    [/Lands in (.+?), about (\d+) km from (.+)/,"Atterra a $1, a circa $2 km da $3"],[/(\d+) of (\d+) like it/,"piace a $1 su $2"],[/Free cancellation until (.+)/,"Cancellazione gratuita fino a $1"],[/^(€[\d,.]+) with flights$/,"$1 con i voli"],[/price of the hotel for (\d+) nights/,"prezzo dell'hotel per $1 notti"],[/price of the room for (\d+) nights/,"prezzo della camera per $1 notti"],[/\b1 adults\b/,"1 adulto"],[/\b1 nights\b/,"1 notte"]
   ];
   const RX2=[
     [/\bfor (\d)/g,"per $1"],[/\b(\d+) of (\d+)\b/g,"$1 di $2"],
@@ -1870,6 +1873,12 @@ const WZ_STEPS=["Hotel","Room","Flights","Book"];
 let WZ=null;
 const uiLang=()=>document.documentElement.lang==="it"?"it":"en";
 const wzCanc=c=>{const m=/^(.*?)(?:until|fino al?|entro il)\s*(\d{4}-\d{2}-\d{2})\s*$/i.exec(String(c||"").trim()); return m?`${/gratu|free/i.test(m[1])?"Free cancellation":m[1].trim()} until ${dfmt(m[2])}`:String(c||"");};
+const wzFl=()=>{const v=WZ&&SPLIT[splitKey(WZ.code)];return v&&v!=="busy"?v.fl:null};
+function wzPriceInner(total){const fl=wzFl(), own=fl!=null?total-fl:0;
+  if(fl!=null&&own>=total*0.12) return `${eur(own)}<small>${eur(total)} with flights</small>`;
+  return `${eur(total)}<small>${SPLIT[splitKey(WZ.code)]==="busy"?"…":"incl. flights"}</small>`;}
+const wzPrice=total=>`<div class="pr wzp" data-wzp="${total}">${wzPriceInner(total)}</div>`;
+function wzPrices(){if(!WZ) return; document.querySelectorAll("[data-wzp]").forEach(el=>el.innerHTML=wzPriceInner(+el.dataset.wzp));}
 const wzNum=v=>{const n=parseFloat(String(v==null?"":v).replace(/[^0-9.]/g,""));return isFinite(n)?n:0};
 const wzPeople=()=>`${S.trip.adults} adult${S.trip.adults>1?"s":""}`;
 function openSheet(code){
@@ -1928,12 +1937,12 @@ function wzHotelHead(){
 }
 function wzHotel(){
   const w=WZ, d=w.d, code=w.code, cur=hotelFor(d);
-  const rows=d.hotels.slice().sort((a,b)=>a.price-b.price).map(h=>`<div class="hrow" role="button" tabindex="0" data-j="${h.j}" aria-pressed="${h===cur}"><div><div class="n">${esc_(h.name)}</div><div class="d">${starStr(h.stars)} · ${h.rating?(h.rating/10).toFixed(1)+" "+ratingWord(h.rating):"New"} · ${h.km} km</div></div><div class="pr">${eur(h.price)}</div></div>`).join("");
+  const rows=d.hotels.slice().sort((a,b)=>a.price-b.price).map(h=>`<div class="hrow" role="button" tabindex="0" data-j="${h.j}" aria-pressed="${h===cur}"><div><div class="n">${esc_(h.name)}</div><div class="d">${starStr(h.stars)} · ${h.rating?(h.rating/10).toFixed(1)+" "+ratingWord(h.rating):"New"} · ${h.km} km</div></div>${wzPrice(h.price)}</div>`).join("");
   $("wzBody").innerHTML=`<div class="wzGal" id="wzGal"></div>
     <div class="wzHd" id="wzHd"></div>
     <p class="muted wzMeta">${dfmt(S.trip.from)} → ${dfmt(S.trip.to)} · ${wzPeople()}${hrsOf(d)>0?` · <span class="hours">${hrsOf(d)} hours there</span>`:""}</p>
     ${w.err?`<div class="errbox">${w.err}</div>`:""}
-    <span class="eyebrow">Choose your hotel · price includes flights</span>${rows}
+    <span class="eyebrow">Choose your hotel · price of the hotel for ${nightsOf()} night${nightsOf()>1?"s":""}</span>${rows}
     <div id="sheetSplit">${splitHTML(code,cur.price,true)}</div>${S.budgetOn?`<div id="sheetMargin">${marginHTML(cur.price)}</div>`:""}`;
   w.err="";
   wzGalWire(); wzGal(); wzHotelHead();
@@ -1956,7 +1965,7 @@ function wzHotel(){
 /* step 2: room (live price check, then the hotel's rooms) */
 async function wzRoom(){
   const w=WZ, d=w.d, h=hotelFor(d);
-  $("wzBody").innerHTML=`<div class="wzMini"><b>${esc_(h.name)}</b><span>${starStr(h.stars)} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)} · ${wzPeople()}</span></div><span class="eyebrow">Choose your room · price includes flights</span><div id="wzRooms"></div>`;
+  $("wzBody").innerHTML=`<div class="wzMini"><b>${esc_(h.name)}</b><span>${starStr(h.stars)} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)} · ${wzPeople()}</span></div><span class="eyebrow">Choose your room · price of the room for ${nightsOf()} night${nightsOf()>1?"s":""}</span><div id="wzRooms"></div>`;
   $("wzFoot").innerHTML=`<button class="btn" id="wzNext" disabled>Continue · choose flights</button>`;
   if(!mcp){wzNoMcp();return}
   if(!(w.p&&w.p.hid===h.hid&&w.p.lang===uiLang())){
@@ -1977,7 +1986,8 @@ async function wzRoom(){
   const rooms=(w.p.room_options||[]).slice().sort((a,b)=>a.price-b.price).slice(0,8);
   if(!rooms.length){$("wzRooms").innerHTML=`<div class="errbox">No rooms left for these dates. Go back and pick another hotel.</div>`;return}
   let sel=rooms.findIndex(r=>r.rate_id===w.rate); if(sel<0){sel=0; if(S.flex){const k=rooms.findIndex(r=>/Free/i.test(r.cancellation)); if(k>=0) sel=k;}}
-  $("wzRooms").innerHTML=rooms.map((r,i)=>`<label class="room"><input type="radio" name="rm" value="${esc_(r.rate_id)}" ${i===sel?"checked":""}><span><span class="rn">${esc_(String(r.room_name||"").trim())}</span><br><span class="rd">${MEAL[r.meal_plan]||esc_(r.meal_plan||"")} · ${esc_(wzCanc(r.cancellation))}</span></span><span class="rp">${eur(r.price)}</span></label>`).join("");
+  $("wzRooms").innerHTML=rooms.map((r,i)=>`<label class="room"><input type="radio" name="rm" value="${esc_(r.rate_id)}" ${i===sel?"checked":""}><span><span class="rn">${esc_(String(r.room_name||"").trim())}</span><br><span class="rd">${MEAL[r.meal_plan]||esc_(r.meal_plan||"")} · ${esc_(wzCanc(r.cancellation))}</span></span>${wzPrice(r.price).replace('class="pr wzp"','class="rp wzp"')}</label>`).join("");
+  loadSplit(w.code);
   const nb=$("wzNext"); nb.disabled=false;
   nb.onclick=async()=>{
     const rate=($("wzRooms").querySelector('input[name="rm"]:checked')||{}).value; if(!rate) return;
@@ -2192,7 +2202,7 @@ function splitInner(code,total,full){
   return `<span>✈️ Flights ≈ ${eur(v.fl)}</span><span>🏨 Hotel ≈ ${eur(hot)}</span>${full?`<small>Estimated split. You pay the package total, flight + hotel together.</small>`:""}`;
 }
 function splitHTML(code,total,full){return `<div class="split${SPLIT[splitKey(code)]==="busy"?" wait":""}" data-split="${code}" data-total="${total}"${full?' data-full="1"':""}>${splitInner(code,total,full)}</div>`}
-function refreshSplit(code){document.querySelectorAll(`[data-split="${code}"]`).forEach(el=>{el.classList.toggle("wait",SPLIT[splitKey(code)]==="busy");el.innerHTML=splitInner(code,+el.dataset.total,!!el.dataset.full)})}
+function refreshSplit(code){try{wzPrices()}catch(e){}document.querySelectorAll(`[data-split="${code}"]`).forEach(el=>{el.classList.toggle("wait",SPLIT[splitKey(code)]==="busy");el.innerHTML=splitInner(code,+el.dataset.total,!!el.dataset.full)})}
 async function loadSplit(code){
   const k=splitKey(code); if(SPLIT[k]!==undefined||!mcp) return;
   SPLIT[k]="busy"; refreshSplit(code);

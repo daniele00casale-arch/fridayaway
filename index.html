@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="description" content="Fridayaway – swipe to pick your weekend: flight + hotel within your budget.">
 <meta name="theme-color" content="#051653">
+<script>try{if(localStorage.getItem("fa_neg")==="1")document.documentElement.classList.add("neg")}catch(e){}</script>
 <title>Fridayaway</title>
 <link rel="icon" href="/favicon.ico?v=3" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png?v=3">
@@ -777,6 +778,63 @@ header.top .brand,#setupBrand{cursor:pointer}
 .sumbar.sbx .sb-t .sb-s{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sumbar.sbx .sb-t .sb-s b,.sumbar.sbx .sb-t .sb-s span{display:inline;font-size:inherit;font-weight:600;color:inherit}
 .sumbar.sbx .sb-e{border-left:1px solid var(--line);padding-left:10px;align-self:stretch;display:flex;align-items:center}
+
+/* guided booking sheet: one step at a time */
+.sheet.wz{height:88%;max-height:88%;padding-bottom:0;gap:12px}
+.wzTop{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.wzTop .linkbtn{font-size:14px}
+.wzCity{font-size:16px}
+.wzSteps{display:flex;gap:4px;position:relative}
+.wzSteps span{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--muted);position:relative}
+.wzSteps span:not(:first-child)::before{content:"";position:absolute;top:11px;right:50%;width:100%;height:2px;background:var(--line);z-index:0}
+.wzSteps span.on::before,.wzSteps span.done::before{background:var(--primary)}
+.wzSteps i{font-style:normal;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--bg);border:2px solid var(--line);color:var(--muted);font-size:12px;position:relative;z-index:1}
+.wzSteps em{font-style:normal}
+.wzSteps .on i{background:var(--primary);border-color:var(--primary);color:#fff}
+.wzSteps .done i{background:var(--surface);border-color:var(--primary);color:var(--primary)}
+.wzSteps .on{color:var(--ink)}
+.wzBody{display:flex;flex-direction:column;gap:10px}
+.wzGal{position:relative;height:220px;flex:none;border-radius:16px;overflow:hidden;background:var(--bg);touch-action:pan-y;user-select:none}
+.wzGal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;cursor:zoom-in;transition:opacity .2s}
+.wzArt{position:absolute;inset:0}
+.wzNav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.88);color:#26233A;font-size:22px;line-height:1;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.wzNav.l{left:8px}.wzNav.r{right:8px}
+.wzDots{position:absolute;bottom:9px;left:0;right:0;display:flex;justify-content:center;gap:5px;pointer-events:none}
+.wzDots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55)}
+.wzDots i.on{background:#fff;width:16px;border-radius:3px}
+.wzCnt{position:absolute;top:9px;right:9px;background:rgba(0,0,0,.55);color:#fff;font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 8px}
+.wzHd h3{margin:0;font-size:17px}
+.wzHd .muted{font-size:12.5px}
+.wzMeta{margin:-4px 0 0;font-size:12.5px}
+.wzMini{display:flex;flex-direction:column;gap:2px;background:var(--bg);border-radius:12px;padding:10px 12px}
+.wzMini span{font-size:12.5px;color:var(--muted)}
+.wzFoot{position:sticky;bottom:0;margin-top:auto;background:var(--surface);border-top:1px solid var(--line);display:flex;gap:8px;padding:10px 0 calc(14px + env(safe-area-inset-bottom,0px));z-index:2}
+.wzFoot .btn{flex:1}
+.wzFoot .wzSave{flex:0 0 auto;padding-left:18px;padding-right:18px}
+.wzFoot .checkout{flex:1}
+.wzFoot .step{flex:1;justify-content:center;padding:10px 0}
+.fopt{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;font-size:13px}
+.fopt:has(input:checked){border-color:var(--primary);box-shadow:inset 0 0 0 1px var(--primary)}
+.fopt input{accent-color:var(--primary)}
+.fopt .fo-h{display:flex;flex-direction:column}
+.fopt .fo-h small{font-size:12px;color:var(--muted)}
+.fopt .fo-h small.warn{color:var(--rose-ink)}
+.fopt .fo-p{font-family:var(--mono);font-weight:700}
+.fopt .legs{grid-column:1/-1}
+.wzSum{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:14px;padding:12px}
+.wzRow{display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:start}
+.wzRow b{display:block}
+.wzRow small{font-size:12.5px;color:var(--muted)}
+/* discreet Book button on the card */
+.prR{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.goTrip{border:1px solid var(--primary);background:transparent;color:var(--primary);font:inherit;font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 12px;cursor:pointer;line-height:1.2}
+.goTrip:hover{background:var(--primary);color:#fff}
+/* black mode: the whole page in negative, photos kept as they are */
+html.neg{filter:invert(1) hue-rotate(180deg);background:#fff}
+html.neg img,html.neg video,html.neg svg[preserveAspectRatio="xMidYMid slice"]{filter:invert(1) hue-rotate(180deg)}
+.darkBtn{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0}
+.darkBtn svg{width:16px;height:16px}
+.darkBtn[aria-pressed="true"]{background:var(--ink);color:var(--app);border-color:var(--ink)}
 </style>
 </head>
 <body>
@@ -784,7 +842,7 @@ header.top .brand,#setupBrand{cursor:pointer}
 <div class="app">
   <header class="top gut">
     <div class="brand"><img class="logo" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAIAAABt+uBvAAAq3ElEQVR42qV9eZxdVZXut/Y+w51qSiqVMIcAggyRIZIwowKCIA0oiIpzt023rf3s1zx7sB3bVul2bmdtURQQVJAGmYmgIshMNAQCZKykklSlxjuds/da748z33sr5PWrX35Q995z7jln7bXX+tZa31pFzsibAAAEAiT+FQIQcj8CEERy76THCxFFR4uwxB+kZ6VfBwDJkdEXESCdFypeIXpHIPF3UtcB3adT1/fEX0VA7sqFr6Poc4k+lcL5TnYFKd6loOtmCzJLn1oEFH87UeGOqeN0SV9K7n3JizJ3YaHkf1Q8KycJ6hBKKkwpXLrjWeIrZvcqFN0cFcUMkKgOWf8//sRni0ivt3sdLt2fyvynSZescx9JKhQpyE7yKypd39Z9BwJJnkA6rkXOHm8i/yVF5RTJ6blEStr7lmi+DUBd1xXsrZi7D+j+nZIbkz0uMBUlm9uQRAJRvaUjXcs+76ddl6dETJ0LRntaCUrsWuenVNQ92VutxstK52XUViCQWEC0J02PHpgIsYmlzJggs3G9xUTdFlG6ZCTJ6gntjS4XLtBtNImKe6TjPnosdq8lTo9Xnfcqe3F7ksgrlto8SyF5LZb57H/+6Lwl6LlLe698DxdCkEi7pVNYNK+ccyuZ+XSVnZEpeY9zCl/crTKx+kvncwn2wlxT8Rv3wlTLno1UciOE/8GPJGY7+l3lHUAPg1LcA71UMS816rGqtPe39bLPJHu5BSmTOe2t5en1OQFqPqHsQRQ9rtLjZnobVOq2zIS92FDz7Ie9eUnzCEb2ysyprvuRXtf7H6Mlmef/2d1Lj7dpjxtzDx5hz8soexJ199cTQHkjnaqSyP+3XPK3IL1UkIorQPPDk72HQi+79ebfdCLdOylyLU4PrEB7tzv34nG6EUGnv5AuHCAvY97nhVR5J9Oll9kBgh4BG3VGmulNOXvClntrkaS3hkQxYIa5qeB8KIsgk0Cy6E9f3jh2mJj8WlOmA0hjukQ4kkbbOfhM1OGtKLZBe7CkMs+69zy8+DzpqYIILqnemzwWT/w8RLlHy0PTHgAmzQ+oBM2RUBayUyckoQIephwA7omOk7edeYKLNNdAhSi6mGaQrn1EoGRNSNKEiFAxIksWt0OpJTtfOnEF5TZItiuJSKQrfCXqslISr0ROeRMd7WF6JCcDp8cGSd+IdyZ1HCJ5c5cuWnZbSSSWtybdEDkFc5Fux5/H8iFQelnJZ6SICkG37NFOS69oNo66qSt8l57G28kelqS3qvW0MJ3Ilwp+UiR14kIE4a6UgGRBbSZHkuQj6fI6RW2jJMMhBYsRnSo5ARWSDVKEG7l76B0gSaRBvVCPJNGw9LKCedOaHly4DMd7syMgEiGKQziGiHAuM5mG8tQjXJHM2lN87UQSkih59DlLl00s5jEIShEBhueHC6l4iJxeeUwqLp9Eu70jEVAwRCKgIpQoaI0ApImgEBgjYQgRuI7nuBzJKHMLnBmXLDmLJN9HHToQHU+dBie3nTmyoyClFEGAoNlGYCDQtQpp1dvvUCpkcXqBgAKklQ4HUkjcSrwbOmywSCogRURAYELTboGlPDhw5MH7V7X7/I5dYxO7HL+U+iBApe42ixjnDRQEuagyL8zsTYhSIFLGWFNvodmC44y8YunKI/Y96aj9r772wempuuNo2SOUcSBdWJwKUsqwl/SC5WnSMw3Qk0y+AkJrTLsNa8r9tVNf+aqLjj7unCXLDlU1tHmi1fjyYw98Zs2DjnYEFNsJIhECUbTqHYl/yWsPpWrCsUPKCUgrAiQIjZltIQhQKx91+AGvO3vl6y84ZUW4a2Rx5Zn2wMe+cpvjOtIbx0cOnAA4vbPsiWwSpEuURfWS7Lt0DRnCAoKIIlFEhq1ptmADr1Y7+cgjLz7q2PMOOPwwdxCzBltmuLWLRRY6+tNHnd2ebvz7ht97XtlCREBQII3YNnVEWJKUHrJlSA2ciBBBEUAUBqGpNxCG3oL+E0468ryzTjj3nBOPffWRroT49lelf6Gc8rav/8P3zMxcafFCY2U+XBe/0CNv7p0QpF5mO68skt4rE0QTWbYmaCNsU7n06gOXXXLEsW9c+sojS4swE2JyzrRaDFFKKQAMK6ygphqzh/3++1McauUIFJGO5ZJiy46IiRKjxiwxPhalACBoB2g0YUx10eDJJx51/nkrz3ntCa88Ymm8uLf9IvzWf+Lyd+or3t1qto9a9dcbN2x3y6VMYYlyME4ocqkiDnVBpLh+VcAZ+e3D8S2KEERBBBwGbdNuwXePOeDAC49YftGy5Sv8RZhhjM7Z5qgVUVopTUoIhsGAiGZhmIVu7Yzq4lsmX9Bu2UAEQlAgBVHx3sk59siVCUSEiUQTIBIEbdSbsKZvZPCUM0688IJTXn/WymXL9o3OswA/t46++G/qmaf0f3zNnnKGEnnwt89sfH6T218T5sjwFQs+CVgQSIykqVCcos5YXOJAJro3YYIoEkCCMECrCY1li5e88Yhj33zYq1bV9nXmgLFZrm83wkppFcV7xiIECGCBCFgAsLBo58KBg26ZWCviAQzoGGCo6HZUAtEi+cTeUxPCMDRzdZigb2To1Nes/LMLTj/rda8+5OB9Irm0WqGUXLc+p276if7m12jBAv7Jz2XZYdJsoVy6/mf3I2grqtmO7ApRimXSMMDpkR6lQsUrcuERohFhAkM4mJsD8ZLh4XNXnHjpoceeMbB/telifI43bA+ElVaKyIGCsZEsMs8iAAuYASgR0q2z+w6oKrdh20q5EomGBMwgEjBBJZhLJA5nJZic9vpLrzn3xIsuPO3ss06M5BIK5ppWrFElX5dc7w+/oe9/A48+QsevDP/tKzIyotqBWyrtnpy9454/ULVkjQF0EYxKGiNTApKdQommy5hTojwQFhGCWBOKab/huGPffvSrzxleNtwuYdcctu1umdBRytHkgGIRRJrCHF+bOSv1sYBFAYbM/qWBk8qL7p3drFyyEZgSJdEuo4JnJQgRmWbzE5987wf+8uLh4QEAAWOmYVhER4ah5tP4uHv9N+mBO2n3JJ9/Ufsjn5JqTbdCS8ol3HXvI7s2bvUWLrQskWb2StFlwNQpQo3U+hTdVoQpIGyDmsY1b7/ykn2OwegsXphtNydExCEqeX7Yak23gqrjUQTpWMAC4eS/nCBrERtHGJbZ8aoXVpfeO/0CsY84hIistRRLy0nWQuGRR589/thDX/valdWyay2YRRHEdUTD+81d3rXfxI7tpMRe8vbWX/6DQOuWEUczM4AbfnYfuuPv3jkb6fZiEexJEzdCYIlQn1gCh43Z69703rce/Or2s5uUQAm0KIQWoFvGXvjh2PprDjtlwK2KbUteQNaKtUJsm9Y0rLUcuXRREMVV13s+mFix5UartVIOSAlpAQEaMZ7O5UFEiGCmZ8Bm+QmHv+9d51/+1vNGhgcbgOza7t/2Pf3Q/WI11VvmjVc03n4lWlYLlCZAfE9v2brzmBVX1BtGe75AEykoJ6t9UR7wRFGkaFU9socGJVqT6pGChO36Cfse9LVVF4UbxrSjlIUWPDW5Y1tjrh22LnzmvnOGRjYFjXXTE4f6NReAtbAsxrAJQxs0xpthf52On8ayCR6eDaqNttNoc3umXu9rqV9NvzQWTNlAbNty27JlFssQBdEkmkSBo3VnsU7Z02Vv+6atd/7q3utvuG18qr7CH++/9au0Zb2t1GBD+7YP1S9+BxpGgUgRCNZy2dPX3Xj3LTfc4fX1swCkiBRIFQt8GUCOSiNO71QBJXWuBLASAdactGB/aYuIiBEFdcPYc9966Zmxdt2DUyb3pzs3LlbeoFtZqJ03DB5gQgu2JgzaJqhPN8unTvW/aVKFE9QOhAlCIg4bxwSamu51zaVrphZtm7Kbxs2W3eHWqXDHjJmYM802bBh5fAWl4GrXA1sRYV0pkbij23Z/9lOfPWLj8neevH8bwz4J3nnVxJEn0WxIWuVyKcoybvrFfVBuZ/QuKJQ/KZ+wFacnOIwBUww+ciiRLRkLgRJwGJy/YH9jzKefe2xL2PSVagbBGUNL/uugVSCx7RZZDkzQClrTuxv+4duGLp/kTVPSADPIMphBohwqOYq1HDPkHjPiwPWgFKBgZC6Q8YYdm7Vbp82mKbNxUrZMyTNbWhu2W+VTBBKY2S/7tjn0TN3H4IA3u+2LI+cfNLDiTYGd1bptraMVCYlwpeyseXbTQw89o6o1KwDpyF9CukqiuZCOOnLSSeaEklyHpLE7C0M7vxvbwO2WA7JsXNe7d8eG9zy9+qzhZWZ2VwV86X7Ln5iZ+PCWR798wKutsWJNELRnm616Y3KfM3ZiRxMtggKxgAhaKU1gsW2QkBHDHCbZUlFENUU1Vy3tJywgOC4cDahGu/qNB2c/cucMOY4QQSkr1lh5avMMmBuq8tm5xePX/u6vTzvkY8cfMNynJmeNImFmT+G/b3swmKn7wyPGJiX8juo5pY+dgRzVu2gbGak0pSDMwlrrpyY2Pzq+SZV8KwKRX01s++/lZ59QrZ1QHvzOoac8OrnrloNW/dXIIWHYIuYwNK0gmJ1rGW+3t7AtDYYIDBMzW1YuXXaj/7tN0C5bw0rEARyQA2ghWFgjpsFmxoQTYbAjCEab4Wjdn2z+/cneVasqthHqqCYABe2t3d7G5OzD/r67hxY6yxZ/42e/PumUC356wx1DfY7nO8w027I337oaboklV0vPAhpKyvlZHjmyx2qeCpvk6RLRoZpIwtaPX3oUnqdE2ASfO+jYcxcdFlhzWv/ISQP7vNCaumVy6+HeQpchxhpjgjCsN1rsNsgVMRAWiDRDOCW+6UmtLf1ibTlsWrKC0Cb/GCFTyBSwCqwKWFtxGJqhhGwgdoavPEKVSmJYiEigyHPHpu2OHXN3Lj6SDzuIHn3I+fYXNzy57u1v/dBbLv3wpg1bRgbdp9e89PRTL+hajYUQ2WaoXCJNOsgn8WsiraqvLOTHesXQAoZYCDN4tDH1/kNfXTJKrK1Cm6B1Yt/CZU55wCk925p5bG7Hykr/ltZcjZUxpt5u7p6ul4d3LzndciPapvLun/tbxvGDp/33LG/fu158rY7ZNzRNUcJgwDCswAqMRL+IFVghyzCiWDSzJ3zNs+3pAEoRiLRW0jQnLx+59g3v2HbNL+nLX2eldKmmvNKfnl77kxvurvT13Xr7b55+fJ1bqYoQkc78F3JMlR6FcTid5RSRtEKUmXMBQAw4jj86s+vusecuGV7O7XaUkRpiZ6jcV+fmhtbUHdPbn2hPne4v+sTQIR5zYE2LA3fAgMQG1qvRDX/QP31G3/m8C7F/fptvWMZD58JlLZetiKIYfAsYwhCtyIQUWiYVeh4pUhDtoN2yrdBm1EdSYpufWUvPfvaH+NHPuVoDgZmJtDswMl0P//YDV6NU1v0D1gopXSQNUZaZjoK+CNwkWNJBjyR9kemUVceiLBj9+KXHL9n32KjQxyxCtC2cfdtzvxPBt/Y74ezyomVUmgtbU7Zu2RgYr9+CxVWyYYfzd3f6FRcEC0U+oUp4fDu+/7jzgRVh2IAWwAosWyvEhqen55y+xtCAG7aGtm0nx21Xa1Tzd8+Z6cCAlAhBaTZhZeHAM49vM5NrVP9gDNeVBsgyab+kKx7HZFOV7a+MD5aLq3IRafQynzCj1JEVKlREiXgVC5FXuWfbc6P1Xfu5ZWNbRFBQTebP7feqU6rDMIIwaJh2KCwixrKFKQ0wrJDCtx8hsF1S40ZIIZNhCgSOwsceds87oHVwH1sDFXIYWjGt0d3qrjM/+NjFZ69fMGiD1lHrnjzvN79aseaxAycnxudKbUvKj0I8kUbrvtXfvfb6u7/x1Z+42jHGQqk4h0tKQJZjeyygmI5A1INtRJ05+w4Nykcjma4lpyoQC5HreHP1iZ+P/ulDB53BzaZDJGxfUe5/hd9v223LIUgUERFYxDILrDcgsGLb+OeT2/+8itqhtENqB9wKpBWibfVM0/rCYE2WrZGw2dq6vf2lP7v6wb9/w7q6Qdug0vf7ky74wckXHLvl+bc+fJe++S6Eazl0nOoQt2eu/NDbVxx/9MWXXkV+ybIkxiUSRBTDRtVXRdSRCKROVkDGdaPEBhHlXJYUCuNRXCZRuiryikrA0N51m5/84KGnaa2EmQiWLTNrRY7SzJajpBazYVYI/X7ACiB9HmC5zxH4ADNAYMbsJAYUxLfj42K4EWozM/sj75zV73vDi1NzqsmkCCKoN5jo8eGDH7/sg0Pnv2fJux5qXX9H694/tOqTB44s+MD/vnpsy3Z3YMhaGyNACMVhhMo59VxkRzkiQ55pnXly6kDSBdFSqjsUpRlIoEDKCimv/NjOTU9Pbz62vDg0c5oUgXVSFI1WglksW2PFgfGrFgYQsUywUc4MAo2gBWtx4vkyO6de/JO66pO85UW6+9b1ax598O2v3zEI3m6V1sxCQkKKBKrRQF0mXdd5/Tl9F5zjPbdh5S/u+eQPf9levx4omXZb+X4UsJFS+XxkIdSSXJ6M5qlNJil5JS9PolAJpS12h47S1rSv3/w0PF+EkbEeJclZC4SVMDNr17gVSMgEkAgJR4ULVZ/W+xyoPnodXfphtWQp1efCnWPh8tMq7/u7h2cXPH36sa3Aqhiv5hSbSLRWbGV8anLr5IkHHvDrj75/v5uvcX749b7Lz9UV107t5rkGFEFnGdHY9KYyooLRSVAQdUVoGf1FiokioXxSMUqaRWopUVGU4JZu2vz0Jw57na+0sElT6ZAIdbMwM3MYWrePdZm4LQXCdNjG8P4IGHfdyPfdjKnd1qu0Pv+RBpVGd8wueu07rzl96WXjM1CKBJLxYlK3o0hhsaLbq/RP6yde2tV0zj+T3nH2ovWbw1/e37jp3uYTz7FlqvWrUikp0hHAyWIXTK7MwxaTrK6XEhCkm68bmbV03yqQYpDj+Bumxh7Y/ZIql62kafyonCyphIw1fs3CFQk5Bjik0JimY8/EP14rY6N84zfQbHK5n5l4YFGL9fhY+0v+gaf79MWKxyErlixFrmJWriIxoDrwj2ONz47WadDnxtzMjunt+yypX/Xuyv3fG7ntS4PvvsDpK9vxCa43oUnAAHcXZrJ0cHEnEWU86Vy2nrrYapTrQInTxQpQSjkQ/GTzk3BdkjSQifeYiFgWy2wjEKQENtGxMED/IrniE/KLb2LnDhrZV5d9R5FWSli0DV7EksfPWHnZ9sa7ys5AYEPDKWyNgkMihIz/0+9dVtZfHJ1z+jwMeuI5SilqtJrbpsYDnjj7VP7BJ4d+973hL3/YP3qp7J5JggmGcGeFVrooujlXp7rY1jkZpvSb1NNFMRwpK4BXuX3buvFg0nU9SQuwDEi0vSwLW9hSjRG5IY5AoCXHlVu/K7/6MUo1Epu054gVmLnWI/uc0H/W0b+emD187e7pNhOLcAzlCeQCInhPxfl81ds6EzoljSGffCclmZDv0UzLbJ+c2TGzc3i4/rdvLT/wHfdj75V6MyE6xIYgPSN1cT27I1RvknGOUU8FSo5K62Wu9iYbk7ePvwDPt9H1RCDMLFbEMhthCy73WzDH1Z4I13kVuuuHxAJHp6Uctgwbjo7b9aefLYtLJDhzyP/ocFnaVkUCElEiAQuzfKTqvXfTzN2bp8VVtqTifgoWOAoCuv0xcjQpTY1Wc/vUZD2wH3sP/uJimZqFjmwaikVzkh60yzifquZlbUqxfySGW0mKIMrvQV///G/hK2WzZrQIAVmIFRHY0gAQciwdAUxA7/uMrDyfgka6PGw5MMLNxtPtfUbPPzkM26L18YP+GysOWpZYIEIixmKlq5e76riXJn+weVqXXS450AoicceA1vTBb9CND6BWAjNIkXbIWDvZknecL/0VGJN1ihE6YqlerFAo6WISF3lUlPMhOW6DUrYdULn64NJ9X5ze4Ti+RIUdjitE8R4D+zWJqDhInlNAKNei/juK6ofGhpYbk3OP7H/c7IkHh9NN0lRT1AgYbaOsOCLWyptKzsPD1WOsNFvW6/d4yIOnAEHZR8vIUB8eWqduuF+2jGFsCopgmaJ6f2Aw2I+FAwjCHBaSzrYGom42Y86LZb5L8v1LRIkjy29CFhqoVb90dfO443+2+XHUKlZsCoMgwpZDawnW74s0CHEONwjw/ONwXGILUrAMw8xsTXvjDvrTa85tDWpuszjqa5Otfxmbc4jahgMjJ5Xcny0s/8Xm6Z9smHYcFQ76KDuAoOTh2a3qnI+or9xKD68TauHIpVgyhGoZZU8kYbA1AzSaUDGMnb8LgHK2O6pW5L1ah6WSIgM06Tglx+GZSffyC9l38INvXb/7OUuBk5L2WVjAIsaKo61bEZgk98uMch/d8B/0+9uweB80ZyEQa4NQuNl4zCwZf8Mq22hBUNLqFb7z27YxgiNLzmU17/nQLl8/8b0XJpVWtuyQp0kpMEvJp+/cgXVrpN7Gb/8IUXLRKjDov+7Fxp0gEsvwPDy7Ebsm4OgEzVDWfJUsf8/iqerF/aE8D0m6Cq+22fJeeURw66+bf3WVUs7TM9v/MLVZRxQWRBZDBGIsu551PWabGFEWKC1zU3TqG/GJ61AqI2wzsxFpTTUfO/SUqVftp2ZaArqorG9YVF4g9Mn9qs8sHTzXoYmp1prZ0Bn0ZUEJvhINEcZQH8026cE12P9QLFtMT76Ach+W7YeH16kPfo6u+j48F5ahNH71IIK2pLTUPM2UOmnLccgAgHp5sc72gbzwNNl6a59jDl1++9fFURRa7Vdh7XU7/gTXS6PhyDWHLF7ZaofFJGRCFhiD0gDf9gOaGMPVt7DrcauBqR1P/HHymde+bq6ignroiHxmUeUrG6bL9fCS4epl6yfeu2Zct6xTc3moRCUdZ9Z9F2u34Nt3YnQn+mvqx/fBBDCWvvQLddeTUCQnvxKehtbYugurf49yCWzTVsJCR6TkYhIp0DjS0nMPnrSgyE0XAeCIWfGFDz/566fkhc1qqI9NCK9y8851n93/9AqplhiJ3JhYI1yrMLTAMvKEGqWk2Qg/8xd01CqUyu4XvjfUmjvs3j9OrDrxXQjfcmD/Ib6zr5EXxlujzfCYx7ejZVXF4YpLJQc6sZgMuC7WbqYbVsNRWLsB6zZhuB9BgOMOxeo1QhWcfjSaAaoV/PIBbNmCoQUJlzIp9lCu7ZqooxUocv7OfPz1nq0wwiyl8toHn9p27e1UKosQoBztjzan7p7aeIleamxDGCIswhbs1Sx0jnma/vi+NNr2obvZLYXXf4sPX7F5xWnNBX3BeJM8fevO6S+v3TUqUPv3wVFqoccVJ5FO0hSpCHNNXHSSnL9CHl9Pdz+B+57E2s1kBKPjeGY9VhwhRx1Mc21UXPz3/RmXtjeooSg/kuvoiTkwSnoFa5LP1OYoQjBmweLBrVf/SDZsVmUfApBSpEF07Y5noBQss3BkiSxsqZ8zBea0qUaUiNIatYHAYOb2mx664n1XfPWexnTw5MapQ2reo3Pt0aZxBn2puuj3uc9DyYlpMGn5KtLyuQYCi1VHyr++W277V7n+H+U952L1k5jZLYM1hAa+h+c24OEnqFyJiThEna1G6M1miCkb1NmSREVefz7tQbbe+Np3/+E177+Im4FyNCkFpSwROeV7pjduNlMV5UaRayQgv2ZT2SZRtQjHdpJELBR5/ppFK5rvv0gq9O5lg7+eC27c1XQWV3m4QjUPvoZDuepUUq2L2ZIKBMw2MD4DrfC64/mLV/Ldn+NrPyY1jx5bj6EqbluNmd3wvDQqoCR1QymGyTSr2MKV8YPmYXEKpb0hZIwpDfQdfPjBO75ze5L3FhKAlKvcenv6FzMv/K/S0bY5GwVjjNCvcaI4KXFZKIplWZjFAs3Jxq1LV75x5f5n2OaHts1htKFcbYd8VF1oIkVQ1NkbEoOqZG5FRFJkxnSdRFAp4YJVOG+l1FvYPkt3rCbHhySJ10im0awIkkT2KRlKcvl7AqWhBnU2v1H3EA6Qo2X7jond23fCcRJ6vIoIK1DudZPrjBaFKMAUwJZrFoZj3WGGFbDAMiyzsaFhCYPn5irnvvXin/WrqabFrHE9jYUl9HlwFHRCMOtspZTOPE5kO7SCVsSWpuuYmoPv02Nr8OzzKFfj4kOckEhnDsTMR0qJd/miBsUEKum0yb1GhAigFTWsvvjMv0EQ6FqFmRMV00ys3fITzfGnWuNHqtKU1C3IAfwaEDDAcaY1QpBWrGFj0Zqea+/c8ZRz4qkXnfLurdM/XDelNZk+lyouXAWdw63U0YOU6waQfKdy8rYigEk5+OU9MAG0Buc7q5DkrYtARnpQgdV8DYnoInYqpWRu7sr3nfeGN7+WZ+ta6zjLoQikNLlW7OcnHqsoR4MCZq3FLwuMUJarEjBLVCvdvVMf8soDf3DHk6e+6awtkz9cN6WtcMVF2RVXkaakY10KAVMGVYTyIzvSpCkjVlLPxehO3Pdb8itgZNn7zl5Rmp9mT73THeimlkdfpUjaZvkxr/jQ379NbJrdjTOTFnB0+WeNDVdN/UELV63T58FxWcLokRjMUbqKGw07vdu/9P3D37n9sad2PHLoK/RgRRPxoI+qSy5RWrnKd+Tnkws9pCORAYnFGFqUyvj1IxjbjlIZRAkDOwFkmQWR3s0sCTpU1FmBzVAQFeM3ZkGt+oUv3nDsUUuPOPM4U28qnWRSiECKSWvl/0fz6dfX7/t3s+aB6hbtE3NELAKsoNmQqV1YeoQaGmm5lbGP/fWP/ubj2084Amx5wEfVhUuiYicjHS5ZpEdLE0uB8p8AeYDQNLj5Lop4QJTUHbKyj5KO5ufOPRSviTNPlyp1xqhCwqJL7osbtl365o+ObdrOzXbgOK7vsrWxtVZKWDu6+jw3nudd5/Vp6BEWpcEI2rCMkf30xVeqUy8MPn3lxH/+65bR5uNn/4u3fP/22C4quXCJdMcOEOTb9PJM5fSuWQotwtH+8kv443o8+qRUasQgpVBg20XfrDPfJL2yYVk+qKMEK9KleJSqpl8p/+bm+0467ojb7/pCf7UcTs9pRzlaOVorpUEaSpfdsu8PNoxHhlVjGvVpDI2g3cLFV5qlRzf+6Yrd990d9A2/SAdsOe8sdgxpBV3oSM64t1IAQAVzKigkKhPWAwzD9fCr1WjOket1kRRUPt0jhZFBPaYgOV1+K3UYQvFgKcmIfELM8IYWrl27cd99Rl76048uedvHH7zrkTj28zxd9UwzMK060Hhgi9ow3bf0pHPMSZfpg4+Uj77FfuvjjZlmfXK2qftkbuqJgZN3n7LcTtcp7UmK8U0u6UnFlFbPkQVp36hAWKA0xqdx1wPkVhCPxYo3WI5X3GtAWLF3MNLbHMtV8qOFCD16OJLjHL1719R3r7mjUvE2btg+PDz4+as/sHDJAsf3to3uXHbIvqedceLlbzm7Nrjo7sdfeuu/f0GPb2t8+1PBS8+3mqZlVeiWmWRqZ/tHq9619c2nmsk5cnTERY12gEh31bOY0uzgYeT1yzAqVdz7O/z4Rqr1QRSUzghBSCvRlHME3d2tqTnPl56pow+Sco3MlBunA2F2KyVrwo//83chcsLpxy1ZsvDTH//zdc9vec2ZV/7dBy+/4vKzRrfvnpi6/j9vabznlEs+vu/Ygb5StT5UHQg1AwTN8LH2yKZzXydhm4SQV1MLKIDTwRVCWc99DusWEFD0DUQsYkUYdOs9BIA0oBPQ3yEXytd2urp1cySp3u1QVJiVI3HzY65gIhz1rQkQ1BuoN9TQgOsq02775TJJuz4+DRs6fWXTDPrLOHHQLHHsoMuDLlU1KvXx1bVz7rvpW3NhnYxAkSSt79EaSy7di9ygN0EuLREPLsjhgJDFcbFxDJf+OYUGjg9ySTkgh5SO6w6kci2fhfbEjoRGlDt2onsQKQ4lkNxwBkpIQjEtRCU4PaZxuOUyVUomNEFglHabzZYwO301IrHGuhU1Y+29OzTYRox9kMDq0vtP14OebJ4mRyNmG0raEhx7zihPQoXhepL1OGfHxx3CIaNawp33Y3oCAyMQTXnFyUJekl62o2cDvZPvx5JuolB+RAuRRG1csbBUtHxRpUlpJ8rWa+1CS5QSIqWsWK2U8m3cAiZaYKXR7x6zrNkKICQMUhJ/awLsSSVd/xJv8a7IhzJxcQKglcJUHXeshlNOyuYKKqUFobPlINc73dHfncRqcKLmMdqjQKXg4/LHJo3ISZ8mRXUD4ZjRFbXuIEqi2YgJKlogjfbMJJOmqO0p0l+Vm2LGuWb3xKd2dA9H5jzqL0fUqlep4oE/0PMvoNoHKCrEFjnOncS0uWykoBTHR2S15PimSPLDRrK5EdI1fZNimxddPn0ZwzANpUCalCblgDSRJuUQOSCXlAvlQjsEB8oP77xXjEARjI0TYAyyQlZIIAziOIgTBjgqBuSxD8CJBsfxlwAKt94Na6AckE7o9KpIKaPcXIx8yFKg90oSj2hVO4oK0y4Kheekbp1T0izln8MEpJJ0VFropvgn5QRSIlMB+T698BKUg9NWwdGwUYdDpNckSb951ABKSQGqMM8zH5pFtGHHxdad+NK3CRraIdJQmsgBEaXEzcQeEXpP7egebhIJaB4U2dk2X+RQU6E+klG5UiHGTMpEvJGMUpPpOvjtI3j2RfglLFyIBYPQGsbECpX0YsWbKZlOAElaypJ/FKlPaKVao1vuorvvR18/RJHSUIpIE1LmeN7HSy791Xvya7TdYwHl5qd2jWlKWK6EXvTHWM3if5TLZxLyNG2VucPEeZPn4tl1uONerP4NNmyF42PxCAb6ASAMYTgFz+kYmU7dibahjV0YfeHbNDFJXina3RmDM6V1UrHhaS9GOWlVO6qDv5hTDCKiHHwlyesRZQFalhLIBEWZPmWKTfmzIaBSmXyPdu/GU0/g9nvw4CPYPo5KDSOLUKsCgjCETSMJKkz3jE0PEFqUy/TEWlxzHVWqBIeUk1hJhbTVPIsopZivoHnL0AStqkd11F0pl2fIZYMpaxZPjDoVZ5NQLkbJpUEyQRatWe6mHY/KVTgaY2N49GHcfg8efgJTcxgYwvBCVEqwFsZkyQ0GbGR6ACsILPwK/egmevpPqNbixvKs30DlJ0FS0RJDek3uSK2vgJzFlxI6Rw11TKPMB0F5U512CSdSk94aK0Van8REvbQFX2IMybGBMQEadUiI/gU4/lU460ysPB77LIIwmk2EYRxSRfJihtIy11bv+1tMT8MrR42WBMrca8e0jXQSs0h3oN7RdJBsse6Jgz1GKlEnEu8qxPVMLGVWJ0kGU9LxmAJ/iglH0SeaSmUqVWBCrH8B96/GPQ9g3UtgkoXDNDgArREYhFaMAAp9g/T96+j3j6DWT0JQTuYxC+pTtDmyh6HEuft1Fl9GiTSJ8pOhe04Kp95TLgqLQ9nY61xgXigbUI43GRXLIkQcsYvi1CwnBQhGu4lWE6Rw4AFYtRKnnozDD0W1IgLM1Onm2+nHP0WpRAnwIVJQueQbFfumuwdgd9dOieIHcZZcRpKWWvc0ZbIwgo/m21HdQ9up4AwLdK0c51QSzBdz0Tilq8W/k4CttFtot+B4OHApDjwIYGzcQqOjqPaRipFhL79emBudKUTvcYKZIRYIOYsv60LM843soj0GePOMm09NfKFmm9ahknklCeNPInSYq8RmOhUDSYAt2gFMCCj4PpUqEIqtcoo5oLqm9Eohv91zQmenERKne3i9FB6DitWDnrWj7pc5mrVkzeXo0nhJsQjlGAAxESyJWUko1azo/pQjFT92iTE5WOfaMqjXZORMcaQ44bLnoscmgshJBlDlp+ORdM92z6H8efQF81FBKZu5SQXtSnMclOsaVWlfn+T70iMyXXyGSEZeoWQsWmEOI3XQnXs25hYyPB0rnU2gyrp9CgdRCmWEcoNJ8n3TqYrh5ebhzzeOEQUUlc3Oo2JAkahaPLGMuvI5+WFD+TgxP2RQivuK9iijzM04+T9y0WGJo4SnFK6cM20dg+pyJpu6GkCSxEKBMUuSwTF0DmZEMRJQcadF5+OpQnCZrmCarcj1WMw7waXDAOT//oTEgyY7TE/nDEvKNWoWelw62vJzhCIqTI6Tzh6aNMucHIp8cYsoJ+wkhxbn5+ZxOMj3fpEUugeLQ1t7m4bOGThpWUB1zGvrDfli0ybzyF7yY6oSIrDQHrZc2tbRPTwuTtSnYBLoYDAXquyq2GUhubFrWXW0G8FQ928d9XbqUNFON1/Ir+3xD1OIFBJNGRllj1FyRg4sVt3TjvUCyYVyIXKHsUhmWWa1rlyFTOadNh8lJOeBKbkYLZqj2P1XeHqNDixuU+nJTOn5pyzys9FEeuDK6CkpalVDWkToNG6RCyPp+cjS4csLmdEeOWRKr0DpYNFey+p0YrvenlFydY6057c7C0dpb0gHes0IEb3ngUsHJaBYPeQO/gL12LEF3JObwEuF3rkIKEhuSklheybFidzDOR2zu3qiSSlE8oI9iDJBNgVckLf3HWO3YhdOXXSArAIuXfSOHhufsCeaT9b01h2UU/ZHgmIEIbnZxuIkMyLzfOHciI/U1qZWN16sxN/HLnW+UnVK+krKK1kAk84+7na0hRkaRVtUBPR7+CNQxdOL9kVyTjShI0TNsYVatADyfwGJDa9ZXA4RFAAAAABJRU5ErkJggg=="><span>Friday<b>away</b></span></div>
-    <div class="topR"><div class="trip" id="tripTxt"></div><button class="instBtn" data-src="header" hidden><span aria-hidden="true">📲</span><span class="ibT">Install</span></button><div class="lang" role="group" aria-label="Language"><button data-lang="it" aria-pressed="false">IT</button><button data-lang="en" aria-pressed="false">EN</button></div></div>
+    <div class="topR"><div class="trip" id="tripTxt"></div><button class="instBtn" data-src="header" hidden><span aria-hidden="true">📲</span><span class="ibT">Install</span></button><div class="lang" role="group" aria-label="Language"><button data-lang="it" aria-pressed="false">IT</button><button data-lang="en" aria-pressed="false">EN</button></div><button class="darkBtn" aria-pressed="false" aria-label="Black mode" title="Black mode"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/></svg></button></div>
   </header>
 
   <!-- DISCOVER -->
@@ -794,7 +852,7 @@ header.top .brand,#setupBrand{cursor:pointer}
     <div class="ask">
       <div class="askrow">
         <label for="q" class="eyebrow" style="position:absolute;left:-9999px">Describe your weekend</label>
-        <textarea id="q" placeholder="Describe your weekend…">Somewhere warm by the sea, great food, nice hotel near the centre, max €750 for the two of us</textarea>
+        <textarea id="q" placeholder="Describe your weekend…">Somewhere warm by the sea, great food, nice hotel near the centre, max €450</textarea>
         <button class="go" id="go">Go</button>
       </div>
       <div class="chips" role="group" aria-label="Moods">
@@ -815,12 +873,12 @@ header.top .brand,#setupBrand{cursor:pointer}
         <label>Return<input id="dTo" type="date"></label>
         <label>Leave after<input id="tOut" type="time"></label>
         <label>Fly home after<input id="tIn" type="time"></label>
-        <label>Adults<select id="adults"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></label>
+        <label>Adults<select id="adults"><option selected>1</option><option>2</option><option>3</option><option>4</option></select></label>
         <button class="go" id="applyTrip" style="height:38px;align-self:end">Update</button>
       </div>
       </details>
       <span class="read" id="liveStatus"></span>
-      <div class="budget"><label for="b" id="bLabel">Budget</label><input id="b" type="range" min="300" max="3000" step="10" value="750"><b id="bv">€750</b><button class="linkbtn" id="bClear" title="No budget">✕</button></div>
+      <div class="budget"><label for="b" id="bLabel">Budget</label><input id="b" type="range" min="150" max="3000" step="10" value="450"><b id="bv">€450</b><button class="linkbtn" id="bClear" title="No budget">✕</button></div>
       <span class="read" id="read"></span>
     </div>
 
@@ -970,7 +1028,7 @@ header.top .brand,#setupBrand{cursor:pointer}
 </div>
 <div class="setup" id="setup" hidden role="dialog" aria-modal="true" aria-label="Plan your weekend">
   <div class="setupIn">
-    <div class="setupHead"><div class="brand" id="setupBrand"></div><div class="shR"><div class="lang" role="group" aria-label="Language"><button data-lang="it" aria-pressed="false">IT</button><button data-lang="en" aria-pressed="false">EN</button></div><button class="linkbtn" id="setupX">Close ✕</button></div></div>
+    <div class="setupHead"><div class="brand" id="setupBrand"></div><div class="shR"><div class="lang" role="group" aria-label="Language"><button data-lang="it" aria-pressed="false">IT</button><button data-lang="en" aria-pressed="false">EN</button></div><button class="darkBtn" aria-pressed="false" aria-label="Black mode" title="Black mode"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/></svg></button><button class="linkbtn" id="setupX">Close ✕</button></div></div>
     <button class="setupInst" data-src="setup" hidden><span class="si" aria-hidden="true">📲</span><span><b>Install the app</b><small>Add it to your home screen in two taps</small></span><span class="instBtn" aria-hidden="true">Install</span></button>
     <h2>Plan your weekend</h2>
     <p class="muted">Budget, mood, departure and dates. We find the flight + hotel weekends that fit.</p>
@@ -988,6 +1046,13 @@ header.top .brand,#setupBrand{cursor:pointer}
 /* ===== IT / EN switch: translates every visible string in place, including text the app adds later ===== */
 const I18N=(()=>{
   const EX={
+  "‹ Back":"‹ Indietro","Hotel":"Hotel","Room":"Camera","Black mode":"Modalità nera","Book ›":"Prenota ›","per person":"a persona",
+  "Continue · choose room":"Continua · scegli la camera","Continue · choose flights":"Continua · scegli i voli","Continue · review":"Continua · riepilogo",
+  "Choose your hotel · price includes flights":"Scegli l'hotel · il prezzo include i voli","Choose your room · price includes flights":"Scegli la camera · il prezzo include i voli",
+  "Choose your flights · total with hotel and room":"Scegli i voli · totale con hotel e camera","Included in your package":"Inclusi nel pacchetto","Other flight times":"Altri orari di volo",
+  "Flights that match your times":"Voli che rispettano i tuoi orari","Same price":"Stesso prezzo","Book on lastminute.com ↗":"Prenota su lastminute.com ↗","Try again":"Riprova",
+  "Checking today's price and rooms…":"Controllo prezzo di oggi e camere…","Locking your room…":"Blocco la camera…","Looking for other flight times…":"Cerco altri orari di volo…","Preparing your checkout…":"Preparo il checkout…",
+  "Total price · all included":"Prezzo totale · tutto incluso","Open lastminute.com ↗":"Apri lastminute.com ↗",
   "Edit your search":"Modifica la ricerca","Edit ✎":"Modifica ✎","Top sights":"Da vedere","Describe your weekend":"Descrivi il tuo weekend","Describe your weekend…":"Descrivi il tuo weekend…","Go":"Vai","Moods":"Mood",
   "Sea":"Mare","Food":"Cibo","Culture":"Cultura","City":"Città","Nightlife":"Vita notturna","Relax":"Relax","Free cancel":"Cancellazione gratis","Direct":"Diretti","Any":"Tutti","Maximum flight time":"Durata massima del volo",
   "From":"Da","Depart":"Andata","Return":"Ritorno","Leave after":"Parti dopo le","Fly home after":"Rientra dopo le","Adults":"Adulti","Update":"Aggiorna","Budget":"Budget","No budget":"Nessun budget","Set":"Imposta","No limit":"Nessun limite",
@@ -1163,7 +1228,7 @@ const I18N=(()=>{
       else m.addedNodes.forEach(walk);
     }
   });
-  const Q_EN="Somewhere warm by the sea, great food, nice hotel near the centre, max €750 for the two of us", Q_IT="Un posto caldo sul mare, buon cibo, bel hotel in centro, max €750 in due";
+  const Q_EN="Somewhere warm by the sea, great food, nice hotel near the centre, max €450", Q_IT="Un posto caldo sul mare, buon cibo, bel hotel in centro, max €450";
   function swapQ(){ const q=document.getElementById("q"); if(!q) return; const from=lang==="it"?Q_EN:Q_IT, to=lang==="it"?Q_IT:Q_EN; if(q.value.trim()===from){q.value=to; try{if(S.lastQ===from)S.lastQ=to}catch(e){}} }
   function sync(){ document.documentElement.lang=lang; document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===lang))); }
   function set(l,user){
@@ -1322,7 +1387,7 @@ const VIBE_WORDS={sea:["sea","beach","mare","spiaggia","warm","caldo","sun","sol
 const VLABEL={sea:"sea",city:"city",food:"food",culture:"culture",nightlife:"nightlife",relax:"relax & spa"};
 
 /* ===== state ===== */
-const S={budget:750,budgetOn:true,filterOn:false,vibes:new Set(["sea","food"]),flex:false,direct:false,hotelPref:{stars4:true,central:true},
+const S={budget:450,budgetOn:true,filterOn:false,vibes:new Set(["sea","food"]),flex:false,direct:false,hotelPref:{stars4:true,central:true},
   taste:{v:{},stars:0,central:0,price:0},seen:new Set(),saved:[],choice:{},together:{on:false,who:0,names:["Player 1","Player 2"],likes:[new Set(),new Set()]},lastQ:"",lastTop:"",split:false};
 let deck=[], sample=null;
 const $=id=>document.getElementById(id);
@@ -1331,14 +1396,14 @@ const eur=(n,dec)=>"€"+(dec?n.toFixed(2):Math.round(n).toLocaleString("en-GB")
 /* ===== trip (dates, times, adults) ===== */
 const BASE={from:"2026-10-23",to:"2026-10-25",adults:2};
 const ORIG=DATA.map(d=>({code:d.code,hotels:d.hotels.slice()}));
-S.trip={from:BASE.from,to:BASE.to,tOut:"",tIn:"",adults:2,live:false,origin:"MIL"};
+S.trip={from:BASE.from,to:BASE.to,tOut:"",tIn:"",adults:1,live:false,origin:"MIL"};
 const ORIGINS={"MIL": "Milan", "TRN": "Turin", "GOA": "Genoa", "VRN": "Verona", "VCE": "Venice", "BLQ": "Bologna", "PSA": "Pisa", "FLR": "Florence", "ROM": "Rome", "NAP": "Naples", "BRI": "Bari", "CTA": "Catania", "PMO": "Palermo", "CAG": "Cagliari", "ZRH": "Zurich", "GVA": "Geneva"};
 const ORI=()=>S.trip.origin||"MIL"; const oriName=()=>ORIGINS[ORI()]||ORI();
 const nightsOf=()=>Math.round((new Date(S.trip.to)-new Date(S.trip.from))/864e5);
 const dfmt=iso=>new Date(iso+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
 const wd=iso=>new Date(iso+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short"}); const dayFrom=()=>wd(S.trip.from), dayTo=()=>wd(S.trip.to);
 function renderTrip(){ setTimeout(renderSum,0);
-  $("tripTxt").innerHTML=`<b>From ${oriName()} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)}</b><br>${S.trip.adults} adult${S.trip.adults>1?"s":""} · ${nightsOf()} night${nightsOf()>1?"s":""} · flight + hotel`;
+  $("tripTxt").innerHTML=`<b>From ${oriName()} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)}</b><br>${S.trip.adults} adult${S.trip.adults>1?"s":""} · ${nightsOf()} night${nightsOf()>1?"s":""}`;
   $("bLabel").textContent=`Budget for ${S.trip.adults}`;
 }
 function timeOK(t,min){return !min||!t||hm(t)>=hm(min)}
@@ -1636,7 +1701,7 @@ const starStr=n=>n?"★".repeat(n):"";
 const ratingWord=r=>r>=90?"Superb":r>=85?"Excellent":r>=80?"Very good":r>=70?"Good":r>0?"Fair":"New";
 function cardHTML(o,pos){
   const {d,h,m}=o, left=S.budget-h.price, up=upgradeFor(d,h);
-  const pp=S.split?`<div class="pp">${eur(h.price/S.trip.adults)} per person</div>`:`<div class="pp">flight + hotel for ${S.trip.adults} · ${eur(h.price/S.trip.adults)} pp</div>`;
+  const pp=S.split?`<div class="pp">${eur(h.price/S.trip.adults)} per person</div>`:(S.trip.adults>1?`<div class="pp">for ${S.trip.adults} · ${eur(h.price/S.trip.adults)} each</div>`:`<div class="pp">per person</div>`);
   const why=m.length?`Fits your mood: <b>${m.map(v=>VLABEL[v]).join(" + ")}</b>`:Object.keys(S.taste.v).length?`Picked from what you saved so far`:`A strong all-round weekend`;
   return `<article class="card" data-code="${d.code}" style="z-index:${10-pos};transform:translateY(${pos*10}px) scale(${1-pos*0.04});${pos>2?"opacity:0;":""}" aria-label="${d.city}, ${eur(h.price)}">
     <div class="stamp like">SAVE</div><div class="stamp nope">SKIP</div>
@@ -1650,7 +1715,7 @@ function cardHTML(o,pos){
       ${pos<2?`<button class="evPill" data-ev="${d.code}" aria-label="Events in ${d.city}">${evPillInner(d)}</button>`:""}
       ${pos<2?`<div class="cardFacts" data-cf="${d.code}">${cardFactsInner(d,h)}</div>`:""}
       ${up?`<div class="upg"><span><b>+${eur(up.price-h.price)}</b> for ${starStr(up.stars)} ${up.name.length>26?up.name.slice(0,25)+"…":up.name}${up.rating?` · ${(up.rating/10).toFixed(1)}`:""}</span><button data-up="${d.code}|${up.j}">Step up</button></div>`:""}
-      <div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}${pos<2?splitHTML(d.code,h.price).replace('class="split','class="split cardSplit'):""}</div>${marginPill(h.price)}</div>
+      <div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}${pos<2?splitHTML(d.code,h.price).replace('class="split','class="split cardSplit'):""}</div><div class="prR">${marginPill(h.price)}${pos<2?`<button class="goTrip" data-go="${d.code}" aria-label="Book ${d.city}">Book ›</button>`:""}</div></div>
     </div></article>`;
 }
 /* Budget margin: what is left of the budget once flight + hotel are paid, and what that is per day there. */
@@ -1796,31 +1861,216 @@ $("swL").onclick=()=>fling(topCard(),-1);
 $("swR").onclick=()=>fling(topCard(),1);
 document.addEventListener("keydown",e=>{if(document.querySelector('[data-s="discover"]').hidden||e.target.closest("textarea,input"))return;
   if(e.key==="ArrowRight") fling(topCard(),1); else if(e.key==="ArrowLeft") fling(topCard(),-1); else if(e.key==="ArrowUp"&&deck.length) openSheet(deck[0].d.code); else if(e.key==="Backspace"||((e.ctrlKey||e.metaKey)&&e.key==="z")) undo();});
-$("deck").addEventListener("click",e=>{const b=e.target.closest("[data-up]");if(!b)return;const [c,j]=b.dataset.up.split("|");S.choice[c]=+j;toast("Upgraded. Price updated.");renderDeck()});
+$("deck").addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){e.stopPropagation();openSheet(g.dataset.go);return}const b=e.target.closest("[data-up]");if(!b)return;const [c,j]=b.dataset.up.split("|");S.choice[c]=+j;toast("Upgraded. Price updated.");renderDeck()});
 
 /* ===== detail sheet ===== */
 function legHTML(day,l){return `<div class="leg"><span>${day}</span><b>${l[0]} ${l[2]} → ${l[1]} ${l[3]}</b><span class="fn">${l[4]}</span></div>`}
+/* ===== guided booking: 1 hotel → 2 room → 3 flights → 4 review & book (one screen at a time) ===== */
+const WZ_STEPS=["Hotel","Room","Flights","Book"];
+let WZ=null;
+const wzNum=v=>{const n=parseFloat(String(v==null?"":v).replace(/[^0-9.]/g,""));return isFinite(n)?n:0};
+const wzPeople=()=>`${S.trip.adults} adult${S.trip.adults>1?"s":""}`;
 function openSheet(code){
+  const d=DATA.find(x=>x.code===code); if(!d||!d.hotels.length) return;
   TRK.sheet=code; trk("sheet",{c:cityOf(code)});
-  const d=DATA.find(x=>x.code===code), cur=hotelFor(d), f=FL[code];
-  const rows=d.hotels.slice().sort((a,b)=>a.price-b.price).map(h=>`<div class="hrow" role="button" tabindex="0" data-j="${h.j}" aria-pressed="${h===cur}"><div><div class="n">${h.name}</div><div class="d">${starStr(h.stars)} · ${h.rating?(h.rating/10).toFixed(1)+" "+ratingWord(h.rating):"New"} · ${h.km} km · ${h.flex?"Free cancellation":"Non-refundable"}</div></div><div class="pr">${eur(h.price)}</div></div>`).join("");
-  $("layer").innerHTML=`<div class="scrim" id="scrim"></div><div class="sheet" role="dialog" aria-label="${d.city} options"><div style="display:flex;justify-content:space-between;align-items:center"><div class="grab" style="margin:0"></div><button class="linkbtn" id="sheetClose" style="font-size:14px">Close ✕</button></div>
-    <div style="height:140px;flex:none;border-radius:16px;overflow:hidden;position:relative">${art(d)}</div>
-    ${photoLink(code)}
-    <h2>${d.city}, ${d.country}</h2>
-    <p class="muted">${dfmt(S.trip.from)} → ${dfmt(S.trip.to)} · ${S.trip.adults} adult${S.trip.adults>1?"s":""} ${hrsOf(d)>0?`· <span class="hours">${hrsOf(d)} hours there</span>`:""}</p>
-    ${fcLegs(code)?fcBlock(code):""}${!fcLegs(code)&&f&&!S.trip.live&&timeIssue(code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights matching your times (${timeTxt()}) are picked when you book</span></div>`:""}${!fcLegs(code)&&f&&!S.trip.live&&!timeIssue(code)?`<span class="eyebrow">Flights in this package</span><div class="legs">${legHTML(dayFrom(),f.o)}${legHTML(dayTo(),f.i)}</div>${f.note?`<div class="warnline">${f.note}</div>`:""}`:""}
-    <span class="eyebrow">Flight + hotel · total for ${S.trip.adults}</span>${rows}<div id="sheetSplit">${splitHTML(code,cur.price,true)}</div>${S.budgetOn?`<div id="sheetMargin">${marginHTML(cur.price)}</div>`:""}
-    <div id="bookArea" style="display:flex;flex-direction:column;gap:10px"></div>
-    <button class="btn" id="sheetBook">Book</button>
-    <button class="btn ghost" id="sheetSave">Save</button>
-  </div>`;
-  const close=()=>{bookCtl.n++;$("layer").innerHTML=""};
+  bookCtl.n++;
+  WZ={code,d,step:0,ph:0,run:bookCtl.n,p:null,sid:null,rate:null,cur:null,pkgPrice:null,flSel:"pkg",alts:null,err:""};
+  $("layer").innerHTML=`<div class="scrim" id="scrim"></div><div class="sheet wz" role="dialog" aria-label="Book ${esc_(d.city)}">
+    <div class="wzTop"><button class="linkbtn" id="wzBack">‹ Back</button><b class="wzCity">${esc_(d.city)}</b><button class="linkbtn" id="sheetClose">Close ✕</button></div>
+    <div class="wzSteps" id="wzSteps"></div>
+    <div class="wzBody" id="wzBody"></div>
+    <div class="wzFoot" id="wzFoot"></div></div>`;
+  const close=()=>{bookCtl.n++;WZ=null;$("layer").innerHTML=""};
   $("scrim").onclick=close; $("sheetClose").onclick=close;
-  $("layer").querySelectorAll(".hrow").forEach(r=>{const pick=()=>{S.choice[code]=+r.dataset.j;if(deck[0]&&deck[0].d.code===code)S.pin=code;$("layer").querySelectorAll(".hrow").forEach(x=>x.setAttribute("aria-pressed",String(x===r)));$("bookArea").innerHTML="";$("sheetBook").hidden=false;renderDeck();renderSaved()};r.onclick=()=>{pick();const m=$("sheetMargin");if(m)m.innerHTML=marginHTML(hotelFor(d).price);const sp=$("sheetSplit");if(sp)sp.innerHTML=splitHTML(code,hotelFor(d).price,true)};r.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}}});
-  $("sheetSave").onclick=()=>{const j=hotelFor(d).j;const ex=S.saved.find(s=>s.code===code);if(ex)ex.j=j;else S.saved.push({code,j});S.seen.add(code);updateCount();close();renderDeck();toast(`Saved ${d.city}`)};
-  $("sheetBook").onclick=()=>{trk("book",{c:d.city,p:Math.round(hotelFor(d).price)});startBooking(d,hotelFor(d))};
+  $("wzBack").onclick=()=>{ if(WZ&&WZ.step>0) wzGo(WZ.step-1); else close(); };
+  wzGo(0);
+}
+function wzGo(n){
+  if(!WZ) return; WZ.step=n;
+  $("wzSteps").innerHTML=WZ_STEPS.map((s,i)=>`<span class="${i<n?"done":i===n?"on":""}"><i>${i<n?"✓":i+1}</i><em>${s}</em></span>`).join("");
+  $("wzBack").style.visibility=n>0?"visible":"hidden";
+  const sh=document.querySelector(".sheet.wz"); if(sh) sh.scrollTop=0;
+  if(n>0) try{trk("book_step",{c:WZ.d.city,s:n+1})}catch(e){}
+  [wzHotel,wzRoom,wzFlights,wzReview][n]();
+}
+const wzLive=w=>w&&WZ===w&&w.run===bookCtl.n;
+function wzBusy(t){$("wzBody").insertAdjacentHTML("beforeend",`<div class="step wzWait"><span class="spin"></span>${t}</div>`)}
+function wzNoMcp(){ $("wzBody").innerHTML+=`<div class="errbox">${mcpMsg({code:"no_mcp"})}</div><a class="checkout" href="https://www.lastminute.com" target="_blank" rel="noopener">Open lastminute.com ↗</a>`; }
+
+/* step 1: hotel, with its photos one at a time at the top */
+function wzPhotos(d,h){
+  const det=DET[detKey(d,h)], ok=det&&det!=="busy"&&det.hotel;
+  const ph=ok?(det.hotel.photos||[]).filter(Boolean):[]; const one=(ok&&det.hotel.image)||h.img;
+  if(one&&!ph.includes(one)) ph.unshift(one);
+  return ph;
+}
+function wzGal(){
+  const g=$("wzGal"); if(!g||!WZ) return; const d=WZ.d, h=hotelFor(d), ph=wzPhotos(d,h);
+  if(!ph.length){ g.innerHTML=`<div class="wzArt">${art(d)}</div>`; g.dataset.n="0"; return; }
+  WZ.ph=Math.max(0,Math.min(WZ.ph,ph.length-1)); g.dataset.n=String(ph.length);
+  g.innerHTML=`<img src="${esc_(ph[WZ.ph])}" alt="${esc_(h.name)}" referrerpolicy="no-referrer" draggable="false" onerror="this.style.opacity=0">`+
+    (ph.length>1?`<button class="wzNav l" data-mv="-1" aria-label="Previous photo">‹</button><button class="wzNav r" data-mv="1" aria-label="Next photo">›</button><div class="wzDots">${ph.slice(0,10).map((_,i)=>`<i class="${i===WZ.ph?"on":""}"></i>`).join("")}</div>`:"")+
+    `<span class="wzCnt">${WZ.ph+1} / ${ph.length}</span>`;
+}
+function wzGalWire(){
+  const g=$("wzGal"); if(!g) return; let sx=null;
+  const mv=k=>{const n=+g.dataset.n||0; if(n<2) return; WZ.ph=(WZ.ph+k+n)%n; wzGal();};
+  g.addEventListener("click",e=>{const b=e.target.closest("[data-mv]"); if(b){e.stopPropagation();mv(+b.dataset.mv);return}
+    if(e.target.tagName==="IMG"){const d=WZ.d,h=hotelFor(d),ph=wzPhotos(d,h); if(ph.length) openGal(ph.map(u=>({img:u,name:h.name})),WZ.ph,d.city);}});
+  g.addEventListener("pointerdown",e=>{if(!e.target.closest("[data-mv]")) sx=e.clientX});
+  g.addEventListener("pointerup",e=>{if(sx==null) return; const dx=e.clientX-sx; sx=null; if(Math.abs(dx)>40){mv(dx<0?1:-1); e.preventDefault();}});
+}
+function wzHotelHead(){
+  const d=WZ.d, h=hotelFor(d), hd=$("wzHd"); if(!hd) return;
+  hd.innerHTML=`<h3>${esc_(h.name)}</h3><span class="muted">${starStr(h.stars)}${h.rating?` · ${(h.rating/10).toFixed(1)} ${ratingWord(h.rating)}`:""} · ${h.km} km from centre · ${h.flex?"Free cancellation":"Non-refundable"}</span>`;
+}
+function wzHotel(){
+  const w=WZ, d=w.d, code=w.code, cur=hotelFor(d);
+  const rows=d.hotels.slice().sort((a,b)=>a.price-b.price).map(h=>`<div class="hrow" role="button" tabindex="0" data-j="${h.j}" aria-pressed="${h===cur}"><div><div class="n">${esc_(h.name)}</div><div class="d">${starStr(h.stars)} · ${h.rating?(h.rating/10).toFixed(1)+" "+ratingWord(h.rating):"New"} · ${h.km} km</div></div><div class="pr">${eur(h.price)}</div></div>`).join("");
+  $("wzBody").innerHTML=`<div class="wzGal" id="wzGal"></div>
+    <div class="wzHd" id="wzHd"></div>
+    <p class="muted wzMeta">${dfmt(S.trip.from)} → ${dfmt(S.trip.to)} · ${wzPeople()}${hrsOf(d)>0?` · <span class="hours">${hrsOf(d)} hours there</span>`:""}</p>
+    ${w.err?`<div class="errbox">${w.err}</div>`:""}
+    <span class="eyebrow">Choose your hotel · price includes flights</span>${rows}
+    <div id="sheetSplit">${splitHTML(code,cur.price,true)}</div>${S.budgetOn?`<div id="sheetMargin">${marginHTML(cur.price)}</div>`:""}`;
+  w.err="";
+  wzGalWire(); wzGal(); wzHotelHead();
+  const photos=h=>{const p=loadDetail(d,h); if(p&&p.then) p.then(()=>{if(wzLive(w)&&w.step===0&&hotelFor(d)===h) wzGal()});};
+  photos(cur);
+  $("wzBody").querySelectorAll(".hrow").forEach(r=>{const pick=()=>{
+    S.choice[code]=+r.dataset.j; if(deck[0]&&deck[0].d.code===code) S.pin=code; w.p=null; w.cur=null; w.pkgPrice=null; w.ph=0;
+    $("wzBody").querySelectorAll(".hrow").forEach(x=>x.setAttribute("aria-pressed",String(x===r)));
+    const h=hotelFor(d); wzHotelHead(); wzGal(); photos(h);
+    const m=$("sheetMargin"); if(m) m.innerHTML=marginHTML(h.price); const sp=$("sheetSplit"); if(sp) sp.innerHTML=splitHTML(code,h.price,true);
+    const g=$("wzGal"); if(g) g.scrollIntoView({block:"nearest",behavior:"smooth"});
+    renderDeck(); renderSaved();};
+    r.onclick=pick; r.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}}});
+  $("wzFoot").innerHTML=`<button class="btn ghost wzSave" id="sheetSave">Save</button><button class="btn" id="wzNext">Continue · choose room</button>`;
+  $("sheetSave").onclick=()=>{const j=hotelFor(d).j;const ex=S.saved.find(s=>s.code===code);if(ex)ex.j=j;else S.saved.push({code,j});S.seen.add(code);updateCount();bookCtl.n++;WZ=null;$("layer").innerHTML="";renderDeck();toast(`Saved ${d.city}`)};
+  $("wzNext").onclick=()=>{trk("book",{c:d.city,p:Math.round(hotelFor(d).price)}); wzGo(1);};
   loadSplit(code);
+}
+
+/* step 2: room (live price check, then the hotel's rooms) */
+async function wzRoom(){
+  const w=WZ, d=w.d, h=hotelFor(d);
+  $("wzBody").innerHTML=`<div class="wzMini"><b>${esc_(h.name)}</b><span>${starStr(h.stars)} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)} · ${wzPeople()}</span></div><span class="eyebrow">Choose your room · price includes flights</span><div id="wzRooms"></div>`;
+  $("wzFoot").innerHTML=`<button class="btn" id="wzNext" disabled>Continue · choose flights</button>`;
+  if(!mcp){wzNoMcp();return}
+  if(!(w.p&&w.p.hid===h.hid)){
+    wzBusy("Checking today's price and rooms…");
+    try{
+      const r1=await mcp.callTool(LM,"search_flight_and_hotel_package",{origin:ORI(),destination:d.code,...DATES_(),adults:String(S.trip.adults),max_results:20,lang:"it",sort:"recommended"});
+      if(!wzLive(w)||w.step!==1) return;
+      const p1=r1.payload||{}, hit=(p1.products_summary||[]).find(x=>x.internal_id_hotel===h.hid);
+      if(!hit){w.err=`${esc_(h.name)} is no longer available for these dates. Pick another hotel.`; wzGo(0); return;}
+      const r=await mcp.callTool(LM,"select_hotel_options",{search_id:p1.search_id,hotel_internal_id:h.hid,...DATES_()});
+      if(!wzLive(w)||w.step!==1) return;
+      const p=r.payload||{};
+      if(!p.success){w.err=esc_(p.message||"This hotel is no longer available. Pick another one."); wzGo(0); return;}
+      w.p={...p,hid:h.hid}; w.sid=p1.search_id; w.cur=null; w.pkgPrice=null; w.alts=null; w.flSel="pkg";
+    }catch(e){ if(wzLive(w)){ const x=$("wzBody").querySelector(".wzWait"); if(x) x.remove(); $("wzBody").insertAdjacentHTML("beforeend",`<div class="errbox">${mcpMsg(e)}</div>`);} return; }
+  }
+  const x=$("wzBody").querySelector(".wzWait"); if(x) x.remove();
+  const rooms=(w.p.room_options||[]).slice().sort((a,b)=>a.price-b.price).slice(0,8);
+  if(!rooms.length){$("wzRooms").innerHTML=`<div class="errbox">No rooms left for these dates. Go back and pick another hotel.</div>`;return}
+  let sel=rooms.findIndex(r=>r.rate_id===w.rate); if(sel<0){sel=0; if(S.flex){const k=rooms.findIndex(r=>/Free/i.test(r.cancellation)); if(k>=0) sel=k;}}
+  $("wzRooms").innerHTML=rooms.map((r,i)=>`<label class="room"><input type="radio" name="rm" value="${esc_(r.rate_id)}" ${i===sel?"checked":""}><span><span class="rn">${esc_(String(r.room_name||"").trim())}</span><br><span class="rd">${MEAL[r.meal_plan]||esc_(r.meal_plan||"")} · ${esc_(r.cancellation||"")}</span></span><span class="rp">${eur(r.price)}</span></label>`).join("");
+  const nb=$("wzNext"); nb.disabled=false;
+  nb.onclick=async()=>{
+    const rate=($("wzRooms").querySelector('input[name="rm"]:checked')||{}).value; if(!rate) return;
+    if(w.rate!==rate){w.rate=rate; w.cur=null; w.pkgPrice=null; w.alts=null; w.flSel="pkg";}
+    if(w.pkgPrice!=null){wzGo(2);return}
+    nb.disabled=true; nb.textContent="Locking your room…";
+    try{
+      const g=await mcp.callTool(LM,"generate_booking_link",{pricing_id:w.p.pricing_id,rate_id:rate});
+      if(!wzLive(w)) return; const q=g.payload||{};
+      if(!q.booking_url) throw {code:"tool_error",message:q.message||"No booking link returned"};
+      const L={url:q.booking_url,sum:q.booking_summary||{},price:wzNum(q.booking_summary&&q.booking_summary.price)||(rooms.find(r=>r.rate_id===rate)||{}).price||0};
+      w.cur={sel:"pkg",L}; w.pkgPrice=L.price;
+      wzGo(2);
+    }catch(e){ if(!wzLive(w)) return; nb.disabled=false; nb.textContent="Continue · choose flights"; $("wzBody").insertAdjacentHTML("beforeend",`<div class="errbox">${mcpMsg(e)}</div>`); }
+  };
+}
+
+/* step 3: flights (the package's flights, or other times for the same hotel and room) */
+const wzLeg=(day,a,b,t1,t2,fn)=>`<div class="leg"><span>${day}</span><b>${esc_(a)} ${esc_(t1)} → ${esc_(b)} ${esc_(t2)}</b><span class="fn">${esc_(fn)}</span></div>`;
+function wzPkgLegs(p){
+  const fo=p.flight_details&&p.flight_details.outbound, fi=p.flight_details&&p.flight_details.inbound;
+  const one=(x,day)=>x?wzLeg(day,x.from,x.to,iso2(x.departure_time),iso2(x.arrival_time),`${x.carrier_code||""} ${x.flight_number||""}${x.direct?"":" · 1 stop"}`):"";
+  return {html:one(fo,dayFrom())+one(fi,dayTo()), fits:timeOK(iso2(fo&&fo.departure_time),S.trip.tOut)&&timeOK(iso2(fi&&fi.departure_time),S.trip.tIn)};
+}
+const wzAltLegs=x=>wzLeg(dayFrom(),x.outbound.departure.airport,x.outbound.arrival.airport,x.outbound.departure.time,x.outbound.arrival.time,x.outbound.carrier.code)+wzLeg(dayTo(),x.inbound.departure.airport,x.inbound.arrival.airport,x.inbound.departure.time,x.inbound.arrival.time,x.inbound.carrier.code);
+const wzAltFits=x=>timeOK(x.outbound.departure.time,S.trip.tOut)&&timeOK(x.inbound.departure.time,S.trip.tIn);
+async function wzFlights(){
+  const w=WZ; if(!w.p||w.pkgPrice==null){wzGo(1);return}
+  const pk=wzPkgLegs(w.p), base=w.pkgPrice;
+  $("wzBody").innerHTML=`<span class="eyebrow">Choose your flights · total with hotel and room</span>
+    <label class="fopt"><input type="radio" name="fl" value="pkg" ${w.flSel==="pkg"?"checked":""}><span class="fo-h"><b>Included in your package</b>${!pk.fits&&hasTimes()?`<small class="warn">Doesn't match your times (${timeTxt()})</small>`:""}</span><span class="fo-p">${eur(base)}</span><div class="legs">${pk.html}</div></label>
+    <div id="wzAlts"></div>`;
+  $("wzFoot").innerHTML=`<button class="btn" id="wzNext">Continue · review</button>`;
+  const wire=()=>{ $("wzBody").querySelectorAll('input[name="fl"]').forEach(i=>i.onchange=()=>{w.flSel=i.value}); };
+  wire();
+  $("wzNext").onclick=()=>{const c=$("wzBody").querySelector('input[name="fl"]:checked'); w.flSel=c?c.value:"pkg"; wzGo(3);};
+  const box=$("wzAlts");
+  if(!w.alts){
+    box.innerHTML=`<div class="step"><span class="spin"></span>Looking for other flight times…</div>`;
+    try{const r=await mcp.callTool(LM,"get_alternative_flights",{pricing_id:w.p.pricing_id}); if(!wzLive(w)) return; w.alts=((r.payload||{}).flights||[]).filter(x=>x&&x.outbound&&x.inbound&&x.price);}
+    catch(e){ if(wzLive(w)&&w.step===2) box.innerHTML=""; w.alts=[]; return; }
+    if(w.step!==2) return;
+  }
+  let alts=w.alts.slice().sort((a,b)=>a.price.total-b.price.total);
+  if(hasTimes()) alts=alts.filter(wzAltFits);
+  alts=alts.slice(0,8);
+  if(!alts.length){ box.innerHTML=hasTimes()&&!pk.fits?`<div class="errbox">No other flight for this hotel matches your times (${timeTxt()}).</div>`:""; return; }
+  if(hasTimes()&&!pk.fits&&w.flSel==="pkg") w.flSel=String(alts[0].transport_id);
+  box.innerHTML=`<span class="eyebrow">${hasTimes()?"Flights that match your times":"Other flight times"}</span>`+alts.map(x=>{const v=String(x.transport_id), diff=x.price.total-base;
+    return `<label class="fopt"><input type="radio" name="fl" value="${esc_(v)}" ${w.flSel===v?"checked":""}><span class="fo-h"><b>${esc_(x.outbound.carrier.code)} · ${esc_(x.outbound.departure.time)} / ${esc_(x.inbound.departure.time)}</b><small>${Math.abs(diff)<1?"Same price":diff>0?`+${eur(diff)}`:`−${eur(-diff)}`}</small></span><span class="fo-p">${eur(x.price.total)}</span><div class="legs">${wzAltLegs(x)}</div></label>`}).join("");
+  wire();
+}
+
+/* step 4: review and open the exact checkout */
+async function wzReview(){
+  const w=WZ, d=w.d, h=hotelFor(d); if(!w.p||w.pkgPrice==null){wzGo(1);return}
+  const room=(w.p.room_options||[]).find(r=>r.rate_id===w.rate)||{};
+  const alt=w.flSel!=="pkg"&&(w.alts||[]).find(x=>String(x.transport_id)===w.flSel);
+  const legs=alt?wzAltLegs(alt):wzPkgLegs(w.p).html;
+  $("wzBody").innerHTML=`<div class="wzSum">
+      <div class="wzRow"><span>🏨</span><div><b>${esc_(w.p.hotel&&w.p.hotel.name||h.name)}</b><small>${starStr(h.stars)} · ${nightsOf()} night${nightsOf()>1?"s":""} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)}</small></div></div>
+      <div class="wzRow"><span>🛏️</span><div><b>${esc_(String(room.room_name||"").trim())}</b><small>${MEAL[room.meal_plan]||esc_(room.meal_plan||"")} · ${esc_(room.cancellation||"")}</small></div></div>
+      <div class="wzRow"><span>✈️</span><div class="legs">${legs}</div></div>
+    </div><div id="wzTotal"></div>`;
+  $("wzFoot").innerHTML=`<div class="step" id="wzPrep"><span class="spin"></span>Preparing your checkout…</div>`;
+  const done=L=>{ if(!wzLive(w)||w.step!==3) return;
+    const pr=L.price||(alt?alt.price.total:0);
+    $("wzTotal").innerHTML=`<div class="totalbox"><span>Total price · all included</span><b>${eur(pr,true)}</b><small>Return flights + hotel · ${wzPeople()}${L.sum&&L.sum.cancellation_policy?` · ${esc_(L.sum.cancellation_policy)}`:""}</small></div>${S.budgetOn?marginHTML(pr):""}${splitHTML(d.code,pr,true)}`;
+    $("wzFoot").innerHTML=`<a class="checkout wzGo" href="${esc_(L.url)}" target="_blank" rel="noopener">Book on lastminute.com ↗</a>`;
+    $("wzBody").insertAdjacentHTML("beforeend",`<p class="note">Opens this exact flight + hotel + room. lastminute.com confirms the final price before you pay.</p>`);
+    loadSplit(d.code);
+  };
+  if(w.cur&&w.cur.sel===w.flSel){done(w.cur.L);return}
+  try{
+    let L;
+    if(w.flSel==="pkg"){ /* back to the package's own flights: load the hotel again, then the same room */
+      const r=await mcp.callTool(LM,"select_hotel_options",{search_id:w.sid,hotel_internal_id:w.p.hid,...DATES_()});
+      const p=r.payload||{}; if(!p.success) throw {code:"tool_error",message:p.message||"Hotel not available"};
+      const old=room, nr=(p.room_options||[]).find(x=>x.rate_id===w.rate)||(p.room_options||[]).find(x=>String(x.room_name).trim()===String(old.room_name||"").trim()&&x.meal_plan===old.meal_plan);
+      if(!nr) throw {code:"tool_error",message:"That room is no longer available"};
+      w.p={...p,hid:w.p.hid}; w.rate=nr.rate_id; w.alts=null;
+      const g=await mcp.callTool(LM,"generate_booking_link",{pricing_id:w.p.pricing_id,rate_id:nr.rate_id});
+      const q=g.payload||{}; if(!q.booking_url) throw {code:"tool_error",message:q.message||"No booking link"};
+      L={url:q.booking_url,sum:q.booking_summary||{},price:wzNum(q.booking_summary&&q.booking_summary.price)||nr.price||0}; w.pkgPrice=L.price;
+    }else{
+      const c=await mcp.callTool(LM,"change_flight",{pricing_id:w.p.pricing_id,new_transport_id:w.flSel});
+      const cp=c.payload||{}; const nr=cp.details&&cp.details.new_rate_id;
+      if(!cp.success||!nr) throw {code:"tool_error",message:cp.message||"Flight change failed"};
+      const g=await mcp.callTool(LM,"generate_booking_link",{pricing_id:w.p.pricing_id,rate_id:nr});
+      const q=g.payload||{}; if(!q.booking_url) throw {code:"tool_error",message:q.message||"No booking link"};
+      L={url:q.booking_url,sum:q.booking_summary||{},price:wzNum(q.booking_summary&&q.booking_summary.price)||(alt?alt.price.total:0)};
+    }
+    if(!wzLive(w)) return;
+    w.cur={sel:w.flSel,L}; done(L);
+  }catch(e){ if(!wzLive(w)) return; $("wzFoot").innerHTML=`<button class="btn" id="wzRetry">Try again</button>`; $("wzRetry").onclick=()=>wzGo(3); $("wzBody").insertAdjacentHTML("beforeend",`<div class="errbox">${mcpMsg(e)}</div>`); }
 }
 
 /* ===== live booking through the viewer's lastminute.com connector ===== */
@@ -2222,7 +2472,7 @@ $("split").onchange=e=>{S.split=e.target.checked;renderSaved();renderDeck()};
 /* ===== setup popup ===== */
 
 /* search bar: rotating examples of what you can type; your own request once you have written one */
-const SBQ_EN="Somewhere warm by the sea, great food, nice hotel near the centre, max €750 for the two of us", SBQ_IT="Un posto caldo sul mare, buon cibo, bel hotel in centro, max €750 in due";
+const SBQ_EN="Somewhere warm by the sea, great food, nice hotel near the centre, max €450", SBQ_IT="Un posto caldo sul mare, buon cibo, bel hotel in centro, max €450";
 const SBQ_EX=["Describe your weekend…","Sea & food, max €600","Art city, 2 nights","Party with friends","Spa for two"];
 let sbqI=0;
 function sbqRender(){
@@ -2490,7 +2740,7 @@ function budgetTipHide(){const t=$("bTip");if(t){clearTimeout(t.t);t.t=setTimeou
   const sc=syncChips; syncChips=function(){sc.apply(this,arguments);budgetMood(false)}; budgetMood(false);})();
 
 function applyIntent(o,src){
-  if(o.budget){S.budget=Math.max(300,Math.min(3000,Math.round(o.budget/10)*10));S.budgetOn=true}else S.budgetOn=false;
+  if(o.budget){S.budget=Math.max(150,Math.min(3000,Math.round(o.budget/10)*10));S.budgetOn=true}else S.budgetOn=false;
   if(Array.isArray(o.vibes)) S.vibes=new Set(o.vibes.filter(v=>VLABEL[v]));
   S.flex=!!o.flexible; S.direct=!!o.direct;
   S.hotelPref={stars4:!!o.nice_hotel,central:!!o.central};
@@ -2581,6 +2831,14 @@ const STANDALONE=!window.claude&&/^https?:$/.test(location.protocol);
     $("dFrom").value=f; $("dTo").value=d.toISOString().slice(0,10); applyTrip();
   } else discoverMore();})();
 
+
+
+/* ===== black mode (negative colours), remembered on this device ===== */
+(function(){
+  const set=(on,user)=>{document.documentElement.classList.toggle("neg",on);document.querySelectorAll(".darkBtn").forEach(b=>b.setAttribute("aria-pressed",String(on)));try{localStorage.setItem("fa_neg",on?"1":"0")}catch(e){} if(user) try{trk("theme",{neg:on})}catch(e){}};
+  set(document.documentElement.classList.contains("neg"),false);
+  document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".darkBtn"); if(b){e.preventDefault(); set(!document.documentElement.classList.contains("neg"),true);}});
+})();
 
 /* ===== install to home screen: first-open popup + always-visible Install buttons ===== */
 const INST={ev:null};

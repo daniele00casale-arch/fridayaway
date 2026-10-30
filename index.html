@@ -87,7 +87,7 @@ textarea{flex:1;min-width:0;resize:none;height:62px;font:inherit;font-size:15px;
 .card{position:absolute;inset:0;background:var(--surface);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;touch-action:pan-y;user-select:none;-webkit-user-select:none;will-change:transform;cursor:grab}
 .card.dragging{cursor:grabbing;transition:none}
 .card.anim{transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s}
-.art{position:relative;height:185px;flex:none;overflow:hidden}
+.art{position:relative;height:240px;flex:none;overflow:hidden}
 .art svg{position:absolute;inset:0;width:100%;height:100%}
 .art .city{position:absolute;left:16px;bottom:12px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.35)}
 .art .city h2{font-size:30px;font-weight:700;line-height:1}
@@ -237,7 +237,7 @@ details.more[open] .when{margin-top:8px}
 .bitem .p{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
 .bitem .lf{font-size:12px;color:var(--mint-ink);text-align:right}
 @media (prefers-reduced-motion:reduce){.card.anim{transition:none}}
-@media (max-height:740px){.deckwrap{height:580px}.art{height:160px}}
+@media (max-height:740px){.deckwrap{height:580px}.art{height:205px}}
 .totalbox{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px;padding:14px 16px;border-radius:14px;background:var(--primary);color:#fff}.totalbox span{font-size:13px;font-weight:600;opacity:.9}.totalbox b{grid-row:span 2;font-size:24px;letter-spacing:-.02em}.totalbox small{font-size:12px;opacity:.85}
 .bin{position:fixed;left:10px;top:46%;z-index:40;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--nope);box-shadow:var(--shadow);opacity:0;transform:translateX(-40px) scale(.7);transition:opacity .18s,transform .22s cubic-bezier(.3,1.4,.5,1),background .15s,color .15s;pointer-events:none}
 .bin.show{opacity:1;transform:none}
@@ -691,7 +691,7 @@ header.top .brand,#setupBrand{cursor:pointer}
   .card .badge.lilac,.card .art .temp,.card .upg{display:none}
   .card .body:has(.cfD .cdFl) .exactNote{display:none}
   .deckwrap{height:min(660px,calc(100vh - 190px));min-height:560px}
-  .art{height:170px}
+  .art{height:290px}
 }
 .cdRow{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:8px;align-items:start}
 .cdRow>svg{width:19px;height:19px;color:var(--ink);margin-top:1px}
@@ -834,6 +834,10 @@ header.top .brand,#setupBrand{cursor:pointer}
 /* black mode: the whole page in negative, photos kept as they are */
 html.neg{filter:invert(1) hue-rotate(180deg);background:#fff}
 html.neg img,html.neg video,html.neg svg[preserveAspectRatio="xMidYMid slice"]{filter:invert(1) hue-rotate(180deg)}
+html.neg .card{box-shadow:0 0 0 1px #8F8AA8,0 0 0 4px rgba(38,35,58,.07),0 18px 40px rgba(38,35,58,.28)}
+html.neg .card .body{border-top:1px solid #C9C5DA}
+html.neg :is(div,button,a):has(> .shade){filter:invert(1) hue-rotate(180deg)}
+html.neg :is(div,button,a):has(> .shade) img{filter:none}
 .darkBtn{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0}
 .darkBtn svg{width:16px;height:16px}
 .darkBtn[aria-pressed="true"]{background:var(--ink);color:var(--app);border-color:var(--ink)}
@@ -2262,7 +2266,7 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
 
 function cardFactsInner(d,h){
   const det=DET[detKey(d,h)], ok=det&&det!=="busy", hrs=hoursWith(d,det), wait=det==="busy"||(det===undefined&&!!mcp);
-  const tiles=`<div class="cf4"><div><span>☀️ Typical high</span><b>${d.temp}°C</b></div><div><span>🕑 Time there</span><b>${hrs>0?hrs+" h":"—"}</b></div><div><span>📍 Hotel to centre</span><b>${h.km!=null?h.km+" km":"—"}</b></div><div><span>⭐ Guest rating</span><b>${h.rating?(h.rating/10).toFixed(1):"New"}</b></div></div>`;
+  const tiles=`<div class="cf4"><div><span>☀️ Typical high</span><b>${d.temp}°C</b></div><div><span>🕑 Time there</span><b>${hrs>0?hrs+" h":"—"}</b></div></div>`;
   let fl="", dfl="";
   if(!fcLegs(d.code)){
     if(ok&&det.flights&&det.flights.out){

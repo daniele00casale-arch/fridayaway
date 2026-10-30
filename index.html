@@ -87,7 +87,7 @@ textarea{flex:1;min-width:0;resize:none;height:62px;font:inherit;font-size:15px;
 .card{position:absolute;inset:0;background:var(--surface);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;touch-action:pan-y;user-select:none;-webkit-user-select:none;will-change:transform;cursor:grab}
 .card.dragging{cursor:grabbing;transition:none}
 .card.anim{transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s}
-.art{position:relative;height:240px;flex:none;overflow:hidden}
+.art{position:relative;flex:1 1 0;min-height:120px;overflow:hidden}
 .art svg{position:absolute;inset:0;width:100%;height:100%}
 .art .city{position:absolute;left:16px;bottom:12px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.35)}
 .art .city h2{font-size:30px;font-weight:700;line-height:1}
@@ -97,7 +97,7 @@ textarea{flex:1;min-width:0;resize:none;height:62px;font:inherit;font-size:15px;
 .stamp{position:absolute;top:26px;font-family:var(--display);font-weight:700;font-size:28px;border:4px solid;border-radius:10px;padding:2px 12px;opacity:0;pointer-events:none;z-index:3;background:rgba(255,255,255,.85)}
 .stamp.like{right:18px;color:var(--like);transform:rotate(12deg)}
 .stamp.nope{left:18px;color:var(--nope);transform:rotate(-12deg)}
-.body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
+.body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:none}
 .hotel{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
 .hotel h3{font-size:18px;font-family:var(--body);font-weight:700;line-height:1.2}
 .stars{color:var(--star);letter-spacing:1px;font-size:13px}
@@ -237,7 +237,7 @@ details.more[open] .when{margin-top:8px}
 .bitem .p{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
 .bitem .lf{font-size:12px;color:var(--mint-ink);text-align:right}
 @media (prefers-reduced-motion:reduce){.card.anim{transition:none}}
-@media (max-height:740px){.deckwrap{height:580px}.art{height:205px}}
+@media (max-height:740px){.deckwrap{height:580px}}
 .totalbox{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px;padding:14px 16px;border-radius:14px;background:var(--primary);color:#fff}.totalbox span{font-size:13px;font-weight:600;opacity:.9}.totalbox b{grid-row:span 2;font-size:24px;letter-spacing:-.02em}.totalbox small{font-size:12px;opacity:.85}
 .bin{position:fixed;left:10px;top:46%;z-index:40;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--nope);box-shadow:var(--shadow);opacity:0;transform:translateX(-40px) scale(.7);transition:opacity .18s,transform .22s cubic-bezier(.3,1.4,.5,1),background .15s,color .15s;pointer-events:none}
 .bin.show{opacity:1;transform:none}
@@ -690,8 +690,7 @@ header.top .brand,#setupBrand{cursor:pointer}
   .cfD{display:flex;flex-direction:column;gap:9px;min-height:0}
   .card .badge.lilac,.card .art .temp,.card .upg{display:none}
   .card .body:has(.cfD .cdFl) .exactNote{display:none}
-  .deckwrap{height:min(660px,calc(100vh - 190px));min-height:560px}
-  .art{height:290px}
+  .deckwrap{height:min(660px,calc(100vh - 190px));min-height:470px}
 }
 .cdRow{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:8px;align-items:start}
 .cdRow>svg{width:19px;height:19px;color:var(--ink);margin-top:1px}

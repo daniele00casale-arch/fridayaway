@@ -730,6 +730,9 @@ header.top .brand,#setupBrand{cursor:pointer}
   .dinfo::-webkit-scrollbar-thumb,.dmedia::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
 }
 @media (min-width:1200px){.dinfo{align-self:start}.dmedia{max-height:none}}
+@media (min-width:960px){main[data-s="discover"]{padding-bottom:0}}
+/* desktop, Discover: everything fits the window, so the page itself does not scroll (only the side panels do) */
+@media (min-width:1200px) and (min-height:650px){html:has(main[data-s="discover"]:not([hidden])):not(:has(#setup:not([hidden]))){overflow:hidden}}
 /* first-visit hint on the search bar */
 .sumbar.pulse{animation:sbPulse 1.4s ease-in-out 3;border-color:var(--primary)}
 @keyframes sbPulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--primary) 40%,transparent)}50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--primary) 0%,transparent)}}

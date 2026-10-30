@@ -1170,7 +1170,7 @@ const I18N=(()=>{
     [", hold your thumb here to unlock your turn",", tieni il pollice qui per sbloccare il tuo turno"],[": your turn. Same deck, fresh start.",": tocca a te. Stesse carte, si riparte da zero."]];
   const RX=[
     [/^Locking (.+?)'s choices…$/,"Blocco le scelte di $1…"],[/^(.+?)'s picks$/,"Le scelte di $1"],[/^(Player \d+) name$/,"Nome $1"],[/^Saved (.+)$/,"Salvato: $1"],[/^Open (?!lastminute|in browser|this page)(.+)$/,"Apri $1"],[/^(.+) options$/,"Opzioni $1"],
-    [/Lands in (.+?), about (\d+) km from (.+)/,"Atterra a $1, a circa $2 km da $3"],[/(\d+) of (\d+) like it/,"piace a $1 su $2"],[/\b1 adults\b/,"1 adulto"],[/\b1 nights\b/,"1 notte"]
+    [/Lands in (.+?), about (\d+) km from (.+)/,"Atterra a $1, a circa $2 km da $3"],[/(\d+) of (\d+) like it/,"piace a $1 su $2"],[/Free cancellation until (.+)/,"Cancellazione gratuita fino a $1"],[/\b1 adults\b/,"1 adulto"],[/\b1 nights\b/,"1 notte"]
   ];
   const RX2=[
     [/\bfor (\d)/g,"per $1"],[/\b(\d+) of (\d+)\b/g,"$1 di $2"],
@@ -1868,6 +1868,8 @@ function legHTML(day,l){return `<div class="leg"><span>${day}</span><b>${l[0]} $
 /* ===== guided booking: 1 hotel → 2 room → 3 flights → 4 review & book (one screen at a time) ===== */
 const WZ_STEPS=["Hotel","Room","Flights","Book"];
 let WZ=null;
+const uiLang=()=>document.documentElement.lang==="it"?"it":"en";
+const wzCanc=c=>{const m=/^(.*?)(?:until|fino al?|entro il)\s*(\d{4}-\d{2}-\d{2})\s*$/i.exec(String(c||"").trim()); return m?`${/gratu|free/i.test(m[1])?"Free cancellation":m[1].trim()} until ${dfmt(m[2])}`:String(c||"");};
 const wzNum=v=>{const n=parseFloat(String(v==null?"":v).replace(/[^0-9.]/g,""));return isFinite(n)?n:0};
 const wzPeople=()=>`${S.trip.adults} adult${S.trip.adults>1?"s":""}`;
 function openSheet(code){
@@ -1957,10 +1959,10 @@ async function wzRoom(){
   $("wzBody").innerHTML=`<div class="wzMini"><b>${esc_(h.name)}</b><span>${starStr(h.stars)} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)} · ${wzPeople()}</span></div><span class="eyebrow">Choose your room · price includes flights</span><div id="wzRooms"></div>`;
   $("wzFoot").innerHTML=`<button class="btn" id="wzNext" disabled>Continue · choose flights</button>`;
   if(!mcp){wzNoMcp();return}
-  if(!(w.p&&w.p.hid===h.hid)){
+  if(!(w.p&&w.p.hid===h.hid&&w.p.lang===uiLang())){
     wzBusy("Checking today's price and rooms…");
     try{
-      const r1=await mcp.callTool(LM,"search_flight_and_hotel_package",{origin:ORI(),destination:d.code,...DATES_(),adults:String(S.trip.adults),max_results:20,lang:"it",sort:"recommended"});
+      const r1=await mcp.callTool(LM,"search_flight_and_hotel_package",{origin:ORI(),destination:d.code,...DATES_(),adults:String(S.trip.adults),max_results:20,lang:uiLang(),sort:"recommended"});
       if(!wzLive(w)||w.step!==1) return;
       const p1=r1.payload||{}, hit=(p1.products_summary||[]).find(x=>x.internal_id_hotel===h.hid);
       if(!hit){w.err=`${esc_(h.name)} is no longer available for these dates. Pick another hotel.`; wzGo(0); return;}
@@ -1968,14 +1970,14 @@ async function wzRoom(){
       if(!wzLive(w)||w.step!==1) return;
       const p=r.payload||{};
       if(!p.success){w.err=esc_(p.message||"This hotel is no longer available. Pick another one."); wzGo(0); return;}
-      w.p={...p,hid:h.hid}; w.sid=p1.search_id; w.cur=null; w.pkgPrice=null; w.alts=null; w.flSel="pkg";
+      w.p={...p,hid:h.hid,lang:uiLang()}; w.sid=p1.search_id; w.cur=null; w.pkgPrice=null; w.alts=null; w.flSel="pkg";
     }catch(e){ if(wzLive(w)){ const x=$("wzBody").querySelector(".wzWait"); if(x) x.remove(); $("wzBody").insertAdjacentHTML("beforeend",`<div class="errbox">${mcpMsg(e)}</div>`);} return; }
   }
   const x=$("wzBody").querySelector(".wzWait"); if(x) x.remove();
   const rooms=(w.p.room_options||[]).slice().sort((a,b)=>a.price-b.price).slice(0,8);
   if(!rooms.length){$("wzRooms").innerHTML=`<div class="errbox">No rooms left for these dates. Go back and pick another hotel.</div>`;return}
   let sel=rooms.findIndex(r=>r.rate_id===w.rate); if(sel<0){sel=0; if(S.flex){const k=rooms.findIndex(r=>/Free/i.test(r.cancellation)); if(k>=0) sel=k;}}
-  $("wzRooms").innerHTML=rooms.map((r,i)=>`<label class="room"><input type="radio" name="rm" value="${esc_(r.rate_id)}" ${i===sel?"checked":""}><span><span class="rn">${esc_(String(r.room_name||"").trim())}</span><br><span class="rd">${MEAL[r.meal_plan]||esc_(r.meal_plan||"")} · ${esc_(r.cancellation||"")}</span></span><span class="rp">${eur(r.price)}</span></label>`).join("");
+  $("wzRooms").innerHTML=rooms.map((r,i)=>`<label class="room"><input type="radio" name="rm" value="${esc_(r.rate_id)}" ${i===sel?"checked":""}><span><span class="rn">${esc_(String(r.room_name||"").trim())}</span><br><span class="rd">${MEAL[r.meal_plan]||esc_(r.meal_plan||"")} · ${esc_(wzCanc(r.cancellation))}</span></span><span class="rp">${eur(r.price)}</span></label>`).join("");
   const nb=$("wzNext"); nb.disabled=false;
   nb.onclick=async()=>{
     const rate=($("wzRooms").querySelector('input[name="rm"]:checked')||{}).value; if(!rate) return;
@@ -2037,7 +2039,7 @@ async function wzReview(){
   const legs=alt?wzAltLegs(alt):wzPkgLegs(w.p).html;
   $("wzBody").innerHTML=`<div class="wzSum">
       <div class="wzRow"><span>🏨</span><div><b>${esc_(w.p.hotel&&w.p.hotel.name||h.name)}</b><small>${starStr(h.stars)} · ${nightsOf()} night${nightsOf()>1?"s":""} · ${dfmt(S.trip.from)} → ${dfmt(S.trip.to)}</small></div></div>
-      <div class="wzRow"><span>🛏️</span><div><b>${esc_(String(room.room_name||"").trim())}</b><small>${MEAL[room.meal_plan]||esc_(room.meal_plan||"")} · ${esc_(room.cancellation||"")}</small></div></div>
+      <div class="wzRow"><span>🛏️</span><div><b>${esc_(String(room.room_name||"").trim())}</b><small>${MEAL[room.meal_plan]||esc_(room.meal_plan||"")} · ${esc_(wzCanc(room.cancellation))}</small></div></div>
       <div class="wzRow"><span>✈️</span><div class="legs">${legs}</div></div>
     </div><div id="wzTotal"></div>`;
   $("wzFoot").innerHTML=`<div class="step" id="wzPrep"><span class="spin"></span>Preparing your checkout…</div>`;
@@ -2056,7 +2058,7 @@ async function wzReview(){
       const p=r.payload||{}; if(!p.success) throw {code:"tool_error",message:p.message||"Hotel not available"};
       const old=room, nr=(p.room_options||[]).find(x=>x.rate_id===w.rate)||(p.room_options||[]).find(x=>String(x.room_name).trim()===String(old.room_name||"").trim()&&x.meal_plan===old.meal_plan);
       if(!nr) throw {code:"tool_error",message:"That room is no longer available"};
-      w.p={...p,hid:w.p.hid}; w.rate=nr.rate_id; w.alts=null;
+      w.p={...p,hid:w.p.hid,lang:w.p.lang}; w.rate=nr.rate_id; w.alts=null;
       const g=await mcp.callTool(LM,"generate_booking_link",{pricing_id:w.p.pricing_id,rate_id:nr.rate_id});
       const q=g.payload||{}; if(!q.booking_url) throw {code:"tool_error",message:q.message||"No booking link"};
       L={url:q.booking_url,sum:q.booking_summary||{},price:wzNum(q.booking_summary&&q.booking_summary.price)||nr.price||0}; w.pkgPrice=L.price;
@@ -2280,7 +2282,7 @@ async function loadSights(d){
 
 /* ===== trip preview: real details for the card on top (desktop: side panels, phone: below the cards) ===== */
 const DET={}, PANEL={code:"",hid:null,photo:0};
-const detKey=(d,h)=>[ORI(),d.code,h.hid,S.trip.from,S.trip.to,S.trip.adults].join("|");
+const detKey=(d,h)=>[ORI(),d.code,h.hid,S.trip.from,S.trip.to,S.trip.adults,uiLang()].join("|");
 const durTxt=m=>m?`${Math.floor(m/60)}h ${String(m%60).padStart(2,"0")}m`:"";
 const esc_=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 async function loadDetail(d,h){
@@ -2818,7 +2820,7 @@ function restMcp(){
     callTool:async(server,tool,args)=>call(tool,args),
     sights:(city)=>getJSON(`/api/sights?v=3&city=${encodeURIComponent(city)}`),
     events:(o)=>getJSON(`/api/events?lat=${o.lat}&lon=${o.lon}&city=${encodeURIComponent(o.city)}&from=${o.from}&to=${o.to}`),
-    detail:(q)=>getJSON(`/api/detail?o=${q.o}&d=${q.d}&f=${q.f}&t=${q.t}&a=${q.a}&h=${q.h}`),
+    detail:(q)=>getJSON(`/api/detail?o=${q.o}&d=${q.d}&f=${q.f}&t=${q.t}&a=${q.a}&h=${q.h}&l=${uiLang()}`),
     batchSearch:(o,f,t,a,ds)=>getJSON(`/api/search?o=${o}&f=${f}&t=${t}&a=${a}&d=${ds.join(",")}`),
     verify:(q)=>getJSON(`/api/verify?v=2&o=${q.o}&f=${q.f}&t=${q.t}&a=${q.a}&tOut=${encodeURIComponent(q.tOut||"")}&tIn=${encodeURIComponent(q.tIn||"")}&b=${Math.round(q.b||0)}&d=${q.d.join(",")}`)
   };

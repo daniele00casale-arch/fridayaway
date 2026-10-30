@@ -10,10 +10,11 @@ module.exports = async (req, res) => {
   const q = req.query || {};
   const o = String(q.o || "").toUpperCase(), d = String(q.d || "").toUpperCase(), f = String(q.f || ""), t = String(q.t || ""), a = String(q.a || "2");
   const hid = Number(q.h);
+  const lang = q.l === "en" ? "en" : "it";
   if (!IATA.test(o) || !IATA.test(d) || !DATE.test(f) || !DATE.test(t) || !/^[1-4]$/.test(a) || !(hid > 0))
     return res.status(400).json({ error: { code: "bad_request", message: "Invalid parameters" } });
   try {
-    const r1 = await callTool("search_flight_and_hotel_package", { origin: o, destination: d, date_from: f, date_to: t, adults: a, max_results: 20, lang: "it", sort: "recommended" });
+    const r1 = await callTool("search_flight_and_hotel_package", { origin: o, destination: d, date_from: f, date_to: t, adults: a, max_results: 20, lang, sort: "recommended" });
     const p1 = r1.payload || {};
     if (!p1.search_id) throw new Error("no search");
     const hit = (p1.products_summary || []).find((x) => x.internal_id_hotel === hid);

@@ -630,9 +630,9 @@ header.top .brand,#setupBrand{cursor:pointer}
 .msights .msh,.mevents .msh{font-size:12px;font-weight:700;color:var(--muted)}
 .msRow{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px;-webkit-overflow-scrolling:touch}
 .msRow::-webkit-scrollbar{display:none}
-.msRow button{flex:none;width:76px;scroll-snap-align:start;border:0;background:none;padding:0;text-align:left;cursor:pointer;font:inherit;color:inherit}
-.msRow img{width:76px;height:50px;object-fit:cover;border-radius:10px;display:block;background:var(--bg);box-shadow:0 1px 4px rgba(38,35,58,.12)}
-.msRow span{display:block;font-size:10.5px;line-height:1.2;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.msRow button{flex:none;width:132px;scroll-snap-align:start;border:0;background:none;padding:0;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.msRow img{width:132px;height:92px;object-fit:cover;border-radius:10px;display:block;background:var(--bg);box-shadow:0 1px 4px rgba(38,35,58,.12)}
+.msRow span{display:block;font-size:12px;line-height:1.2;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .msSkel{display:flex;gap:8px}.msSkel i{width:76px;height:50px;border-radius:10px;flex:none;background:linear-gradient(90deg,var(--bg) 0%,var(--line) 50%,var(--bg) 100%);background-size:200% 100%;animation:pskel 1.2s linear infinite}
 @media (min-width:960px){.msights{display:none!important}}
 .sightBox{position:fixed;inset:0;z-index:49;background:rgba(14,10,30,.78);display:flex;align-items:center;justify-content:center;padding:16px;animation:vIn .2s ease}
@@ -937,7 +937,6 @@ html.neg :is(.bt,.msRow button,.meImg) img{filter:none}
     <div class="bin" id="bin" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g class="lid"><path d="M3 6h18"/><path d="M9 6V4h6v2"/></g><path d="M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"/><path d="M10 11v6M14 11v6"/></svg></div>
     <p class="hint">Right to save · left to skip · tap to book</p>
     <div class="msights" id="mSights" hidden aria-label="Top sights"></div>
-    <div class="mevents" id="mEvents" hidden aria-label="Events during your trip"></div>
    </div>
    <aside class="dinfo" id="dInfo" hidden aria-live="polite"></aside>
    <aside class="dmedia" id="dMedia" hidden></aside>
@@ -1742,10 +1741,11 @@ function cardHTML(o,pos){
     <div class="stamp like">SAVE</div><div class="stamp nope">SKIP</div>
     <div class="art">${art(d)}<span class="temp">☀ ${d.temp}°C</span>${pos===0&&o.s>8?`<span class="match">Top match</span>`:""}<div class="city"><h2>${d.city}</h2><span>${d.country}${d.carrier?" · "+d.carrier:""}</span></div></div>
     <div class="body">
-      <div class="hotelL"><span aria-hidden="true">🏨</span><b>${h.name}</b><span class="stars">${starStr(h.stars)}</span></div>
+
+      ${pos<2?`<button class="evPill" data-ev="${d.code}" aria-label="Events in ${d.city}">${evPillInner(d)}</button>`:""}
+      ${pos<2?"":hotelLine(h)}
       ${fcLegs(d.code)?fcBlock(d.code):FL[d.code]&&!S.trip.live&&!timeIssue(d.code)?`<div class="legs"><div class="leg"><span>${dayFrom()}</span><b>${FL[d.code].o[0]} ${FL[d.code].o[2]} → ${FL[d.code].o[1]} ${FL[d.code].o[3]}</b><span class="fn">${FL[d.code].o[4].split(" · ")[0]}</span></div><div class="leg"><span>${dayTo()}</span><b>${FL[d.code].i[0]} ${FL[d.code].i[2]} → ${FL[d.code].i[1]} ${FL[d.code].i[3]}</b><span class="fn">${FL[d.code].i[4].split(" · ")[0]}</span></div></div>`:""}
       ${fcLegs(d.code)?"":S.trip.live||!FL[d.code]?`<div class="leg exactNote" style="grid-template-columns:1fr"><span>Exact flights are shown when you open this weekend</span></div>`:timeIssue(d.code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights to match your times (${timeTxt()}) are picked when you book</span></div>`:FL[d.code]&&FL[d.code].note?`<div class="warnline">${FL[d.code].note}</div>`:earlyReturn(d.code)?`<div class="warnline">Early flight home on Sunday (${FL[d.code].i[2]})</div>`:""}
-      ${pos<2?`<button class="evPill" data-ev="${d.code}" aria-label="Events in ${d.city}">${evPillInner(d)}</button>`:""}
       ${pos<2?`<div class="cardFacts" data-cf="${d.code}">${cardFactsInner(d,h)}</div>`:""}
       ${up?`<div class="upg"><span><b>+${eur(up.price-h.price)}</b> for ${starStr(up.stars)} ${up.name.length>26?up.name.slice(0,25)+"…":up.name}${up.rating?` · ${(up.rating/10).toFixed(1)}`:""}</span><button data-up="${d.code}|${up.j}">Step up</button></div>`:""}
       <div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}${pos<2?splitHTML(d.code,h.price).replace('class="split','class="split cardSplit'):""}</div><div class="prR">${marginPill(h.price)}${pos<2?`<button class="goTrip" data-go="${d.code}" aria-label="Book ${d.city}">Book ›</button>`:""}</div></div>
@@ -2272,7 +2272,6 @@ async function loadEvents(d){
   catch(e){EVT[k]=[]}
   document.querySelectorAll(`[data-ev="${d.code}"]`).forEach(el=>{el.innerHTML=evPillInner(d)});
   if(PANEL.code===d.code) renderPanels();
-  if(deck[0]&&deck[0].d.code===d.code) renderMEvents(d);
 }
 function evPillInner(d){
   const ev=EVT[evKey(d)]; if(!Array.isArray(ev)||!ev.length) return "";
@@ -2291,6 +2290,7 @@ function openEvents(code){
 }
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".evPill"); if(b){e.stopPropagation();openEvents(b.dataset.ev);}});
 
+const hotelLine=h=>`<div class="hotelL"><span aria-hidden="true">🏨</span><b>${esc_(h.name)}</b><span class="stars">${starStr(h.stars)}</span></div>`;
 function cardFactsInner(d,h){
   const det=DET[detKey(d,h)], ok=det&&det!=="busy", hrs=hoursWith(d,det), wait=det==="busy"||(det===undefined&&!!mcp);
   const tiles=`<div class="cf4"><div><span>☀️ Typical high</span><b>${d.temp}°C</b></div><div><span>🕑 Time there</span><b>${hrs>0?hrs+" h":"—"}</b></div></div>`;
@@ -2307,7 +2307,7 @@ function cardFactsInner(d,h){
   const ci=ok&&det.hotel&&(det.hotel.checkIn||det.hotel.checkOut);
   const dho=ci?`<div class="cdRow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg><div><span class="cdH">Hotel</span><div class="cdL">Check-in ${esc_(det.hotel.checkIn||"—")} · check-out ${esc_(det.hotel.checkOut||"—")}</div></div></div>`:"";
   const chips=`<div class="cdChips">${hrs>0?`<span>🕑 ${hrs} h there</span>`:""}<span>🌡️ ${d.temp}°C typical high</span></div>`;
-  return `<div class="cfM">${tiles+fl}</div><div class="cfD">${tiles}${dfl}</div>`;
+  return `<div class="cfM">${tiles}${hotelLine(h)}${fl}</div><div class="cfD">${tiles}${hotelLine(h)}${dfl}</div>`;
 }
 function refreshCardFacts(code){const d=DATA.find(x=>x.code===code); if(!d) return; const h=hotelFor(d); if(!h) return;
   document.querySelectorAll(`[data-cf="${code}"]`).forEach(el=>{el.innerHTML=cardFactsInner(d,h)});}
@@ -2423,11 +2423,11 @@ addEventListener("scroll",()=>requestAnimationFrame(fitPanes),{passive:true});
 function renderPanels(){
   const I=$("dInfo"),M=$("dMedia"); if(!I||!M) return;
   const shown=!document.querySelector(".deckarea.empty");
-  const o=shown&&deck[0]; if(!o){I.hidden=M.hidden=true;PANEL.code="";renderMSights(null);renderMEvents(null);return}
+  const o=shown&&deck[0]; if(!o){I.hidden=M.hidden=true;PANEL.code="";renderMSights(null);return}
   I.hidden=M.hidden=false;
   const d=o.d,h=hotelFor(d); if(!h){I.hidden=M.hidden=true;return}
   if(PANEL.code!==d.code||PANEL.hid!==h.hid){PANEL.code=d.code;PANEL.hid=h.hid;PANEL.photo=0}
-  loadDetail(d,h); loadSplit(d.code); loadSights(d); renderMSights(d); renderMEvents(d); loadEvents(d);
+  loadDetail(d,h); loadSplit(d.code); loadSights(d); renderMSights(d); loadEvents(d);
   if(deck[1]){const n=deck[1].d,nh=hotelFor(n); if(nh) loadDetail(n,nh); loadEvents(n);}
   const det=DET[detKey(d,h)], ok=det&&det!=="busy", wait=det==="busy"||det===undefined;
   /* left: what the place looks like */

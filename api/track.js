@@ -17,6 +17,17 @@ const clean = (d) => {
 };
 module.exports = async (req, res) => {
   res.setHeader("cache-control", "no-store");
+  if (req.method === "GET" && req.query && req.query.health) {
+    // Health check without any user data: how many event files were written per day in the last 7 days
+    const { list } = require("@vercel/blob");
+    const out = {}; const now = Date.now();
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(now - i * 864e5).toISOString().slice(0, 10); let n = 0, cursor, last = 0;
+      do { const r = await list({ prefix: `ev/${day}/`, limit: 1000, cursor }); n += r.blobs.length; r.blobs.forEach((b) => { const t = +new Date(b.uploadedAt); if (t > last) last = t; }); cursor = r.hasMore ? r.cursor : undefined; } while (cursor);
+      out[day] = { files: n, lastWrite: last ? new Date(last).toISOString() : null };
+    }
+    return res.status(200).json(out);
+  }
   if (req.method !== "POST") return res.status(405).json({ error: "POST only" });
   let b = req.body;
   if (typeof b === "string") { try { b = JSON.parse(b); } catch (e) { b = {}; } }

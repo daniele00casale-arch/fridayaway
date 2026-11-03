@@ -1,16 +1,25 @@
 // GET /api/stats?key=...   Aggregated, anonymous usage of Fridayaway (only for the owner: needs STATS_KEY).
-const { list } = require("@vercel/blob");
+const { list, put } = require("@vercel/blob");
 module.exports = async (req, res) => {
   res.setHeader("cache-control", "no-store");
   const key = String((req.query && req.query.key) || "");
   if (!process.env.STATS_KEY || key !== process.env.STATS_KEY) return res.status(401).json({ error: "wrong key" });
+  // Read events fast: past days are merged once into one summary file each (agg/DAY.json), only today is read file by file
   const blobs = []; let cursor;
   do { const r = await list({ prefix: "ev/", limit: 1000, cursor }); blobs.push(...r.blobs); cursor = r.hasMore ? r.cursor : undefined; } while (cursor);
+  const aggs = {}; cursor = undefined;
+  do { const r = await list({ prefix: "agg/", limit: 1000, cursor }); r.blobs.forEach((b) => { const m = /^agg\/(\d{4}-\d{2}-\d{2})/.exec(b.pathname); if (m && (!aggs[m[1]] || b.uploadedAt > aggs[m[1]].uploadedAt)) aggs[m[1]] = b; }); cursor = r.hasMore ? r.cursor : undefined; } while (cursor);
+  const byDay = {};
+  blobs.forEach((b) => { const m = /^ev\/(\d{4}-\d{2}-\d{2})\//.exec(b.pathname); const d = m ? m[1] : "other"; (byDay[d] = byDay[d] || []).push(b); });
+  const getJSON = (u) => fetch(u).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  const readAll = async (list) => { const out = []; for (let i = 0; i < list.length; i += 100) { const part = await Promise.all(list.slice(i, i + 100).map((b) => getJSON(b.url))); out.push(...part.filter(Boolean)); } return out; };
+  const today = new Date().toISOString().slice(0, 10);
   const recs = [];
-  for (let i = 0; i < blobs.length; i += 25) {
-    const part = await Promise.all(blobs.slice(i, i + 25).map((b) => fetch(b.url).then((r) => (r.ok ? r.json() : null)).catch(() => null)));
-    recs.push(...part.filter(Boolean));
-  }
+  await Promise.all(Object.entries(byDay).map(async ([day, list]) => {
+    if (day < today && aggs[day]) { const a = await getJSON(aggs[day].url); if (a && a.count === list.length && Array.isArray(a.recs)) { recs.push(...a.recs); return; } }
+    const r = await readAll(list); recs.push(...r);
+    if (day < today && day !== "other") { try { await put(`agg/${day}.json`, JSON.stringify({ count: list.length, recs: r }), { access: "public", addRandomSuffix: true, contentType: "application/json" }); } catch (e) {} }
+  }));
   const S = {};
   const EXCL = new Set(String(process.env.STATS_EXCLUDE || "").split(",").map((x) => x.trim()).filter(Boolean));
   recs.filter((r) => !String(r.sid).startsWith("selftest") && !EXCL.has(r.sid) && !(r.uid && EXCL.has(r.uid))).forEach((r) => { const s = S[r.sid] || (S[r.sid] = { sid: r.sid, uid: r.uid || "", dev: r.dev, os: r.os, country: r.country, first: r.at, ev: [] }); s.first = Math.min(s.first, r.at); if (r.uid) s.uid = r.uid; s.ev.push(...r.ev); });

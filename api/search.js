@@ -19,6 +19,6 @@ module.exports = async (req, res) => {
   const out = {};
   results.forEach((x, k) => { out[ds[k]] = x && !x.error ? x.products : null; });
   const failed = Object.values(out).filter((v) => v === null).length;
-  res.setHeader("cache-control", failed > ds.length / 2 ? "no-store" : "public, s-maxage=900, stale-while-revalidate=3600");
+  res.setHeader("cache-control", failed > ds.length / 2 ? "no-store" : "public, s-maxage=10800, stale-while-revalidate=21600");
   return res.status(200).json({ results: out });
 };

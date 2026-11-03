@@ -85,7 +85,12 @@ module.exports = async (req, res) => {
     if (new Set(v.map((x) => new Date(x.a + 3600e3).toISOString().slice(0, 10))).size > 1) backDay++;
   });
   out.returning = { users: tracked, returned: back, returnedOtherDay: backDay, rate: tracked ? Math.round((back / tracked) * 100) : 0, rateOtherDay: tracked ? Math.round((backDay / tracked) * 100) : 0, visitsPerUser: tracked ? Math.round((visits / tracked) * 10) / 10 : 0 };
-  try { const sb = []; let c; do { const r = await list({ prefix: "subs/", limit: 1000, cursor: c }); sb.push(...r.blobs); c = r.hasMore ? r.cursor : undefined; } while (c); out.subscribers = new Set(sb.map((b) => b.pathname.split("/")[1].split("-")[0])).size; } catch (e) { out.subscribers = 0; }
+  try { // Thursday alert sign-ups: latest record per email, without the owner's and test devices
+    const sb = []; let c; do { const r = await list({ prefix: "subs/", limit: 1000, cursor: c }); sb.push(...r.blobs); c = r.hasMore ? r.cursor : undefined; } while (c);
+    const sr = (await Promise.all(sb.map((b) => fetch(b.url).then((r) => (r.ok ? r.json() : null)).catch(() => null)))).filter(Boolean);
+    const by = {}; sr.forEach((r) => { if (!by[r.email] || r.at > by[r.email].at) by[r.email] = r; });
+    out.subscribers = Object.values(by).filter((r) => !r.test && !(r.uid && EXCL.has(r.uid))).length;
+  } catch (e) { out.subscribers = 0; }
   { const r = (out._ready || []).sort((x, y) => x - y); out.ready = { n: r.length, median: r.length ? r[Math.floor(r.length / 2)] : 0, instant: out._readySnap || 0 }; delete out._ready; delete out._readySnap; }
   out.updated = Date.now(); out.files = blobs.length;
   return res.status(200).json(out);

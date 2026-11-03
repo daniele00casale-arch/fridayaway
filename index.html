@@ -2989,7 +2989,7 @@ function alertOpen(src){
     if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(em)){er.textContent="Check your email address.";er.hidden=false;return}
     bt.disabled=true; bt.textContent="…";
     let uid=""; try{uid=localStorage.getItem("fa_uid")||""}catch(x){}
-    try{ const r=await fetch("/api/subscribe",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email:em,b:S.budgetOn?S.budget:0,o:ORI(),a:S.trip.adults,l:(document.documentElement.lang==="it"?"it":"en"),uid,g:CAMP})});
+    try{ const r=await fetch("/api/subscribe",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email:em,b:S.budgetOn?S.budget:0,o:ORI(),a:S.trip.adults,l:(document.documentElement.lang==="it"?"it":"en"),uid,g:CAMP,t:TRK_OFF===true})});
       if(!r.ok&&r.status!==204) throw 0;
       try{localStorage.setItem("fa_alert","1")}catch(x){} trk("alert_signup",{src,b:S.budgetOn?S.budget:0}); trkFlush();
       o.hidden=true; toast("Done! Your first deals arrive on Thursday 🔔"); renderAlertBtn();

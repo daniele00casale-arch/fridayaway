@@ -2526,6 +2526,8 @@ document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest
 const CAMP=(()=>{let g="";try{const q=new URLSearchParams(location.search);g=(q.get("g")||q.get("utm_campaign")||q.get("utm_source")||"").toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,40);
   if(g)sessionStorage.setItem("fa_g",g);else g=sessionStorage.getItem("fa_g")||"";}catch(e){}return g})();
 setTimeout(()=>trk("open",{g:CAMP,app:!!(window.matchMedia&&matchMedia("(display-mode: standalone)").matches),ref:(document.referrer?(()=>{try{return new URL(document.referrer).hostname}catch(e){return ""}})():"")}),0);
+/* send the visit right away (2 s after opening): short visits from Instagram/Facebook in-app browsers often close without a final send */
+setTimeout(trkFlush,2000);
 
 /* ===== saved ===== */
 function updateCount(){const c=$("savedCount");c.hidden=!S.saved.length;c.textContent=S.saved.length}

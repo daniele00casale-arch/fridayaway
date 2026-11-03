@@ -10,11 +10,11 @@ module.exports = async (req, res) => {
   const allowed = /vercel-cron/i.test(ua) || (process.env.CRON_SECRET && req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`) || (process.env.STATS_KEY && q.key === process.env.STATS_KEY);
   if (!allowed) return res.status(401).json({ error: "not allowed" });
   const [f, t] = nextWeekend(), o = String(q.o || "MIL").toUpperCase(), t0 = Date.now(), done = {};
-  for (const a of String(q.a || "1,2").split(",")) {
-    if (Date.now() - t0 > 150000) break;
+  for (const a of String(q.a || "1").split(",").slice(0, 1)) {
     const results = {};
-    const rows = await pool(CODES, 20, async (d) => {
+    const rows = await pool(CODES, 25, async (d) => {
       if (d === o) return [d, []];
+      if (Date.now() - t0 > 48000) return [d, null];
       const r = await callTool("search_flight_and_hotel_package", { origin: o, destination: d, date_from: f, date_to: t, adults: a, max_results: 6, lang: "it", sort: "recommended" });
       return [d, r.error ? null : (r.payload && r.payload.products_summary) || []];
     });

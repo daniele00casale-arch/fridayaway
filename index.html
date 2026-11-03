@@ -780,6 +780,20 @@ header.top .brand,#setupBrand{cursor:pointer}
 .meImg i{position:absolute;left:6px;bottom:6px;font-style:normal;font-size:13px;background:rgba(255,255,255,.9);border-radius:999px;padding:1px 6px}
 .meCard b{font-size:12.5px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .meCard small{font-size:11px;color:var(--muted)}
+.alCard h3{margin:0;font-size:19px}
+.alIco{font-size:34px;line-height:1}
+.alSub{margin:0;color:var(--muted);font-size:14px}
+.alForm{display:flex;gap:8px;margin-top:4px}
+.alForm input{flex:1;min-width:0;font:inherit;font-size:16px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--app);color:var(--ink)}
+.alForm .btn{flex:none;padding-left:16px;padding-right:16px}
+.alNote{margin:0;font-size:11.5px;color:var(--muted)}
+.alErr{margin:0;font-size:12.5px;color:var(--rose-ink)}
+.alBtn{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-radius:14px;padding:12px 14px;margin:10px 0 4px;background:linear-gradient(90deg,#FF5A7A,#FF9F45);color:#fff;font:inherit;cursor:pointer;box-shadow:0 4px 12px rgba(255,90,122,.25)}
+.alBtn>span:first-child{font-size:22px}
+.alBtn b{display:block;font-size:14px}.alBtn small{font-size:12px;opacity:.92}
+.alBtn i{margin-left:auto;font-style:normal;font-size:22px}
+.alOn{margin:10px 0 4px;padding:10px 12px;border-radius:12px;background:var(--mint);color:var(--mint-ink);font-weight:600;font-size:13.5px}
+html.neg .alBtn{filter:invert(1) hue-rotate(180deg)}
 .evOv{position:fixed;inset:0;z-index:70;background:rgba(10,16,32,.55);display:flex;align-items:flex-end;justify-content:center;padding:12px;animation:fadeIn .2s ease}
 .evOv[hidden]{display:none}
 @media (min-width:700px){.evOv{align-items:center}}
@@ -966,6 +980,7 @@ html.neg :is(.bt,.msRow button,.meImg) img{filter:none}
   <main class="screen gut" data-s="saved" hidden>
     <div class="sec">
       <h2>Saved weekends</h2>
+      <div id="alertBtnWrap"></div>
       
       <div id="savedList" class="sec" style="margin-top:0"></div>
       <div class="cmp" id="cmpWrap" hidden><table id="cmp"></table></div>
@@ -1099,6 +1114,12 @@ html.neg :is(.bt,.msRow button,.meImg) img{filter:none}
 /* ===== IT / EN switch: translates every visible string in place, including text the app adds later ===== */
 const I18N=(()=>{
   const EX={
+  "Total price":"Prezzo totale",
+  "The 3 best weekends, every Thursday":"I 3 weekend migliori, ogni giovedì","Notify me":"Avvisami","Your email":"La tua email",
+  "We only use your email to send these offers. Reply STOP to any email to stop them.":"Usiamo la tua email solo per mandarti queste offerte. Rispondi STOP a una qualsiasi email per non riceverle più.",
+  "Check your email address.":"Controlla l'indirizzo email.","Something went wrong, try again.":"Qualcosa è andato storto, riprova.",
+  "Done! Your first deals arrive on Thursday 🔔":"Fatto! Le prime offerte ti arrivano giovedì 🔔","🔔 You get the best weekends every Thursday":"🔔 Ricevi i weekend migliori ogni giovedì",
+  "Get the 3 best weekends every Thursday":"Ricevi i 3 weekend migliori ogni giovedì","Free, for your budget, one email a week":"Gratis, per il tuo budget, una email a settimana",
   "Choose your hotel · price of the hotel for 2 nights":"Scegli l'hotel · prezzo dell'hotel per 2 notti","Choose your room · price of the room for 2 nights":"Scegli la camera · prezzo della camera per 2 notti","incl. flights":"voli inclusi",
   "‹ Back":"‹ Indietro","Hotel":"Hotel","Room":"Camera","Black mode":"Modalità nera","Book ›":"Prenota ›","per person":"a persona",
   "Continue · choose room":"Continua · scegli la camera","Continue · choose flights":"Continua · scegli i voli","Continue · review":"Continua · riepilogo",
@@ -1224,7 +1245,7 @@ const I18N=(()=>{
     [", hold your thumb here to unlock your turn",", tieni il pollice qui per sbloccare il tuo turno"],[": your turn. Same deck, fresh start.",": tocca a te. Stesse carte, si riparte da zero."]];
   const RX=[
     [/^Locking (.+?)'s choices…$/,"Blocco le scelte di $1…"],[/^(.+?)'s picks$/,"Le scelte di $1"],[/^(Player \d+) name$/,"Nome $1"],[/^Saved (.+)$/,"Salvato: $1"],[/^Open (?!lastminute|in browser|this page)(.+)$/,"Apri $1"],[/^(.+) options$/,"Opzioni $1"],
-    [/Lands in (.+?), about (\d+) km from (.+)/,"Atterra a $1, a circa $2 km da $3"],[/(\d+) of (\d+) like it/,"piace a $1 su $2"],[/Free cancellation until (.+)/,"Cancellazione gratuita fino a $1"],[/^(€[\d,.]+) with flights$/,"$1 con i voli"],[/price of the hotel for (\d+) nights/,"prezzo dell'hotel per $1 notti"],[/price of the room for (\d+) nights/,"prezzo della camera per $1 notti"],[/\b1 adults\b/,"1 adulto"],[/\b1 nights\b/,"1 notte"]
+    [/Lands in (.+?), about (\d+) km from (.+)/,"Atterra a $1, a circa $2 km da $3"],[/(\d+) of (\d+) like it/,"piace a $1 su $2"],[/Free cancellation until (.+)/,"Cancellazione gratuita fino a $1"],[/^(€[\d,.]+) with flights$/,"$1 con i voli"],[/price of the hotel for (\d+) nights/,"prezzo dell'hotel per $1 notti"],[/price of the room for (\d+) nights/,"prezzo della camera per $1 notti"],[/^Under (€[\d,.]+)(?: for (\d))?, from (.+?)\. One email a week, free, unsubscribe any time\.$/,"Sotto $1, da $3. Una email a settimana, gratis, ti cancelli quando vuoi."],[/^From (.+?)\. One email a week, free, unsubscribe any time\.$/,"Da $1. Una email a settimana, gratis, ti cancelli quando vuoi."],[/\b1 adults\b/,"1 adulto"],[/\b1 nights\b/,"1 notte"]
   ];
   const RX2=[
     [/\bfor (\d)/g,"per $1"],[/\b(\d+) of (\d+)\b/g,"$1 di $2"],
@@ -1614,6 +1635,7 @@ async function discoverMore(){
   liveBar(); setTimeout(()=>{LIVE.msg="";liveBar()},6000);
   if(FC.again){FC.again=false;checkTimes()} renderDeck();
 }
+const READY={sent:false};
 async function applyTrip(){
   const from=$("dFrom").value,to=$("dTo").value,ad=+$("adults").value;
   S.trip.tOut=$("tOut").value; S.trip.tIn=$("tIn").value;
@@ -1634,9 +1656,18 @@ async function applyTrip(){
   S.trip={...S.trip,from,to,adults:ad,live:true,origin:org}; LIVE.fg=true;
   DATA.forEach(d=>{d.hotels=[];d.hrs=null;d.tried=true});
   S.choice={};S.seen.clear();FC.key="";FC.res={};renderTrip();renderDeck();
-  const myGen=LIVE.gen+1;
-  const err=await liveSearch(DATA.slice(),from,to,ad);
-  if(myGen!==LIVE.gen) return;
+  const t0=performance.now(); let err=null, snap=null;
+  if(mcp.snapshot){ try{ snap=await Promise.race([mcp.snapshot({o:org,f:from,t:to,a:ad}).catch(()=>null), new Promise(r=>setTimeout(()=>r(null),2500))]); }catch(e){snap=null} }
+  if(snap&&typeof snap==="object"&&Object.keys(snap).length>=20){
+    /* prices pre-calculated overnight: show the cards straight away (the booking steps re-check today's price) */
+    LIVE.gen++; LIVE.busy=false; LIVE.fg=false;
+    DATA.forEach(d=>{ if(d.code===org) d.hotels=[]; else setHotels(d,snap[d.code]||[]); d.tried=true; });
+  } else {
+    const myGen=LIVE.gen+1;
+    err=await liveSearch(DATA.slice(),from,to,ad);
+    if(myGen!==LIVE.gen) return;
+  }
+  try{ if(!READY.sent){READY.sent=true; trk("ready",{ms:Math.round(performance.now()-t0),boot:Math.round(performance.now()),snap:!!(snap&&Object.keys(snap).length>=20)});} }catch(e){}
   if(!err){
     const n=DATA.filter(d=>d.hotels.length).length;
     st.textContent=`Live prices for ${n} cities · ${new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})}`;
@@ -1872,7 +1903,8 @@ function fling(card,dir){
 const HIST=[];
 function decide(code,liked){
   trk("swipe",{c:cityOf(code),like:!!liked,tg:!!S.together.on});
-  S.swipes=(S.swipes||0)+1; if((liked||S.swipes>=5)&&!S.together.on) try{instMaybe(liked?"first_save":"swipes")}catch(e){}
+  S.swipes=(S.swipes||0)+1; if(liked) S.likes=(S.likes||0)+1;
+  if(!S.together.on){ if(S.likes>=2&&liked) try{instMaybe("two_saves")}catch(e){} else if(S.swipes>=4) try{alertMaybe("swipes")}catch(e){} }
   if(S.swipes>=3){const da=document.querySelector(".deckarea");da&&da.classList.add("calm");}
   const o=deck.find(x=>x.d.code===code); if(!o) return;
   const hist={code,liked,taste:JSON.parse(JSON.stringify(S.taste)),saved:false,tg:null};
@@ -2542,6 +2574,7 @@ setTimeout(trkFlush,2000);
 /* ===== saved ===== */
 function updateCount(){const c=$("savedCount");c.hidden=!S.saved.length;c.textContent=S.saved.length}
 function renderSaved(){
+  try{renderAlertBtn()}catch(e){}
   const L=$("savedList");
   if(!S.saved.length){L.innerHTML=`<div class="box"><p>Nothing saved yet. Swipe right on a weekend you like.</p></div>`;$("cmpWrap").hidden=true;return}
   const items=S.saved.map(s=>{const d=DATA.find(x=>x.code===s.code);const h=d.hotels[s.j];return {d,h}});
@@ -2551,7 +2584,7 @@ function renderSaved(){
   if(items.length>=2){
     const minP=Math.min(...items.map(i=>i.h.price)),maxR=Math.max(...items.map(i=>i.h.rating)),minKm=Math.min(...items.map(i=>i.h.km)),maxT=Math.max(...items.map(i=>i.d.temp));
     $("cmp").innerHTML=`<thead><tr><th></th>${items.map(i=>`<th>${i.d.city}</th>`).join("")}</tr></thead><tbody>
-      <tr><td>Total for 2</td>${items.map(i=>`<td class="${i.h.price===minP?"best":""}">${eur(i.h.price)}</td>`).join("")}</tr>
+      <tr><td>${S.trip.adults>1?`Total for ${S.trip.adults}`:"Total price"}</td>${items.map(i=>`<td class="${i.h.price===minP?"best":""}">${eur(i.h.price)}</td>`).join("")}</tr>
       <tr><td>Guest rating</td>${items.map(i=>`<td class="${i.h.rating===maxR?"best":""}">${i.h.rating?(i.h.rating/10).toFixed(1):"New"}</td>`).join("")}</tr>
       <tr><td>To centre</td>${items.map(i=>`<td class="${i.h.km===minKm?"best":""}">${i.h.km} km</td>`).join("")}</tr>
       <tr><td>Typical high</td>${items.map(i=>`<td class="${i.d.temp===maxT?"best":""}">${i.d.temp}°C</td>`).join("")}</tr>
@@ -2913,6 +2946,7 @@ function restMcp(){
     sights:(city)=>getJSON(`/api/sights?v=3&city=${encodeURIComponent(city)}`),
     events:(o)=>getJSON(`/api/events?lat=${o.lat}&lon=${o.lon}&city=${encodeURIComponent(o.city)}&from=${o.from}&to=${o.to}`),
     detail:(q)=>getJSON(`/api/detail?o=${q.o}&d=${q.d}&f=${q.f}&t=${q.t}&a=${q.a}&h=${q.h}&l=${uiLang()}`),
+    snapshot:(q)=>getJSON(`/api/snapshot?o=${q.o}&f=${q.f}&t=${q.t}&a=${q.a}`),
     batchSearch:(o,f,t,a,ds)=>getJSON(`/api/search?o=${o}&f=${f}&t=${t}&a=${a}&d=${ds.join(",")}`),
     verify:(q)=>getJSON(`/api/verify?v=2&o=${q.o}&f=${q.f}&t=${q.t}&a=${q.a}&tOut=${encodeURIComponent(q.tOut||"")}&tIn=${encodeURIComponent(q.tIn||"")}&b=${Math.round(q.b||0)}&d=${q.d.join(",")}`)
   };
@@ -2928,6 +2962,48 @@ const STANDALONE=!window.claude&&/^https?:$/.test(location.protocol);
 
 
 {const rp=renderPanels; renderPanels=function(){const r=rp.apply(this,arguments); requestAnimationFrame(fitPanes); return r;};}
+
+/* ===== "Thursday deals" alert: email sign-up, the 3 best weekends for your budget every Thursday ===== */
+const AL={};
+const alertDone=()=>{try{return localStorage.getItem("fa_alert")==="1"}catch(e){return false}};
+function alertMaybe(src){
+  if(alertDone()||Date.now()-(window.__popAt||0)<25000) return;
+  let seen=false; try{seen=!!localStorage.getItem("fa_alert_seen")}catch(e){} if(seen) return;
+  try{localStorage.setItem("fa_alert_seen","1")}catch(e){}
+  setTimeout(()=>{ if($("setup").hidden&&$("layer").innerHTML==="") alertOpen(src); },700);
+}
+function alertOpen(src){
+  window.__popAt=Date.now();
+  let o=$("alOv"); if(!o){o=document.createElement("div");o.id="alOv";o.className="instOv";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.addEventListener("click",e=>{if(e.target===o)alertClose("backdrop")});document.body.appendChild(o);}
+  const b=S.budgetOn?eur(S.budget):"", who=S.trip.adults>1?` for ${S.trip.adults}`:"";
+  o.innerHTML=`<div class="instCard alCard"><button class="instX" aria-label="Close">✕</button>
+    <div class="alIco" aria-hidden="true">🔔</div>
+    <h3>The 3 best weekends, every Thursday</h3>
+    <p class="alSub">${b?`Under ${b}${who}, from ${oriName()}.`:`From ${oriName()}.`} One email a week, free, unsubscribe any time.</p>
+    <form class="alForm" novalidate><input type="email" id="alEmail" placeholder="Your email" autocomplete="email" inputmode="email" required><button class="btn" type="submit">Notify me</button></form>
+    <p class="alNote">We only use your email to send these offers. Reply STOP to any email to stop them.</p>
+    <p class="alErr" id="alErr" hidden></p></div>`;
+  o.querySelector(".instX").onclick=()=>alertClose("x");
+  o.querySelector("form").onsubmit=async e=>{e.preventDefault();
+    const em=$("alEmail").value.trim(), er=$("alErr"), bt=o.querySelector("form .btn");
+    if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(em)){er.textContent="Check your email address.";er.hidden=false;return}
+    bt.disabled=true; bt.textContent="…";
+    let uid=""; try{uid=localStorage.getItem("fa_uid")||""}catch(x){}
+    try{ const r=await fetch("/api/subscribe",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email:em,b:S.budgetOn?S.budget:0,o:ORI(),a:S.trip.adults,l:(document.documentElement.lang==="it"?"it":"en"),uid,g:CAMP})});
+      if(!r.ok&&r.status!==204) throw 0;
+      try{localStorage.setItem("fa_alert","1")}catch(x){} trk("alert_signup",{src,b:S.budgetOn?S.budget:0}); trkFlush();
+      o.hidden=true; toast("Done! Your first deals arrive on Thursday 🔔"); renderAlertBtn();
+    }catch(x){ bt.disabled=false; bt.textContent="Notify me"; er.textContent="Something went wrong, try again."; er.hidden=false; }
+  };
+  o.hidden=false; trk("alert_shown",{src});
+  setTimeout(()=>{try{$("alEmail").focus({preventScroll:true})}catch(e){}},250);
+}
+function alertClose(how){const o=$("alOv"); if(!o||o.hidden) return; o.hidden=true; trk("alert_close",{how});}
+function renderAlertBtn(){
+  const w=$("alertBtnWrap"); if(!w) return;
+  w.innerHTML=alertDone()?`<div class="alOn">🔔 You get the best weekends every Thursday</div>`:`<button class="alBtn" id="alertBtn"><span aria-hidden="true">🔔</span><span><b>Get the 3 best weekends every Thursday</b><small>Free, for your budget, one email a week</small></span><i aria-hidden="true">›</i></button>`;
+  const b=$("alertBtn"); if(b) b.onclick=()=>alertOpen("saved");
+}
 /* ===== black mode (negative colours), remembered on this device ===== */
 (function(){
   const set=(on,user)=>{document.documentElement.classList.toggle("neg",on);document.querySelectorAll(".darkBtn").forEach(b=>b.setAttribute("aria-pressed",String(on)));try{localStorage.setItem("fa_neg",on?"1":"0")}catch(e){} if(user) try{trk("theme",{neg:on})}catch(e){}};
@@ -2996,8 +3072,8 @@ syncInstall();
 function instMaybe(why){
   if(!canInstallHere()) return;
   let seen=false; try{seen=!!localStorage.getItem("fa_inst_seen")}catch(e){}
-  if(seen) return;
-  try{localStorage.setItem("fa_inst_seen","1")}catch(e){}
+  if(seen||Date.now()-(window.__popAt||0)<25000) return;
+  try{localStorage.setItem("fa_inst_seen","1")}catch(e){} window.__popAt=Date.now();
   setTimeout(()=>{ if(canInstallHere()&&document.getElementById("setup").hidden) instOpen(why); },900);
 }
 

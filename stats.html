@@ -51,6 +51,8 @@ fetch("/api/stats?key="+encodeURIComponent(key)+"&t="+Date.now(),{cache:"no-stor
     <div class="kpi"><b>${f.openedCheckout}</b><span>sessions that opened lastminute checkout</span></div>
     <div class="kpi"><b>${j.together.games}</b><span>Together games · ${j.together.matches} matches</span></div>
     <div class="kpi"><b>${j.installs}</b><span>app installs</span></div>
+    <div class="kpi"><b>${j.subscribers||0}</b><span>signed up for the Thursday deals · ${f.swiped?Math.round((j.subscribers||0)/f.swiped*100):0}% of swipers</span></div>
+    <div class="kpi"><b>${j.ready&&j.ready.n?(j.ready.median/1000).toFixed(1)+" s":"–"}</b><span>time to first cards (median) · ${j.ready?j.ready.instant:0} of ${j.ready?j.ready.n:0} instant</span></div>
   </div>
   <div class="card"><h2>Funnel (sessions)</h2>
     <table><tr><th>Step</th><th class="n">Sessions</th><th class="n">of opened</th></tr>

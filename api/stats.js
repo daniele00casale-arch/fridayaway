@@ -5,6 +5,12 @@ module.exports = async (req, res) => {
   const key = String((req.query && req.query.key) || "");
   if (!process.env.STATS_KEY || key !== process.env.STATS_KEY) return res.status(401).json({ error: "wrong key" });
   // Read events fast: past days are merged once into one summary file each (agg/DAY.json), only today is read file by file
+  if (req.query && req.query.subs) { // Thursday alert sign-ups (latest record per email)
+    const sb = []; let c; do { const r = await list({ prefix: "subs/", limit: 1000, cursor: c }); sb.push(...r.blobs); c = r.hasMore ? r.cursor : undefined; } while (c);
+    const recs = (await Promise.all(sb.map((b) => fetch(b.url).then((r) => (r.ok ? r.json() : null)).catch(() => null)))).filter(Boolean);
+    const by = {}; recs.forEach((r) => { if (!by[r.email] || r.at > by[r.email].at) by[r.email] = r; });
+    return res.status(200).json({ count: Object.keys(by).length, subscribers: Object.values(by).sort((a, b) => b.at - a.at) });
+  }
   const blobs = []; let cursor;
   do { const r = await list({ prefix: "ev/", limit: 1000, cursor }); blobs.push(...r.blobs); cursor = r.hasMore ? r.cursor : undefined; } while (cursor);
   const aggs = {}; cursor = undefined;
@@ -41,6 +47,8 @@ module.exports = async (req, res) => {
     s.ev.forEach((e) => {
       out.events++; inc(out.byType, e.t); const d = e.d || {};
       if (e.t === "search") { inc(out.origins, d.o); if (d.b) inc(out.budgets, d.b <= 500 ? "≤€500" : d.b <= 800 ? "€501–800" : d.b <= 1200 ? "€801–1200" : ">€1200"); else inc(out.budgets, "no limit"); }
+      if (e.t === "ready" && d.ms) { (out._ready = out._ready || []).push(d.ms); if (d.snap) out._readySnap = (out._readySnap || 0) + 1; }
+      if (e.t === "alert_signup") out.alertSignups = (out.alertSignups || 0) + 1;
       if (e.t === "fly_filter") inc(out.flyFilter, d.m ? d.m / 60 + "h" : "any");
       if (e.t === "swipe") { swipeTotal++; const c = out.cities[d.c] || (out.cities[d.c] = { saved: 0, skipped: 0, details: 0, book: 0, checkout: 0 }); d.like ? c.saved++ : c.skipped++; }
       if (["sheet", "book", "checkout"].includes(e.t) && d.c) { const c = out.cities[d.c] || (out.cities[d.c] = { saved: 0, skipped: 0, details: 0, book: 0, checkout: 0 }); c[e.t === "sheet" ? "details" : e.t]++; }
@@ -77,6 +85,8 @@ module.exports = async (req, res) => {
     if (new Set(v.map((x) => new Date(x.a + 3600e3).toISOString().slice(0, 10))).size > 1) backDay++;
   });
   out.returning = { users: tracked, returned: back, returnedOtherDay: backDay, rate: tracked ? Math.round((back / tracked) * 100) : 0, rateOtherDay: tracked ? Math.round((backDay / tracked) * 100) : 0, visitsPerUser: tracked ? Math.round((visits / tracked) * 10) / 10 : 0 };
+  try { const sb = []; let c; do { const r = await list({ prefix: "subs/", limit: 1000, cursor: c }); sb.push(...r.blobs); c = r.hasMore ? r.cursor : undefined; } while (c); out.subscribers = new Set(sb.map((b) => b.pathname.split("/")[1].split("-")[0])).size; } catch (e) { out.subscribers = 0; }
+  { const r = (out._ready || []).sort((x, y) => x - y); out.ready = { n: r.length, median: r.length ? r[Math.floor(r.length / 2)] : 0, instant: out._readySnap || 0 }; delete out._ready; delete out._readySnap; }
   out.updated = Date.now(); out.files = blobs.length;
   return res.status(200).json(out);
 };

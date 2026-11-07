@@ -1794,7 +1794,7 @@ function cardHTML(o,pos){
   const why=m.length?`Fits your mood: <b>${m.map(v=>VLABEL[v]).join(" + ")}</b>`:Object.keys(S.taste.v).length?`Picked from what you saved so far`:`A strong all-round weekend`;
   return `<article class="card" data-code="${d.code}" style="z-index:${10-pos};transform:translateY(${pos*10}px) scale(${1-pos*0.04});${pos>2?"opacity:0;":""}" aria-label="${d.city}, ${eur(h.price)}">
     <div class="stamp like">SAVE</div><div class="stamp nope">SKIP</div>
-    <div class="art">${art(d)}<span class="temp">☀ ${d.temp}°C</span>${pos===0&&o.s>8?`<span class="match">Top match</span>`:""}<div class="city"><h2>${d.city}</h2><span>${d.country}${d.carrier?" · "+d.carrier:""}</span></div></div>
+    <div class="art">${art(d)}<span class="temp">☀ ${d.temp}°C</span>${pos===0&&o.s>8?`<span class="match">Top match</span>`:""}<div class="city"><h2>${d.city}</h2><span>${d.country}</span></div></div>
     <div class="body">
 
       ${pos<2?`<button class="evPill" data-ev="${d.code}" aria-label="Events in ${d.city}">${evPillInner(d)}</button>`:""}

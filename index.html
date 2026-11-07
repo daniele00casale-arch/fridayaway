@@ -319,6 +319,9 @@ nav [data-tab="saved"].pop svg{animation:pop .5s ease}
 }
 @media (min-width:960px) and (max-width:1180px){.trip{max-width:220px}}
 .deckarea{position:relative}
+.swPill{position:absolute;left:50%;top:64px;z-index:16;transform:translate(-50%,-6px);opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;max-width:calc(100% - 24px);width:max-content;text-align:center;background:rgba(17,17,32,.86);color:#fff;font-size:13px;font-weight:600;padding:8px 13px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.swPill.on{opacity:1;transform:translate(-50%,0)}
+html.neg .swPill{filter:invert(1) hue-rotate(180deg)}
 .swh{position:absolute;top:78px;z-index:15;width:30px;height:30px;border-radius:50%;border:0;display:grid;place-items:center;background:rgba(255,255,255,.72);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.18);opacity:.75;pointer-events:none;padding:0;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .swh svg{width:16px;height:16px}
 .swh.l{left:8px;animation:nudgeL 2.8s ease-in-out infinite}.swh.r{right:8px;animation:nudgeR 2.8s ease-in-out infinite}
@@ -1114,6 +1117,7 @@ html.neg :is(.bt,.msRow button,.meImg) img{filter:none}
 /* ===== IT / EN switch: translates every visible string in place, including text the app adds later ===== */
 const I18N=(()=>{
   const EX={
+  "Swipe right to save · left to skip":"Scorri a destra per salvare · a sinistra per saltare",
   "Total price":"Prezzo totale",
   "The 3 best weekends, every Thursday":"I 3 weekend migliori, ogni giovedì","Notify me":"Avvisami","Your email":"La tua email",
   "We only use your email to send these offers. Reply STOP to any email to stop them.":"Usiamo la tua email solo per mandarti queste offerte. Rispondi STOP a una qualsiasi email per non riceverle più.",
@@ -1904,7 +1908,8 @@ const HIST=[];
 function decide(code,liked){
   trk("swipe",{c:cityOf(code),like:!!liked,tg:!!S.together.on});
   S.swipes=(S.swipes||0)+1; if(liked) S.likes=(S.likes||0)+1;
-  if(!S.together.on){ if(S.likes>=2&&liked) try{instMaybe("two_saves")}catch(e){} else if(S.swipes>=4) try{alertMaybe("swipes")}catch(e){} }
+  if(!S.together.on){ if(liked&&S.likes===1) try{alertMaybe("first_save")}catch(e){} else if(S.likes>=2&&liked) try{instMaybe("two_saves")}catch(e){} else if(S.swipes>=4) try{alertMaybe("swipes")}catch(e){} }
+  swPillOff();
   if(S.swipes>=3){const da=document.querySelector(".deckarea");da&&da.classList.add("calm");}
   const o=deck.find(x=>x.d.code===code); if(!o) return;
   const hist={code,liked,taste:JSON.parse(JSON.stringify(S.taste)),saved:false,tg:null};
@@ -1921,12 +1926,25 @@ function decide(code,liked){
   renderDeck();
 }
 function demo(card){
-  if(!card||!card.isConnected||RM()||(S.swipes||0)>0) return;
+  if((S.swipes||0)>0) return;
+  if(!card||!card.isConnected) card=deck[0]&&document.querySelector(`#deck .card[data-code="${deck[0].d.code}"]`);
+  if(!$("setup").hidden){ setTimeout(()=>demo(card),600); return; }
+  swPillOn();
+  if(!card||RM()) return;
   const L=card.querySelector(".stamp.nope"),R=card.querySelector(".stamp.like");
   const step=(tx,rot,sl,sr,t)=>setTimeout(()=>{if(!card.isConnected||card.classList.contains("dragging")||card.classList.contains("flying"))return;card.classList.add("demo");card.style.transform=tx?`translate(${tx}px,0) rotate(${rot}deg)`:"";L.style.opacity=sl;R.style.opacity=sr;},t);
   step(-70,-5,.85,0,0); step(0,0,0,0,650); step(70,5,0,.85,1150); step(0,0,0,0,1800);
   setTimeout(()=>card.classList.remove("demo"),2300);
+  if(!demo.again){ demo.again=true; setTimeout(()=>{ const t=deck[0]&&document.querySelector(`#deck .card[data-code="${deck[0].d.code}"]`); if(!(S.swipes>0)&&t) demo(t); },7000); }
 }
+/* first-visit hint: "Swipe right to save · left to skip", until the first swipe (max 12 s) */
+function swPillOn(){
+  if((S.swipes||0)>0) return; const da=document.querySelector(".deckarea"); if(!da) return;
+  let p=$("swPill"); if(!p){ p=document.createElement("div"); p.id="swPill"; p.className="swPill"; p.setAttribute("role","status");
+    p.innerHTML=`<span aria-hidden="true">👉</span> ${"Swipe right to save · left to skip"}`; da.appendChild(p); }
+  requestAnimationFrame(()=>p.classList.add("on")); clearTimeout(swPillOn.t); swPillOn.t=setTimeout(swPillOff,12000);
+}
+function swPillOff(){ const p=$("swPill"); if(p){ p.classList.remove("on"); setTimeout(()=>p.remove(),300); } }
 function undoState(){const b=$("bUndo"); if(!b) return; const ok=HIST.some(x=>S.seen.has(x.code)); b.disabled=!ok; b.classList.toggle("ready",ok);}
 function undo(){
   let x; while((x=HIST.pop())&&!S.seen.has(x.code));
@@ -2680,7 +2698,7 @@ function topSoon(){
   topT=setTimeout(go,700);
 }
 function showTop1(){
-  const top=topList(), el=$("topToast"); if(!el||!top.length||S.together.on) return;
+  const top=topList(), el=$("topToast"); if(!el||!top.length||S.together.on||!(S.swipes>0)) return;
   const o=top[0], key=[o.d.code,o.h.j,ORI(),S.trip.from,S.budget].join("|");
   if(key===S.lastTop) return; S.lastTop=key;
   el.innerHTML=`<div class="tt-img">${art(o.d,true)}</div><div class="tt-t"><small>★ YOUR #1 OF TOP 3</small><b>${o.d.city} · ${eur(o.h.price)} for ${S.trip.adults}</b></div><button class="tt-x" aria-label="Close">✕</button>`;
@@ -2926,7 +2944,7 @@ S.lastQ=$("q").value.trim();
   $("setupGo").onclick=()=>{trk("search",{o:$("orig").value,from:$("dFrom").value,to:$("dTo").value,a:+$("adults").value,b:S.budgetOn?S.budget:0,v:[...S.vibes],fly:S.maxFly||0,tOut:$("tOut").value,tIn:$("tIn").value});applySetup()}; $("setupX").onclick=()=>{closeSetup();loadUI();}; $("sumBar").onclick=e=>{openSetup(); if(!e.target.closest("#sbEdit")) setTimeout(()=>{const q=$("q"); if(q){q.focus(); q.select();}},120);};
   document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("setup").hidden){closeSetup();loadUI();} });
   renderSum(); openSetup(); try{trk("search",{auto:true,o:$("orig").value,from:$("dFrom").value,to:$("dTo").value,a:+$("adults").value,b:S.budgetOn?S.budget:0})}catch(e){} applySetup();
-  const sb=$("sumBar"); if(sb){ setTimeout(()=>{sb.classList.add("pulse");toast("Tap the search bar to describe your weekend, or Edit to change dates and budget.")},2600); setTimeout(()=>sb.classList.remove("pulse"),7000); }
+  /* start stays clean: only the cards and the swipe hint (no toast, no pulse) */
 })();
 (async()=>{try{sample=window.claude?await window.claude.use("sample"):null}catch(e){sample=null}})();
 

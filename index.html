@@ -2473,13 +2473,13 @@ function openGal(list,i,where){
 }
 
 function heroHTML(d){
-  const sg=SIGHTS[d.code], head=`<div class="pdest-h"><h3>${esc_(d.city)}</h3><span>${esc_(d.country)}${d.carrier?" · "+esc_(d.carrier):""}</span></div>`;
+  const sg=SIGHTS[d.code], head=`<div class="pdest-h"><h3>${esc_(d.city)}</h3><span>${esc_(d.country)}</span></div>`;
   if(Array.isArray(sg)&&sg.length){const i=Math.min(PANEL.sight||0,sg.length-1), s=sg[i];
     return `<div class="psight"><a class="psMain" href="${esc_(s.page)}" target="_blank" rel="noopener" title="Photo on Wikimedia Commons: author and licence"><img src="${esc_(s.img)}" alt="${esc_(s.name)}" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('broken')"><span class="psCap">${esc_(s.name)}</span></a>
       ${sg.length>1?`<div class="pthumbs">${sg.map((x,k)=>`<button data-sg="${k}" class="${k===i?"on":""}" aria-label="${esc_(x.name)}" title="${esc_(x.name)}"><img src="${esc_(x.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"></button>`).join("")}</div>`:""}
       ${head}<small class="pcred">Top sights · photos from Wikimedia Commons, tap a photo for author and licence</small></div>`;}
   if(sg==="busy") return `<div class="psMain pskel"></div>${head}`;
-  return `<div class="pdest">${art(d)}<div class="pdest-t"><h3>${esc_(d.city)}</h3><span>${esc_(d.country)}${d.carrier?" · "+esc_(d.carrier):""}</span></div></div>`;
+  return `<div class="pdest">${art(d)}<div class="pdest-t"><h3>${esc_(d.city)}</h3><span>${esc_(d.country)}</span></div></div>`;
 }
 let pnT=0; function panelsSoon(){clearTimeout(pnT);pnT=setTimeout(renderPanels,200)}
 const BSPAN=[5,3,4,4,3,5,4,3,5,3];

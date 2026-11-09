@@ -8,3 +8,5 @@ Budget-first, swipe-to-decide weekend planner (flight + hotel). Concept by Danie
 
 Independent concept, not affiliated with lastminute.com.
 
+
+

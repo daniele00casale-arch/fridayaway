@@ -133,6 +133,12 @@ textarea{flex:1;min-width:0;resize:none;height:62px;font:inherit;font-size:15px;
 .why{font-size:13.5px;color:var(--muted)}
 .why b{color:var(--ink);font-weight:600}
 .priceRow{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+/* lighter card: price first, then flights + hotel, then events, then the step-up offer */
+.card .priceRow{order:-1;margin-top:0}
+.card .price{font-size:30px}
+.pfrom{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:2px}
+.card .cardFacts{order:1}.card .evPill{order:2}.card .upg{order:3}
+.card .leg .fn{display:none}
 .price{font-family:var(--display);font-weight:700;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
 .pp{font-size:12.5px;color:var(--muted)}
 .left{font-size:12.5px;font-weight:600;text-align:right}
@@ -262,6 +268,9 @@ details.more[open] .when{margin-top:8px}
 .bitem .lf{font-size:12px;color:var(--mint-ink);text-align:right}
 @media (prefers-reduced-motion:reduce){.card.anim{transition:none}}
 @media (max-height:740px){.deckwrap{height:580px}}
+/* phones: the card fits above the tab bar, so price, flights and hotel stay in view (the photo takes what is left) */
+@media (max-width:959px){.deckwrap{height:clamp(420px,calc(100vh - 374px),600px);height:clamp(420px,calc(100dvh - 374px),600px)}}
+.vibeBar{margin-top:10px}
 .totalbox{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px;padding:14px 16px;border-radius:14px;background:var(--primary);color:#fff}.totalbox span{font-size:13px;font-weight:600;opacity:.9}.totalbox b{grid-row:span 2;font-size:24px;letter-spacing:-.02em}.totalbox small{font-size:12px;opacity:.85}
 .bin{position:fixed;left:10px;top:46%;z-index:40;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--nope);box-shadow:var(--shadow);opacity:0;transform:translateX(-40px) scale(.7);transition:opacity .18s,transform .22s cubic-bezier(.3,1.4,.5,1),background .15s,color .15s;pointer-events:none}
 .bin.show{opacity:1;transform:none}
@@ -631,8 +640,9 @@ header.top .brand,#setupBrand{cursor:pointer}
 .cf4 span{font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cf4 b{font-size:14px;white-space:nowrap}
 .cfT{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
-.cardFacts .pfl{font-size:13px}
-.cardFacts .pfl small{font-size:11px}
+.cardFacts .pfl{font-size:13px;grid-template-columns:30px auto 1fr}
+.cardFacts .pfl small{font-size:11px;grid-column:3;text-align:right;white-space:nowrap}
+.cfM .cfT{display:none}
 @media (max-width:959px){
   .dinfo{display:none!important}
   .card .body:has(.cardFacts .pfl) .exactNote{display:none}
@@ -918,7 +928,7 @@ html.neg :is(.bt,.msRow button,.meImg) img{filter:none}
   <!-- DISCOVER -->
   <main class="screen gut" data-s="discover">
    <div class="dleft">
-    <button class="sumbar sbx" id="sumBar" aria-label="Search: describe your weekend"><span class="sb-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span><span class="sb-t"><span class="sb-q" id="sbQ">Describe your weekend…</span><span class="sb-s"><b id="sumA"></b> · <span id="sumB"></span></span></span><span class="sb-e" id="sbEdit">Edit ✎</span></button>
+    <button class="sumbar sbx" id="sumBar" aria-label="Search: describe your weekend"><span class="sb-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span><span class="sb-t"><span class="sb-q" id="sbQ">Describe your weekend…</span><span class="sb-s"><b id="sumA"></b> · <span id="sumB"></span></span></span><span class="sb-e" id="sbEdit">Customize ✎</span></button>
     <div class="ask">
       <div class="askrow">
         <label for="q" class="eyebrow" style="position:absolute;left:-9999px">Describe your weekend</label>
@@ -954,6 +964,14 @@ html.neg :is(.bt,.msRow button,.meImg) img{filter:none}
 
     <div class="whoBar" id="whoBar" hidden><span id="whoTxt"></span><button id="whoSwitch">Pass the phone</button></div>
 
+    <div class="chips vibeBar" id="vibeBar" role="group" aria-label="Weekend type">
+      <button class="chip" data-v="sea">Sea</button>
+      <button class="chip" data-v="food">Food</button>
+      <button class="chip" data-v="culture">Culture</button>
+      <button class="chip" data-v="city">City</button>
+      <button class="chip" data-v="nightlife">Nightlife</button>
+      <button class="chip" data-v="relax">Relax</button>
+    </div>
     <div class="matches" id="liveBar" hidden></div>
     <div class="matches" id="matches" hidden></div>
     <div class="learned" id="learned"></div>
@@ -1236,7 +1254,7 @@ const I18N=(()=>{
   "Free cancellation":"Cancellazione gratuita","Non-refundable":"Non rimborsabile","Flights":"Voli","destinations":"destinazioni","cities":"città","adults":"adulti","adult":"adulto","nights":"notti","night":"notte","direct":"diretto","matches!":"match!","match!":"match!",
   "Excellent":"Eccellente","Superb":"Eccezionale","Very good":"Molto buono","Good":"Buono","Fair":"Discreto","New":"Nuovo",
   "extra bookings from conversion":"prenotazioni in più dalla conversione","from Top 3. About":"dalla Top 3. Circa","a year. Placeholder inputs, not company data.":"all'anno. Dati di esempio, non dati aziendali.",
-  "Open":"Apri","options":"opzioni","from":"da","From":"Da","left":"rimasti","pp":"a pers.",
+  "Open":"Apri","options":"opzioni","from":"da","From":"Da","left":"rimasti","under budget":"sotto il budget","Customize":"Personalizza","pp":"a pers.",
   "Spain":"Spagna","Portugal":"Portogallo","Italy":"Italia","Greece":"Grecia","Czechia":"Rep. Ceca","Hungary":"Ungheria","France":"Francia","Croatia":"Croazia","Netherlands":"Paesi Bassi","Denmark":"Danimarca","Belgium":"Belgio",
   "Cyprus":"Cipro","Finland":"Finlandia","Germany":"Germania","Iceland":"Islanda","Ireland":"Irlanda","Latvia":"Lettonia","Lithuania":"Lituania","Morocco":"Marocco","Norway":"Norvegia","Poland":"Polonia","Sweden":"Svezia","United Kingdom":"Regno Unito","Switzerland":"Svizzera","Turkey":"Turchia",
   "Milan":"Milano","Turin":"Torino","Genoa":"Genova","Venice":"Venezia","Florence":"Firenze","Rome":"Roma","Naples":"Napoli","Geneva":"Ginevra","Zurich":"Zurigo","Lisbon":"Lisbona","Seville":"Siviglia","Athens":"Atene","Prague":"Praga","Paris":"Parigi",
@@ -1803,7 +1821,7 @@ function cardHTML(o,pos){
       ${fcLegs(d.code)?"":S.trip.live||!FL[d.code]?`<div class="leg exactNote" style="grid-template-columns:1fr"><span>Exact flights are shown when you open this weekend</span></div>`:timeIssue(d.code)?`<div class="leg" style="grid-template-columns:1fr"><span>Flights to match your times (${timeTxt()}) are picked when you book</span></div>`:FL[d.code]&&FL[d.code].note?`<div class="warnline">${FL[d.code].note}</div>`:earlyReturn(d.code)?`<div class="warnline">Early flight home on Sunday (${FL[d.code].i[2]})</div>`:""}
       ${pos<2?`<div class="cardFacts" data-cf="${d.code}">${cardFactsInner(d,h)}</div>`:""}
       ${up?`<div class="upg"><span><b>+${eur(up.price-h.price)}</b> for ${starStr(up.stars)} ${up.name.length>26?up.name.slice(0,25)+"…":up.name}${up.rating?` · ${(up.rating/10).toFixed(1)}`:""}</span><button data-up="${d.code}|${up.j}">Step up</button></div>`:""}
-      <div class="priceRow"><div><div class="price">${eur(h.price)}</div>${pp}${pos<2?splitHTML(d.code,h.price).replace('class="split','class="split cardSplit'):""}</div><div class="prR">${marginPill(h.price)}${pos<2?`<button class="goTrip" data-go="${d.code}" aria-label="Book ${d.city}">Book ›</button>`:""}</div></div>
+      <div class="priceRow"><div><div class="pfrom">Flight + hotel from</div><div class="price">${eur(h.price)}</div>${pp}${pos<2?splitHTML(d.code,h.price).replace('class="split','class="split cardSplit'):""}</div><div class="prR">${marginPill(h.price)}${pos<2?`<button class="goTrip" data-go="${d.code}" aria-label="Book ${d.city}">Book ›</button>`:""}</div></div>
     </div></article>`;
 }
 /* Budget margin: what is left of the budget once flight + hotel are paid, and what that is per day there. */
@@ -1817,7 +1835,7 @@ function marginPill(price){
   if(!S.budgetOn) return "";
   const left=S.budget-price, days=Math.max(1,nightsOf());
   return left<0?`<div class="mpill over"><b>+${eur(-left)}</b><span>over budget</span></div>`
-    :`<div class="mpill"><b>${eur(left)} left</b><span>${eur(left/days)}/day to spend</span></div>`;
+    :`<div class="mpill"><b>${eur(left)} under budget</b><span>${eur(left/days)}/day to spend</span></div>`;
 }
 function renderMatches(){
   const m=$("matches"); const t=fcOn()&&fcReady();
@@ -2375,7 +2393,7 @@ function cardFactsInner(d,h){
   let fl="", dfl="";
   if(!fcLegs(d.code)){
     if(ok&&det.flights&&det.flights.out){
-      fl=`<span class="cfT">Flights in this package</span>`+[["out",dayFrom()],["back",dayTo()]].map(([k,lab])=>{const x=det.flights[k];return x?`<div class="pfl"><span>${lab}</span><b>${x.from} ${x.dep} → ${x.to} ${x.arr}</b><small>${[durTxt(x.min),x.direct?"direct":"1 stop",(x.carrier+" "+x.num).trim()].filter(Boolean).join(" · ")}</small></div>`:""}).join("");
+      fl=`<span class="cfT">Flights in this package</span>`+[["out",dayFrom()],["back",dayTo()]].map(([k,lab])=>{const x=det.flights[k];return x?`<div class="pfl"><span>${lab}</span><b>${x.from} ${x.dep} → ${x.to} ${x.arr}</b><small>${[durTxt(x.min),x.direct?"direct":"1 stop"].filter(Boolean).join(" · ")}</small></div>`:""}).join("");
       dfl=`<div class="cdRow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg><div><span class="cdH">Flights</span>`+[["out",dayFrom()],["back",dayTo()]].map(([k,lab])=>{const x=det.flights[k];return x?`<div class="cdL cdFl">${lab}&nbsp; <b>${x.from} ${x.dep} → ${x.to} ${x.arr}</b>, ${x.direct?"direct":"1 stop"}</div>`:""}).join("")+`</div></div>`;
     } else if(wait){
       fl=`<div class="pskel" style="height:26px"></div><div class="pskel" style="height:26px"></div>`;
@@ -2385,7 +2403,7 @@ function cardFactsInner(d,h){
   const ci=ok&&det.hotel&&(det.hotel.checkIn||det.hotel.checkOut);
   const dho=ci?`<div class="cdRow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg><div><span class="cdH">Hotel</span><div class="cdL">Check-in ${esc_(det.hotel.checkIn||"—")} · check-out ${esc_(det.hotel.checkOut||"—")}</div></div></div>`:"";
   const chips=`<div class="cdChips">${hrs>0?`<span>🕑 ${hrs} h there</span>`:""}<span>🌡️ ${d.temp}°C typical high</span></div>`;
-  return `<div class="cfM">${tiles}${hotelLine(h)}${fl}</div><div class="cfD">${tiles}${hotelLine(h)}${dfl}</div>`;
+  return `<div class="cfM">${fl}${hotelLine(h)}</div><div class="cfD">${tiles}${hotelLine(h)}${dfl}</div>`;
 }
 function refreshCardFacts(code){const d=DATA.find(x=>x.code===code); if(!d) return; const h=hotelFor(d); if(!h) return;
   document.querySelectorAll(`[data-cf="${code}"]`).forEach(el=>{el.innerHTML=cardFactsInner(d,h)});}
@@ -2603,7 +2621,6 @@ function renderSaved(){
     const minP=Math.min(...items.map(i=>i.h.price)),maxR=Math.max(...items.map(i=>i.h.rating)),minKm=Math.min(...items.map(i=>i.h.km)),maxT=Math.max(...items.map(i=>i.d.temp));
     $("cmp").innerHTML=`<thead><tr><th></th>${items.map(i=>`<th>${i.d.city}</th>`).join("")}</tr></thead><tbody>
       <tr><td>${S.trip.adults>1?`Total for ${S.trip.adults}`:"Total price"}</td>${items.map(i=>`<td class="${i.h.price===minP?"best":""}">${eur(i.h.price)}</td>`).join("")}</tr>
-      <tr><td>Guest rating</td>${items.map(i=>`<td class="${i.h.rating===maxR?"best":""}">${i.h.rating?(i.h.rating/10).toFixed(1):"New"}</td>`).join("")}</tr>
       <tr><td>To centre</td>${items.map(i=>`<td class="${i.h.km===minKm?"best":""}">${i.h.km} km</td>`).join("")}</tr>
       <tr><td>Typical high</td>${items.map(i=>`<td class="${i.d.temp===maxT?"best":""}">${i.d.temp}°C</td>`).join("")}</tr>
       <tr><td>Flight</td>${items.map(i=>`<td>${i.d.direct?"Direct":"1 stop"}${i.d.fly&&i.d.fly!=="Direct"&&i.d.fly!=="1 stop"?" · "+i.d.fly:""}</td>`).join("")}</tr>
@@ -2857,6 +2874,7 @@ $("dropSave").onclick=()=>toast("Saved. Top 3 every Tuesday.");
 function syncChips(){ setTimeout(renderSum,0);document.querySelectorAll(".fchip").forEach(c=>c.setAttribute("aria-pressed",String(+c.dataset.fly===(S.maxFly||0))));document.querySelectorAll(".chip:not(.fchip)").forEach(c=>{const on=c.dataset.v?S.vibes.has(c.dataset.v):c.dataset.f==="flex"?S.flex:S.direct;c.setAttribute("aria-pressed",String(on))});$("b").value=S.budget;$("bv").textContent=S.budgetOn?eur(S.budget):"No limit";$("b").style.opacity=S.budgetOn?1:.4;$("bClear").textContent=S.budgetOn?"✕":"Set";}
 document.querySelectorAll(".fchip").forEach(c=>c.onclick=()=>{S.maxFly=+c.dataset.fly||0;trk("fly_filter",{m:S.maxFly});S.seen.clear();syncChips();renderDeck();renderDrop&&renderDrop()});
 document.querySelectorAll(".chip:not(.fchip)").forEach(c=>c.onclick=()=>{if(c.dataset.v){S.vibes.has(c.dataset.v)?S.vibes.delete(c.dataset.v):S.vibes.add(c.dataset.v)}else if(c.dataset.f==="flex")S.flex=!S.flex;else S.direct=!S.direct;S.seen.clear();syncChips();renderDeck()});
+document.querySelectorAll("#vibeBar .chip").forEach(c=>c.addEventListener("click",()=>{try{trk("vibe_chip",{v:c.dataset.v,on:S.vibes.has(c.dataset.v)})}catch(e){}}));
 $("b").oninput=e=>{S.budget=+e.target.value;S.budgetOn=true;syncChips();renderDeck()};
 $("bClear").onclick=()=>{S.budgetOn=!S.budgetOn;syncChips();S.seen.clear();renderDeck()};
 /* ===== budget mood tooltip ===== */
